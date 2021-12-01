@@ -1,31 +1,18 @@
 { pkgs, config, lib, ... }: {
-  options = with lib;
-    with types; {
-      defaultApplications = mkOption {
-        type = attrsOf (submodule ({ name, ... }: {
+  options = {
+      defaultApplications = lib.mkOption {
+        type = lib.attrsOf (lib.submodule ({ name, ... }: {
           options = {
-            cmd = mkOption { type = path; };
-            desktop = mkOption { type = str; };
+            cmd = lib.mkOption { type = lib.types.path; };
+            desktop = lib.mkOption { type = lib.types.str; };
           };
         }));
         description = "Preferred applications";
       };
 
-      startupApplications = mkOption {
-        type = listOf path;
+      startupApplications = lib.mkOption {
+        type = lib.types.listOf lib.types.path;
         description = "Applications to run on startup";
       };
     };
-#   config = rec {
-#     defaultApplications = {
-#       text_processor = {
-#         cmd = "${pkgs.abiword}/bin/abiword";
-#         desktop = "abiword";
-#       };
-#       spreadsheet = {
-#         cmd = "${pkgs.gnumeric}/bin/gnumeric";
-#         desktop = "gnumeric";
-#       };
-#     };
-#   };
 }

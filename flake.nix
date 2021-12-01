@@ -29,19 +29,14 @@
     in {
       nixosModules = builtins.listToAttrs (findModules ./modules);
 
-      # nixosConfigurations = let
-      #   hosts = builtins.attrNames (builtins.readDir ./systems);
-      #   mkHost = name:
-      #     nixpkgs.lib.nixosSystem {
-      #       system = builtins.readFile (./systems + "/${name}/system");
-      #       modules = [ import (./systems + "/${name}") { device = name; } ];
-      #       specialArgs = { inherit inputs; };
-      #     };
-      # in nixpkgs.lib.genAttrs hosts mkHost;
-      nixosConfigurations.virtualbox = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [ ./systems/virtualbox ];
-        specialArgs = { inherit inputs; };
-      };
+      nixosConfigurations = let
+        hosts = builtins.attrNames (builtins.readDir ./systems);
+        mkHost = name:
+          nixpkgs.lib.nixosSystem {
+            system = builtins.readFile (./systems + "/${name}/system");
+            modules = [ (import (./systems + "/${name}")) { deviceName = name; } ];
+            specialArgs = { inherit inputs; };
+          };
+      in nixpkgs.lib.genAttrs hosts mkHost;
     };
 }

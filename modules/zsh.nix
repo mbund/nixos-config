@@ -23,6 +23,7 @@
       save = size;
       path = "$HOME/.local/share/zsh/history";
     };
+
     plugins = [
       {
         name = "zsh-nix-shell";
@@ -53,67 +54,13 @@
         };
       }
     ];
+    
     shellAliases = {
-      "b" = "nix build";
-      "p" = "nix-shell --run zsh -p";
-      "s" = "nix shell";
-      "e" = "nix edit";
-      "d" = "nix develop";
-      "r" = "nix run";
-      "f" = "nix search";
-      "fs" = "nix search self";
-      "o" = "xdg-open";
-      "post" = ''curl -F"file=@-" https://0x0.st'';
-      "cat" = "${pkgs.bat}/bin/bat";
-      "ls" = "${pkgs.exa}/bin/exa";
-      "hpc" = "bluetoothctl connect CC:98:8B:C0:FC:D2";
-      "hpd" = "bluetoothctl disconnect CC:98:8B:C0:FC:D2";
+      "c" = "clear";
     };
+
     initExtra = ''
-       cmdignore=(htop tmux top vim)
-       # end and compare timer, notify-send if needed
-       function notifyosd-precmd() {
-         retval=$?
-         if [ ! -z "$cmd" ]; then
-           cmd_end=`date +%s`
-           ((cmd_time=$cmd_end - $cmd_start))
-         fi
-         if [ $retval -eq 0 ]; then
-           cmdstat="✓"
-         else
-           cmdstat="✘"
-         fi
-         if [ ! -z "$cmd" ] && [[ $cmd_time -gt 3 ]]; then
-           ${pkgs.libnotify}/bin/notify-send -i utilities-terminal -u low "$cmdstat $cmd" "in `date -u -d @$cmd_time +'%T'`"
-         fi
-         unset cmd
-       }
-       # make sure this plays nicely with any existing precmd
-       precmd_functions+=( notifyosd-precmd )
-       # get command name and start the timer
-       function notifyosd-preexec() {
-         cmd=$1
-         cmd_start=`date +%s`
-       }
-       bindkey -M emacs '^H' backward-kill-word
-       bindkey -r '^W'
-       # make sure this plays nicely with any existing preexec
-       preexec_functions+=( notifyosd-preexec )
-       XDG_DATA_DIRS=$XDG_DATA_DIRS:$GSETTINGS_SCHEMAS_PATH
-       function repl() {
-         source="$(nix flake prefetch --json "$1" | ${pkgs.jq}/bin/jq -r .storePath)"
-         TEMP="$(mktemp --suffix=.nix)"
-         echo "let self = builtins.getFlake \"$source\"; in self // self.legacyPackages.\''${builtins.currentSystem} or { } // self.packages.\''${builtins.currentSystem} or { }" > "$TEMP"
-         nix repl "$TEMP"
-         rm "$TEMP"
-       }
-       function ss() { nix shell "self#$1" }
-       function es() { nix edit "self#$1" }
-       function bs() { nix build "self#$1" }
-       function is() { nix search "self#$1" }
-       function rs() { repl self }
-       PS1="$PS1
-       $ "
+      PROMPT="%F{blue}%m %~%b "$'\n'"%(?.%F{green}%Bλ%b.%F{red}?) %f"
     '';
   };
 }

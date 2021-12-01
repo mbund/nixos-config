@@ -3,6 +3,7 @@
     ./hardware-configuration.nix
 
     inputs.home-manager.nixosModules.home-manager
+    device
     security
     applications
     themes
@@ -10,12 +11,13 @@
     locale
     misc
     fonts
-    
+
     git
     alacritty
     zsh
     vscodium
     nvim
+    plasma
   ];
 
   boot.loader.grub = {
