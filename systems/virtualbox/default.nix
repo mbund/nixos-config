@@ -11,6 +11,7 @@
     locale
     misc
     fonts
+    overlay
 
     git
     alacritty
@@ -18,6 +19,7 @@
     vscodium
     nvim
     plasma
+    firefox
   ];
 
   boot.loader.grub = {

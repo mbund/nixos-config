@@ -2,10 +2,15 @@
   # console.font = "Lat2-Terminus16";
   # console.keyMap = "us";
 
-  environment.sessionVariables = {
-    XKB_DEFAULT_LAYOUT = "us";
-    XKB_DEFAULT_OPTIONS = "caps:swapescape,compose:ralt";
-    LANG = lib.mkForce "en_US.UTF-8";
+  # environment.sessionVariables = {
+  #   XKB_DEFAULT_LAYOUT = "us";
+  #   XKB_DEFAULT_OPTIONS = "caps:swapescape,compose:ralt";
+  #   LANG = lib.mkForce "en_US.UTF-8";
+  # };
+
+  services.xserver = {
+    layout = "us";
+    xkbOptions = "caps:swapescape,compose:ralt";
   };
 
   time.timeZone = "America/New_York";
