@@ -2,4 +2,6 @@
 My custom NixOS configuration.
 
 ## Inspiration
-My configuration setup is heavily inspired by [balsoft/nixos-config](https://code.balsoft.ru/balsoft/nixos-config)
+Check out the following repositories, which are the basis for my configuration
+- [balsoft/nixos-config](https://code.balsoft.ru/balsoft/nixos-config)
+- [MoleTrooper/dotfiles](https://github.com/MoleTrooper/dotfiles)

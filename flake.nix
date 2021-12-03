@@ -35,11 +35,11 @@
       nixosModules = builtins.listToAttrs (findModules ./modules);
 
       nixosConfigurations = let
-        hosts = builtins.attrNames (builtins.readDir ./systems);
+        hosts = builtins.attrNames (builtins.readDir ./nixos);
         mkHost = name:
           nixpkgs.lib.nixosSystem {
-            system = builtins.readFile (./systems + "/${name}/system");
-            modules = [ (import (./systems + "/${name}")) { deviceName = name; } ];
+            system = builtins.readFile (./nixos + "/${name}/system");
+            modules = [ (import (./nixos + "/${name}")) ];
             specialArgs = { inherit inputs; };
           };
       in nixpkgs.lib.genAttrs hosts mkHost;
