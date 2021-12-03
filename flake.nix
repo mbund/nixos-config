@@ -36,11 +36,13 @@
 
       nixosConfigurations = let
         hosts = builtins.attrNames (builtins.readDir ./nixos);
+        rootPath = ./.;
         mkHost = name:
+          let systemPath = ./nixos + "/${name}"; in 
           nixpkgs.lib.nixosSystem {
-            system = builtins.readFile (./nixos + "/${name}/system");
-            modules = [ (import (./nixos + "/${name}")) ];
-            specialArgs = { inherit inputs; };
+            system = builtins.readFile (systemPath + "/system");
+            modules = [ (import (systemPath + "/system.nix")) ];
+            specialArgs = { inherit inputs systemPath rootPath; };
           };
       in nixpkgs.lib.genAttrs hosts mkHost;
     };

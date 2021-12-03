@@ -7,7 +7,6 @@
     git = {
       enable = true;
       userName = "mbund";
-
     };
 
     zsh = {

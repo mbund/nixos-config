@@ -1,7 +1,14 @@
-{ pkgs, ... }: {
+{ pkgs, inputs, ... }@extra: {
 
   imports = [
     ./hardware-configuration.nix
+    
+    inputs.home-manager.nixosModules.home-manager
+    {
+      home-manager.useGlobalPkgs = true;
+      home-manager.useUserPackages = true;
+      home-manager.users.mbund = ((import ./home.nix) extra);
+    }
   ];
 
   networking.hostName = "virtualbox";
