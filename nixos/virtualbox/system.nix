@@ -1,4 +1,19 @@
-{ pkgs, inputs, ... }@extra: {
+{ pkgs, inputs, lib, ... }@extra: {
+
+  nixpkgs.overlays = [
+
+        (self: super: {
+          awesome = super.awesome.overrideAttrs (oldAttrs: rec {
+            src = super.fetchFromGitHub {
+              owner = "awesomeWM";
+              repo = "awesome";
+              rev = "e7a21947e6785f53042338c684b9b96cc9b0f500";
+              sha256 = "1494902ma51nzhhxg35cbl2lp9r8hwin2f2n7d1ag3m7n0ql6nk8";
+            };
+          });
+        })
+
+      ];
 
   imports = [
     ./hardware-configuration.nix

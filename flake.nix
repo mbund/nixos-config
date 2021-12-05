@@ -38,7 +38,7 @@
         hosts = builtins.attrNames (builtins.readDir ./nixos);
         rootPath = ./.;
         mkHost = name:
-          let systemPath = ./nixos + "/${name}"; in 
+          let systemPath = ./nixos + "/${name}"; in
           nixpkgs.lib.nixosSystem {
             system = builtins.readFile (systemPath + "/system");
             modules = [ (import (systemPath + "/system.nix")) ];

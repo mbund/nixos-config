@@ -133,6 +133,9 @@
   home.packages = with pkgs; [
     vscodium
     zip unzip
+
+    firefox
+    vim
   ];
 
   home.file = {
