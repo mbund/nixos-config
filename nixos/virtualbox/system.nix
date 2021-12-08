@@ -1,7 +1,10 @@
 { pkgs, inputs, lib, ... }@extra: {
 
   # TODO: move this into home-manager
+  nixpkgs.config.allowUnfree = true;
+
   nixpkgs.overlays = [
+    # TODO: move this into home-manager
     (self: super: {
       awesome = super.awesome.overrideAttrs (oldAttrs: rec {
         src = super.fetchFromGitHub {
@@ -13,13 +16,37 @@
       });
     })
 
+    # TODO: move this into home-manager
+    # (self: super: {
+    #   pywalfox = pkgs.stdenv.mkDerivation rec {
+    #     pname = "pywalfox";
+    #     version = "0.0.1";
+
+    #     src = pkgs.fetchFromGitHub {
+    #       owner = "Frewacom";
+    #       repo = "pywalfox";
+    #       rev = "871e018b23b4523e536ed21446497cdede65c638";
+    #       hash = "";
+    #     };
+
+    #     buildInputs = [
+    #       pkgs.python3
+    #     ];
+
+    #     configurePhase = ''
+    #     '';
+
+    #     installPhase = ''
+    #     '';
+    #   };
+    # })
+
     (self: super: {
       adi1090x-plymouth = pkgs.stdenv.mkDerivation rec {
         pname = "adi1090x-plymouth";
         version = "0.0.1";
 
         src = pkgs.fetchFromGitHub {
-        # src = builtins.fetchGit {
           owner = "adi1090x";
           repo = "plymouth-themes";
           rev = "bf2f570bee8e84c5c20caac353cbe1d811a4745f";
@@ -32,9 +59,6 @@
 
         configurePhase = ''
           mkdir -p $out/share/plymouth/themes/
-        '';
-
-        buildPhase = ''
         '';
 
         installPhase = ''
@@ -64,7 +88,7 @@
     enable = true;
 
     # video
-    # videoDrivers = [ "nvidia" ];
+    videoDrivers = [ "virtualbox" ];
 
     # touchpad
     # libinput.enable = true;
@@ -76,6 +100,11 @@
     # desktop manager
     windowManager.awesome.enable = true;
     displayManager.defaultSession = "none+awesome";
+    # displayManager.sddm = {
+    #   enable = true;
+    #   theme = "sugar-candy";
+    #   
+    # };
     desktopManager.xterm.enable = false;
 
     # misc
@@ -85,6 +114,15 @@
       Option "SuspendTime" "0"
       Option "OffTime" "0"
     '';
+  };
+
+  services.pipewire = {
+    enable = true;
+    alsa = {
+      enable = true;
+      support32Bit = true; # this is probably not necessary
+    };
+    pulse.enable = true;
   };
 
   users.users.mbund = {

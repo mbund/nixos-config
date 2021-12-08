@@ -62,9 +62,14 @@
         "ls" = "lsd";
       };
 
-      # initExtra = ''
-      #   PROMPT="%F{blue}%m %~%b "$'\n'"%(?.%F{green}%Bλ%b.%F{red}?) %f"
-      # '';
+      # PROMPT="%F{blue}%m %~%b "$'\n'"%(?.%F{green}%Bλ%b.%F{red}?) %f"
+      # (cat ~/.cache/wal/sequences &)
+      
+      initExtra = let
+        zshrc = (config.home.homeDirectory + "/nix-config/dotfiles/zsh/zshrc");
+      in
+      "[[ -f \"" + zshrc + "\" ]] && source " + zshrc;
+      # initExtra = config.lib.file.mkOutOfStoreSymlink (config.home.homeDirectory + "/nix-config/dotfiles/zsh/zshrc");
     };
 
     starship = {
@@ -115,17 +120,17 @@
 
   services = {
     lorri.enable = true;
-    picom = {
-      enable = true;
-      shadow = false;
-      fade = true;
-      fadeDelta = 4;
-      blur = true;
-      inactiveOpacity = "0.90";
+    # picom = {
+    #   enable = true;
+    #   shadow = false;
+    #   fade = true;
+    #   fadeDelta = 4;
+    #   blur = true;
+    #   inactiveOpacity = "0.90";
 
-      # fixes flickering problems with glx backend
-      backend = "xrender";
-    };
+    #   # fixes flickering problems with glx backend
+    #   backend = "xrender";
+    # };
     unclutter.enable = true;
   };
 
@@ -136,14 +141,10 @@
     vscodium
     zip unzip
 
-    # (callPackage ../pkgs/pywal.nix {
-    #   buildPythonPackage = python39Packages.buildPythonPackage;
-    #   fetchPypi = python39Packages.fetchPypi;
-    #   isPy3k = true;
-    # })
-    pywal
+    # pywal
+    picom-next
     kitty
-    # wpgtk
+    wpgtk
     feh
     # xsettingsd
     # python2
@@ -153,6 +154,22 @@
     # krita
     firefox
     vim
+
+    # unfree
+    discord
+
+
+
+    # amixer
+    dmenu
+    # librewolf
+    # mpc
+    mpd
+    scrot
+    unclutter
+    # xbacklight
+    xsel
+    slock
   ];
 
   home.file = {
@@ -167,9 +184,29 @@
       target = "./.config/awesome";
     };
 
+    # TODO: this is ghetto git submodule, but more nix-y. Do we keep it?
+    ".config/awesome/lain" = {
+      source = pkgs.fetchFromGitHub {
+        owner = "lcpz";
+        repo = "lain";
+        rev = "4933d6cb27390776a21c659020d8ba1f4a027624";
+        sha256 = "15d7vbrv7kw03bf31088jhdvgxqgc32ll4i4r8p5abpydscvgzdm";
+        fetchSubmodules = true;
+      };
+    };
+
+    ".config/picom/picom.conf" = {
+      source = config.lib.file.mkOutOfStoreSymlink (config.home.homeDirectory + "/nix-config/dotfiles/picom.conf");
+    };
+
     kitty = {
       source = config.lib.file.mkOutOfStoreSymlink (config.home.homeDirectory + "/nix-config/dotfiles/kitty");
       target = "./.config/kitty";
+    };
+
+    xinitrc = {
+      source = config.lib.file.mkOutOfStoreSymlink (config.home.homeDirectory + "/nix-config/dotfiles/xinitrc");
+      target = ".xinitrc";
     };
 
     xcompose = {
