@@ -98,19 +98,19 @@
       };
     };
 
-    kitty = {
-      enable = true;
-      font = {
-        name = "JetBrains Mono Medium Nerd Font Complete";
-        package = pkgs.jetbrains-mono;
-      };
-    };
+    # kitty = {
+    #   enable = true;
+    #   font = {
+    #     name = "JetBrains Mono Medium Nerd Font Complete";
+    #     package = pkgs.jetbrains-mono;
+    #   };
+    # };
 
+    # kitty.enable = true;
     lsd.enable = true;
-    feh.enable = true;
+    # feh.enable = true;
     direnv.enable = true;
     home-manager.enable = true;
-
   };
 
   services = {
@@ -129,22 +129,53 @@
     unclutter.enable = true;
   };
 
+  dconf.enable = true; # for wpgtk
+
   # extra programs that don't have extra config
   home.packages = with pkgs; [
     vscodium
     zip unzip
 
+    # (callPackage ../pkgs/pywal.nix {
+    #   buildPythonPackage = python39Packages.buildPythonPackage;
+    #   fetchPypi = python39Packages.fetchPypi;
+    #   isPy3k = true;
+    # })
+    pywal
+    kitty
+    # wpgtk
+    feh
+    # xsettingsd
+    # python2
+
+    # gimp
+    # inkscape
+    # krita
     firefox
     vim
   ];
 
   home.file = {
-    "awesome" = {
-      source = ../awesome;
+    awesome = {
+      # this is a bunch of symlinks which eventually point to this git repository.
+      # use `readlink $(readlink $(readlink ~/.config/awesome))` to find final symlink.
+      # TODO: un-hardcode this git repository location `$HOME/nix-config`
+      # useful so that you can make changes directly in this git repository and have it
+      # take effect without doing a nixos-rebuild
+      source = config.lib.file.mkOutOfStoreSymlink (config.home.homeDirectory + "/nix-config/dotfiles/awesome");
+      # source = ../awesome;
       target = "./.config/awesome";
     };
-    ".XCompose" = {
-      source = ./compose;
+
+    kitty = {
+      source = config.lib.file.mkOutOfStoreSymlink (config.home.homeDirectory + "/nix-config/dotfiles/kitty");
+      target = "./.config/kitty";
+    };
+
+    xcompose = {
+      source = config.lib.file.mkOutOfStoreSymlink (config.home.homeDirectory + "/nix-config/dotfiles/compose");
+      # source = ./compose;
+      target = ".XCompose";
     };
   };
 
