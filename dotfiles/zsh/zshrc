@@ -1,4 +1,0 @@
-# wpgtk theming
-[[ -f "$HOME/.config/wpg/sequences" ]] && (cat $HOME/.config/wpg/sequences &)
-
-export PATH="$HOME/nix-config/dotfiles/scripts:$PATH"

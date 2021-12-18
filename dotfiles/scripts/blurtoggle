@@ -1,6 +1,0 @@
-if (($(ps -aux | grep [p]icom | wc -l) > 0))
-then
-  pkill -9 picom
-else
-  picom -b --config=$HOME/.config/picom/picom.conf --experimental-backends &
-fi
