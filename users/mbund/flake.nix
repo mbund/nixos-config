@@ -7,15 +7,16 @@
     nixpkgs.url = "nixpkgs/nixpkgs-unstable";
     utils.url = "github:numtide/flake-utils";
 
+    zsh.url = "path:./zsh";
+
     neovim-nightly-overlay = {
       url = "github:nix-community/neovim-nightly-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    zsh.url = "./zsh";
   };
 
-  outputs = { self, utils, nixpkgs, neovim-nightly-overlay }@inputs:
+  outputs = { self, utils, nixpkgs, neovim-nightly-overlay, ... }@inputs:
     utils.lib.eachSystem ["x86_64-linux"] (system:
       let
         custom = with inputs; [ zsh ];
@@ -39,16 +40,11 @@
               pkgs.neofetch
               pkgs.tldr
               pkgs.neovim-nightly
-              pkgs.zsh
               pkgs.file
               pkgs.firefox
-            ];
+            ] ++ nixpkgs.lib.traceVal (nixpkgs.lib.concatLists (map (x: x.packages.${system}) custom));
             
-            postBuild = ''
-              # Link config directories
-              echo "source ${dotfiles}/.config/zsh/.zshenv" > ~/.zshenv
-              ln --symbolic --force ${dotfiles}/zsh/ ~/.config/zsh/.zshenv
-            '';
+            postBuild = inputs.zsh.postBuild.${system};
           };
       }
     );
