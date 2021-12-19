@@ -7,7 +7,6 @@
 
   outputs = { self, virtualbox }:
   {
-    nixosConfigurations = { }
-      // virtualbox.nixosConfigurations;
+    nixosConfigurations = virtualbox.nixosConfigurations;
   };
 }

@@ -4,6 +4,14 @@
     ./hardware-configuration.nix
   ];
 
+  nix = {
+    extraOptions = ''
+      experimental-features = nix-command flakes
+      keep-outputs = true
+      keep-derivations = true
+    '';
+  };
+
   networking.hostName = "virtualbox";
   time.timeZone = "America/New_York";
 
@@ -11,7 +19,7 @@
     isNormalUser = true;
     extraGroups = [ "wheel" ];
     uid = 1000;
-    password = "mbund";
+    initialPassword = "mbund";
   };
 
   services.xserver = {
