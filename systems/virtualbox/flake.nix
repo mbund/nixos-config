@@ -20,8 +20,9 @@
               experimental-features = nix-command flakes
 
               # allow rebuild while offline
-              keep-outputs = true
-              keep-derivations = true
+              # https://nixos.org/manual/nix/stable/package-management/garbage-collection.html
+              # keep-outputs = true
+              # keep-derivations = true
             '';
           };
 

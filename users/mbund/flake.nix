@@ -29,6 +29,7 @@
             firefox
             neovim
             neofetch
+            vscodium
             file
           ];
 

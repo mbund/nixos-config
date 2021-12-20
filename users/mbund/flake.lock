@@ -7,11 +7,11 @@
       },
       "locked": {
         "narHash": "sha256-ZoNASNG8Rt4uaXn1nvogWkAJQoBNSoD6iHsi77lwkuc=",
-        "path": "/nix/store/6pfscxr6sh4czgyp1r5hjksqwp161598-source/users/mbund/cli",
+        "path": "/nix/store/f3gm9wskjadmgvq4h593bk9fdb5gbv6m-source/users/mbund/cli",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/6pfscxr6sh4czgyp1r5hjksqwp161598-source/users/mbund/cli",
+        "path": "/nix/store/f3gm9wskjadmgvq4h593bk9fdb5gbv6m-source/users/mbund/cli",
         "type": "path"
       }
     },
