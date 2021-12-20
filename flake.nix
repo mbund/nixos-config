@@ -2,7 +2,7 @@
   description = "NixOS Configuration";
 
   inputs = {
-    virtualbox.url = "./systems/virtualbox";
+    virtualbox.url = "./virtualbox";
   };
 
   outputs = { self, virtualbox }:
