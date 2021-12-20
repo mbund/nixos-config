@@ -1,51 +1,36 @@
 {
-  description = "mbund's home profile";
-  # Install with `nix profile install .`
-  # Upgrade packages with `nix profile upgrade '.*'`
+  description = "mbund's home-manager profile";
+  # install with `nix run home-manager --no-write-lock-file -- switch --flake "./users/mbund#mbund"`
+  # update with `home-manager switch --flake "./users/mbund#mbund"`
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixpkgs-unstable";
-    utils.url = "github:numtide/flake-utils";
 
-    zsh.url = "path:./zsh";
-
-    neovim-nightly-overlay = {
-      url = "github:nix-community/neovim-nightly-overlay";
+    home-manager = {
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    cli.url = "./cli";
   };
 
-  outputs = { self, utils, nixpkgs, neovim-nightly-overlay, ... }@inputs:
-    utils.lib.eachSystem ["x86_64-linux"] (system:
-      let
-        custom = with inputs; [ zsh ];
+  outputs = { self, ... }@inputs: {
+    homeConfigurations = {
+      mbund = inputs.home-manager.lib.homeManagerConfiguration {
+        system = "x86_64-linux";
+        homeDirectory = "/home/mbund";
+        username = "mbund";
+        configuration = { config, lib, pkgs, ... }:
+        {
+          home.packages = with pkgs; [
+            git
+            neovim
+            neofetch
+          ];
 
-        pkgs = import nixpkgs {
-            inherit system;
-            config = { allowUnfree = true; };
-            overlays = [
-              neovim-nightly-overlay.overlay
-            ];
-          };
-
-        dotfiles = "~/nix-config/users/mbund/dotfiles";
-      in {
-        # https://github.com/NixOS/nixpkgs/blob/master/pkgs/build-support/buildenv/default.nix
-        defaultPackage =
-          pkgs.buildEnv {
-            name = "mbund-home-profile";
-            paths = [
-	            pkgs.git
-              pkgs.neofetch
-              pkgs.tldr
-              pkgs.neovim-nightly
-              pkgs.file
-              pkgs.firefox
-            ] ++ nixpkgs.lib.traceVal (nixpkgs.lib.concatLists (map (x: x.packages.${system}) custom));
-            
-            postBuild = inputs.zsh.postBuild.${system};
-          };
-      }
-    );
+          programs.home-manager.enable = true;
+        } // inputs.cli.home;
+      };
+    };
+  };
 }

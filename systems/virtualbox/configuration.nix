@@ -1,12 +1,12 @@
-{ ... }: {
+{ pkgs, ... }: {
   
   imports = [
     ./hardware-configuration.nix
   ];
 
   nix = {
+    package = pkgs.nixFlakes;
     extraOptions = ''
-      experimental-features = nix-command flakes
       keep-outputs = true
       keep-derivations = true
     '';
@@ -15,11 +15,13 @@
   networking.hostName = "virtualbox";
   time.timeZone = "America/New_York";
 
-  users.users.mbund = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-    uid = 1000;
-    initialPassword = "mbund";
+  users.users = {
+    mbund = {
+      isNormalUser = true;
+      extraGroups = [ "wheel" ];
+      uid = 1000;
+      initialPassword = "mbund";
+    };
   };
 
   services.xserver = {

@@ -2,11 +2,11 @@
   "nodes": {
     "nixpkgs": {
       "locked": {
-        "lastModified": 1639713555,
-        "narHash": "sha256-w1TacWjnqhC19n+rheyOif3JxwvWMbyxfgqYCY0FLdQ=",
+        "lastModified": 1639925673,
+        "narHash": "sha256-hR/d0JcT11z6Bi69ipowMtvRye7OymVfDw1/wwVBWnc=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "45a3f9d7725c7e21b252c223676cc56fb2ed5d6d",
+        "rev": "c62eb9c6aea5ae8210dd86ff24fa6b51f8872db7",
         "type": "github"
       },
       "original": {
@@ -27,11 +27,11 @@
       },
       "locked": {
         "narHash": "sha256-lSDOCLYulauMujONvFv7pBOe761w9MsCf42dfP1d/aQ=",
-        "path": "/nix/store/93cam4763jayfis40hrkhhsyap1pdzsf-source/systems/virtualbox",
+        "path": "/nix/store/8lcdi4qnbrjxbadcjc4ag72zhm9ryj47-source/systems/virtualbox",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/93cam4763jayfis40hrkhhsyap1pdzsf-source/systems/virtualbox",
+        "path": "/nix/store/8lcdi4qnbrjxbadcjc4ag72zhm9ryj47-source/systems/virtualbox",
         "type": "path"
       }
     }
