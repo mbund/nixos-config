@@ -26,12 +26,12 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "narHash": "sha256-ADHBzoBMauFExyvJMxJOYl4laMAhy1o/rjLch7Sw3ZA=",
-        "path": "/nix/store/ip91xfmwim0i603rkpwg1cmzfk2510sr-source/systems/virtualbox",
+        "narHash": "sha256-UDvB+Jfq2lXjOggHFarUcItOCXpmGnfenrb2rYsnfWg=",
+        "path": "/nix/store/9spzxdn5fcl683crf2h4i4j3ld2xiwwp-source/systems/virtualbox",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/ip91xfmwim0i603rkpwg1cmzfk2510sr-source/systems/virtualbox",
+        "path": "/nix/store/9spzxdn5fcl683crf2h4i4j3ld2xiwwp-source/systems/virtualbox",
         "type": "path"
       }
     }
