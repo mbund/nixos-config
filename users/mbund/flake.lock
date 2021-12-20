@@ -1,5 +1,20 @@
 {
   "nodes": {
+    "cli": {
+      "inputs": {
+        "nixpkgs": "nixpkgs",
+        "zsh-syntax-highlighting": "zsh-syntax-highlighting"
+      },
+      "locked": {
+        "narHash": "sha256-ZoNASNG8Rt4uaXn1nvogWkAJQoBNSoD6iHsi77lwkuc=",
+        "path": "/nix/store/cvzkbs1qg6l3gijxxrmdv6kkgryr44nq-source/users/mbund/cli",
+        "type": "path"
+      },
+      "original": {
+        "path": "/nix/store/cvzkbs1qg6l3gijxxrmdv6kkgryr44nq-source/users/mbund/cli",
+        "type": "path"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -35,10 +50,42 @@
         "type": "indirect"
       }
     },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1639925673,
+        "narHash": "sha256-hR/d0JcT11z6Bi69ipowMtvRye7OymVfDw1/wwVBWnc=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "c62eb9c6aea5ae8210dd86ff24fa6b51f8872db7",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "ref": "nixpkgs-unstable",
+        "type": "indirect"
+      }
+    },
     "root": {
       "inputs": {
+        "cli": "cli",
         "home-manager": "home-manager",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs_2"
+      }
+    },
+    "zsh-syntax-highlighting": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1636857900,
+        "narHash": "sha256-MeuPqDeJpbJi2hT7VUgyQNSmDPY/biUncvyY78IBfzM=",
+        "owner": "zsh-users",
+        "repo": "zsh-syntax-highlighting",
+        "rev": "c7caf57ca805abd54f11f756fda6395dd4187f8a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "zsh-users",
+        "repo": "zsh-syntax-highlighting",
+        "type": "github"
       }
     }
   },

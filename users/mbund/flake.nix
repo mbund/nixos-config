@@ -21,15 +21,19 @@
         homeDirectory = "/home/mbund";
         username = "mbund";
         configuration = { config, lib, pkgs, ... }:
-        {
+        ({
+          imports = with inputs; [ cli.home ];
+
           home.packages = with pkgs; [
             git
+            firefox
             neovim
             neofetch
+            file
           ];
 
           programs.home-manager.enable = true;
-        } // inputs.cli.home;
+        });
       };
     };
   };
