@@ -3,10 +3,11 @@
 
   inputs = {
     virtualbox.url = "./virtualbox";
+    marshmellow-roaster.url = "./marshmellow-roaster";
   };
 
   outputs = { self, virtualbox }:
   {
-    nixosConfigurations = virtualbox.nixosConfigurations;
+    nixosConfigurations = virtualbox.nixosConfigurations \\ marshmellow-roaster;
   };
 }
