@@ -6,8 +6,8 @@
     marshmellow-roaster.url = "./marshmellow-roaster";
   };
 
-  outputs = { self, virtualbox }:
+  outputs = { self, virtualbox, marshmellow-roaster }:
   {
-    nixosConfigurations = virtualbox.nixosConfigurations \\ marshmellow-roaster;
+    nixosConfigurations = virtualbox.nixosConfigurations // marshmellow-roaster.nixosConfigurations;
   };
 }

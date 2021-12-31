@@ -6,13 +6,14 @@
 
   outputs = { self, nixpkgs, impermanence }:
   {
-    nixosConfigurations.virtualbox = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.marshmellow-roaster = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
+      
       modules = [
+        impermanence.nixosModules.impermanence
         ({ ... }: {
 
           imports = [
-            impermanence.impermanence
             ./hardware-configuration.nix
           ];
 

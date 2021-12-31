@@ -28,4 +28,5 @@ mount -o subvol=root,compress=zstd,noatime /dev/mapper/nixos-root /mnt
 nixos-generate-config --root /mnt --show-hardware-config
 cd /mnt/etc/nixos
 git clone https://github.com/mbund/nixos-config .
+# nix-shell -p nixFlakes
 # nixos-install --flake ".#"
