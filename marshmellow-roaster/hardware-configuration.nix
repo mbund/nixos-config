@@ -55,7 +55,7 @@
   boot.initrd = {
     luks.devices = {
       "nixos-root" = {
-        device = "/dev/disk/by-uuid/3c5e9e8f-c059-4c5a-8629-31f6da186348";
+        device = "/dev/disk/by-uuid/";
       };
     };
   
@@ -106,9 +106,11 @@
   boot.loader.grub = {
     enable = true;
     version = 2;
-    device = "/dev/disk/by-id/ata-ST500LM012_HN-M500MBB_S2TDJB0C230612";
+    # device = "/dev/disk/by-id/ata-ST500LM012_HN-M500MBB_S2TDJB0C230612";
+    # device = "/dev/disk/by-id/wwn-0x50004cf206dcba65";
+    device = "/dev/sda";
     enableCryptodisk = true;
-    extraGrubInstallArgs = [ "--modules=luks2 cryptodisk" ];
+    # extraGrubInstallArgs = [ "--modules=luks2 cryptodisk" ];
   };
 
   boot = {

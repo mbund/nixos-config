@@ -11,13 +11,14 @@
       
       modules = [
         impermanence.nixosModules.impermanence
-        ({ ... }: {
+        ({ pkgs, ... }: {
 
           imports = [
             ./hardware-configuration.nix
           ];
 
           nix = {
+            package = pkgs.nixUnstable;
             extraOptions = ''
               # enable the new standalone nix commands
               experimental-features = nix-command flakes
@@ -28,6 +29,10 @@
               # keep-derivations = true
             '';
           };
+
+          environment.systemPackages = with pkgs; [
+            git vim cryptsetup
+          ];
 
           networking.hostName = "marshmellow-roaster";
           networking.networkmanager.enable = true;
