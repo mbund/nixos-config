@@ -9,7 +9,7 @@ fatlabel /dev/sda2 bootloader
 sgdisk -n 0:0:0 /dev/sda
 # must be `pbkdf2` for grub, in the future `argon2id` will be better
 cryptsetup luksFormat /dev/sda3 --pbkdf pbkdf2
-cryptsetup luksOpen /dev/disk/by-label/encrypted-nixos-root nixos-root
+cryptsetup luksOpen /dev/sda3 nixos-root
 mkfs.btrfs /dev/mapper/nixos-root
 
 mkdir -p /mnt
@@ -26,5 +26,6 @@ umount /mnt
 mount -o subvol=root,compress=zstd,noatime /dev/mapper/nixos-root /mnt
 
 nixos-generate-config --root /mnt --show-hardware-config
+mkdir -p /mnt/etc/nixos
 cd /mnt/etc/nixos
 git clone https://github.com/mbund/nixos-config .
