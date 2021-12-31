@@ -24,6 +24,12 @@ btrfs subvolume snapshot -r /mnt/root /mnt/root-blank
 umount /mnt
 
 mount -o subvol=root,compress=zstd,noatime /dev/mapper/nixos-root /mnt
+mkdir -p /mnt/{home,nix,persist,var/log,boot}
+mount -o subvol=home,compress=zstd /dev/mapper/nixos-root /mnt/home
+mount -o subvol=nix,compress=zstd,noatime /dev/mapper/nixos-root /mnt/nix
+mount -o subvol=persist,compress=zstd,noatime /dev/mapper/nixos-root /mnt/persist
+mount -o subvol=log,compress=zstd,noatime /dev/mapper/nixos-root /mnt/var/log
+mount /dev/disk/by-label/bootloader /mnt/boot
 
 nixos-generate-config --root /mnt --show-hardware-config
 mkdir -p /mnt/etc/nixos
