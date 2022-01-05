@@ -40,8 +40,8 @@
 
           environment.systemPackages = with pkgs; [
             git vim cryptsetup 
-	    
-	          (writeShellApplication {
+      
+            (writeShellApplication {
               name = "btrfs-diff";
               runtimeInputs = [ btrfs-progs coreutils gnused ];
               text = ''
@@ -74,19 +74,19 @@
 
                 umount /mnt
               '';
-	          })
+            })
           ];
 
           networking = {
             hostName = "marshmellow-roaster";
-	          networkmanager.enable = true;
+            networkmanager.enable = true;
 
             # The global `networking.useDHCP` is deprecated, so instead list all explicitly
-	          # `$ nmcli device status`
-	          useDHCP = false;
-	          interfaces.enp5s0.useDHCP = true;
-	          interfaces.wlp9s0b1.useDHCP = true;
-	        };
+            # `$ nmcli device status`
+            useDHCP = false;
+            interfaces.enp5s0.useDHCP = true;
+            interfaces.wlp9s0b1.useDHCP = true;
+          };
 
           time.timeZone = "America/New_York";
 
