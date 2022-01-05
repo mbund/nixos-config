@@ -1,3 +1,11 @@
+#!/usr/bin/env bash
+
+# Enfore running as root
+if [ "$EUID" != 0 ]; then
+  sudo "$0" "$@"
+  exit $?
+fi
+
 sgdisk --zap-all /dev/sda
 
 sgdisk -n 0:0:+2MiB -t 0:ef02 /dev/sda
@@ -23,15 +31,27 @@ btrfs subvolume create /mnt/swap
 btrfs subvolume snapshot -r /mnt/root /mnt/root-blank
 umount /mnt
 
+# Create all directories
 mount -o subvol=root,compress=zstd,noatime /dev/mapper/nixos-root /mnt
-mkdir -p /mnt/{home,nix,persist,var/log,boot}
-mount -o subvol=home,compress=zstd /dev/mapper/nixos-root /mnt/home
-mount -o subvol=nix,compress=zstd,noatime /dev/mapper/nixos-root /mnt/nix
-mount -o subvol=persist,compress=zstd,noatime /dev/mapper/nixos-root /mnt/persist
-mount -o subvol=log,compress=zstd,noatime /dev/mapper/nixos-root /mnt/var/log
+# mkdir -p /mnt/{home,nix,persist,var/log,boot,swap}
+
+# mount -o subvol=home,compress=zstd /dev/mapper/nixos-root /mnt/home
+# mount -o subvol=nix,compress=zstd,noatime /dev/mapper/nixos-root /mnt/nix
+# mount -o subvol=persist,compress=zstd,noatime /dev/mapper/nixos-root /mnt/persist
+# mount -o subvol=log,compress=zstd,noatime /dev/mapper/nixos-root /mnt/var/log
+
+# Create swapfile
+mkdir -p /mnt/swap
+mount -o subvol=swap,compress=none,noatime /dev/mapper/nixos-root /mnt/swap
+truncate -s 0 /mnt/swap/swapfile
+chattr +C /mnt/swap/swapfile
+
+# Mount bootloader
+mkdir -p /mnt/boot
 mount /dev/disk/by-label/bootloader /mnt/boot
 
-nixos-generate-config --root /mnt --show-hardware-config
+# Get nixos configuration
 mkdir -p /mnt/etc/nixos
+nixos-generate-config --root /mnt --show-hardware-config > /mnt/etc/nixos/hardware-configuration.nix
 cd /mnt/etc/nixos
 git clone https://github.com/mbund/nixos-config .

@@ -1,5 +1,6 @@
 { pkgs, config, lib, ... }:
 {
+  # Partitioning and drives
   fileSystems = {
     "/" = {
       device = "/dev/mapper/nixos-root";
@@ -34,7 +35,7 @@
     "/swap" = {
       device = "/dev/mapper/nixos-root";
       fsType = "btrfs";
-      options = [ "subvol=swap" ];
+      options = [ "subvol=swap" "compress=none" "noatime" ];
     };
 
     "/home" = {
@@ -47,26 +48,31 @@
   # Create swapfile
   swapDevices = [
     {
+      # To initialize a new swapfile on btrfs, you must first create it like so
+      # truncate -s /swap/swapfile
+      # chattr +C /swap/swapfile
+      # btrfs property set /swap/swapfile compression none
       device = "/swap/swapfile";
       size = 6 * 1024;
     }
   ];
 
-  boot.initrd = {
-    luks.devices = {
-      "nixos-root" = {
-        device = "/dev/disk/by-uuid/";
-      };
+  # Encryption
+  boot.initrd.luks.devices = {
+    "nixos-root" = {
+      device = "/dev/disk/by-uuid/e9bec88c-bd65-4ce0-b370-6c619e453edb";
     };
-  
-    # Taken from:
-    # https://mt-caret.github.io/blog/posts/2020-06-29-optin-state.html
-    postDeviceCommands = pkgs.lib.mkBefore ''
+  };
+
+  # btrfs state erasure
+  # Taken from:
+  # https://mt-caret.github.io/blog/posts/2020-06-29-optin-state.html
+  boot.initrd.postDeviceCommands = pkgs.lib.mkBefore ''
       mkdir -p /mnt
 
       # We first mount the btrfs root to /mnt
       # so we can manipulate btrfs subvolumes.
-      mount -o subvol=/ /dev/mapper/enc /mnt
+      mount -o subvol=/ /dev/mapper/nixos-root /mnt
 
       # While we're tempted to just delete /root and create
       # a new snapshot from /root-blank, /root is already
@@ -100,30 +106,22 @@
       umount /mnt
     '';
 
-    availableKernelModules = [ "ehci_pci" "ahci" "usb_storage" "ums_realtek" "sd_mod" "sr_mod" ];
-  };
+  # Kernel
+  boot.initrd.availableKernelModules = [ "ehci_pci" "ahci" "usb_storage" "ums_realtek" "sd_mod" "sr_mod" ];
+  boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
+  # Bootloader
   boot.loader.grub = {
     enable = true;
     version = 2;
-    # device = "/dev/disk/by-id/ata-ST500LM012_HN-M500MBB_S2TDJB0C230612";
+    device = "/dev/disk/by-id/ata-ST500LM012_HN-M500MBB_S2TDJB0C230612";
     # device = "/dev/disk/by-id/wwn-0x50004cf206dcba65";
-    device = "/dev/sda";
+    # device = "/dev/sda";
     enableCryptodisk = true;
     # extraGrubInstallArgs = [ "--modules=luks2 cryptodisk" ];
   };
-
-  boot = {
-    kernelModules = [ "kvm-intel" ];
-  };
   
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "21.11"; # Did you read the comment?
+  # hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.enableRedistributableFirmware = true;
 }

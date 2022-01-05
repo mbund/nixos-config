@@ -21,12 +21,12 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "narHash": "sha256-aYlvezowoRbgfGJ/BzKzJS7NdMQrw34OgCy10l48GOs=",
-        "path": "/mnt/nix/store/d240q715dvfixzar67kvjdyy5161ac05-source/marshmellow-roaster",
+        "narHash": "sha256-bIlHgGg9Sax0FFhT9JB1f1rY7bGSt9NTnFC9OwkdKUg=",
+        "path": "/nix/store/nw722bgwiax8ryy41hby03mgdkmiasmf-source/marshmellow-roaster",
         "type": "path"
       },
       "original": {
-        "path": "/mnt/nix/store/d240q715dvfixzar67kvjdyy5161ac05-source/marshmellow-roaster",
+        "path": "/nix/store/nw722bgwiax8ryy41hby03mgdkmiasmf-source/marshmellow-roaster",
         "type": "path"
       }
     },
@@ -74,11 +74,11 @@
       },
       "locked": {
         "narHash": "sha256-mTFgVu8m297F6F+0SvalP+h252KQanSYdrXWV6z7IfM=",
-        "path": "/mnt/nix/store/d240q715dvfixzar67kvjdyy5161ac05-source/virtualbox",
+        "path": "/nix/store/nw722bgwiax8ryy41hby03mgdkmiasmf-source/virtualbox",
         "type": "path"
       },
       "original": {
-        "path": "/mnt/nix/store/d240q715dvfixzar67kvjdyy5161ac05-source/virtualbox",
+        "path": "/nix/store/nw722bgwiax8ryy41hby03mgdkmiasmf-source/virtualbox",
         "type": "path"
       }
     }
