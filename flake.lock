@@ -1,32 +1,16 @@
 {
   "nodes": {
-    "impermanence": {
-      "locked": {
-        "lastModified": 1640808801,
-        "narHash": "sha256-iHo8vyuYyhbk5MGfwn/7IahF8dBAwUYTZga4u0UsqPQ=",
-        "owner": "nix-community",
-        "repo": "impermanence",
-        "rev": "29d781b47b0ee6014abd541c132c647d18ab098e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "impermanence",
-        "type": "github"
-      }
-    },
     "marshmellow-roaster": {
       "inputs": {
-        "impermanence": "impermanence",
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "narHash": "sha256-bIlHgGg9Sax0FFhT9JB1f1rY7bGSt9NTnFC9OwkdKUg=",
-        "path": "/nix/store/nw722bgwiax8ryy41hby03mgdkmiasmf-source/marshmellow-roaster",
+        "narHash": "sha256-RIgAuUf4TdyZNky2Oj+6LKCUvOtke3Tv/h6gw5zHlV8=",
+        "path": "/nix/store/phjq2icaq91xf3fwl8bh6jcbsqawzk7w-source/marshmellow-roaster",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/nw722bgwiax8ryy41hby03mgdkmiasmf-source/marshmellow-roaster",
+        "path": "/nix/store/phjq2icaq91xf3fwl8bh6jcbsqawzk7w-source/marshmellow-roaster",
         "type": "path"
       }
     },
@@ -74,11 +58,11 @@
       },
       "locked": {
         "narHash": "sha256-mTFgVu8m297F6F+0SvalP+h252KQanSYdrXWV6z7IfM=",
-        "path": "/nix/store/nw722bgwiax8ryy41hby03mgdkmiasmf-source/virtualbox",
+        "path": "/nix/store/phjq2icaq91xf3fwl8bh6jcbsqawzk7w-source/virtualbox",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/nw722bgwiax8ryy41hby03mgdkmiasmf-source/virtualbox",
+        "path": "/nix/store/phjq2icaq91xf3fwl8bh6jcbsqawzk7w-source/virtualbox",
         "type": "path"
       }
     }

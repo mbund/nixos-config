@@ -2,16 +2,15 @@
   description = "marshmellow-roaster NixOS Configuration";
 
   inputs.nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-  inputs.impermanence.url = "github:nix-community/impermanence";
 
-  outputs = { self, nixpkgs, impermanence }:
+  outputs = { self, nixpkgs }:
   {
     nixosConfigurations.marshmellow-roaster = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       
       modules = [
-        impermanence.nixosModules.impermanence
-        ({ pkgs, ... }: {
+        ({ pkgs, ... }:
+        {
 
           imports = [
             ./hardware-configuration.nix
@@ -61,15 +60,18 @@
                 cut -f17- -d' ' |
                 sort |
                 uniq |
+                grep -v -f /etc/nixos/marshmellow-roaster/ignore |
                 while read -r path; do
                   path="/$path"
-                  if [ -L "$path" ]; then
-                   : # The path is a symbolic link, so is probably handled by NixOS already
-                  elif [ -d "$path" ]; then
-                   : # The path is a directory, ignore
-                  else
-                   echo "$path"
-                  fi
+                  # if [ -L "$path" ]; then
+                  #  : # The path is a symbolic link, so is probably handled by NixOS already
+                  # elif [ -d "$path" ]; then
+                  #  : # The path is a directory, ignore
+                  # else
+                  #  echo "$path"
+                  # fi
+                  
+                  echo "$path"
                 done
 
                 umount /mnt
@@ -116,16 +118,23 @@
 
           virtualisation.docker.enable = true;
 
-          environment.persistence."/persist" = {
-            directories = [
-              "/etc/nixos"
-              "/etc/NetworkManager/system-connections"
-              "/var/lib/docker"
-            ];
-            files = [
-              "/etc/machine-id" # journalctl fails to find logs from past boots
-            ];
-          };
+          systemd.tmpfiles.rules = [
+            "L /etc/nixos - - - - /persist/etc/nixos"
+            "L /etc/NetworkManager/system-connections - - - - /persist/etc/NetworkManager/system-connections"
+            "L /etc/machine-id - - - - /persist/etc/machine-id"
+            "L /var/lib/docker - - - - /persist/var/lib/docker"
+          ];
+
+          # environment.persistence."/persist" = {
+          #   directories = [
+          #     "/etc/nixos"
+          #     "/etc/NetworkManager/system-connections"
+          #     "/var/lib/docker"
+          #   ];
+          #   files = [
+          #     "/etc/machine-id" # journalctl fails to find logs from past boots
+          #   ];
+          # };
           
           security.sudo.extraConfig = ''
             # rollback results in sudo lectures after each reboot
