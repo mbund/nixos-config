@@ -2,13 +2,15 @@
   description = "marshmellow-roaster NixOS Configuration";
 
   inputs.nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+  inputs.erasure.url = "flake:system?dir=erasure";
 
-  outputs = { self, nixpkgs }:
+  outputs = { self, nixpkgs, erasure }:
   {
     nixosConfigurations.marshmellow-roaster = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       
       modules = [
+        erasure
         ({ pkgs, ... }:
         {
 
@@ -118,10 +120,32 @@
 
           virtualisation.docker.enable = true;
 
+          environment.erasure."/persist" = {
+            btrfs = {
+              enable = true;
+              root-subvolume = "root";
+              root-rollback-snapshot = "root-blank";
+            };
+
+            paths = [
+              "/etc/machine-id"
+            ];
+
+            ignore = [
+              "/tmp/*"
+            ];
+          };
+
+          environment.etc = {
+            "nixos".source = "/persist/etc/nixos";
+            "NetworkManager/system-connections".source = "/persist/etc/NetworkManager/system-connections";
+#            "machine-id".source = "/persist/etc/machine-id";
+          };
+
           systemd.tmpfiles.rules = [
-            "L /etc/nixos - - - - /persist/etc/nixos"
-            "L /etc/NetworkManager/system-connections - - - - /persist/etc/NetworkManager/system-connections"
-            "L /etc/machine-id - - - - /persist/etc/machine-id"
+#            "L /etc/nixos - - - - /persist/etc/nixos"
+#            "L /etc/NetworkManager/system-connections - - - - /persist/etc/NetworkManager/system-connections"
+#            "L /etc/machine-id - - - - /persist/etc/machine-id"
             "L /var/lib/docker - - - - /persist/var/lib/docker"
           ];
 

@@ -1,26 +1,41 @@
 {
   "nodes": {
+    "erasure": {
+      "locked": {
+        "dir": "erasure",
+        "lastModified": 1641418034,
+        "narHash": "sha256-uA8bPNCMuGVdaiYeJ5ylNPIEdptmJoyLm81oyPIdYCI=",
+        "type": "git",
+        "url": "file:///persist/etc/nixos"
+      },
+      "original": {
+        "dir": "erasure",
+        "id": "system",
+        "type": "indirect"
+      }
+    },
     "marshmellow-roaster": {
       "inputs": {
+        "erasure": "erasure",
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "narHash": "sha256-RIgAuUf4TdyZNky2Oj+6LKCUvOtke3Tv/h6gw5zHlV8=",
-        "path": "/nix/store/phjq2icaq91xf3fwl8bh6jcbsqawzk7w-source/marshmellow-roaster",
+        "narHash": "sha256-jUSqMJaJKT3wYB6CUmCkG7XRzMPuP7KJSZiXYu7XL8Q=",
+        "path": "/nix/store/71haclfwy1f9bvnm8nwz1yx49vw7xs98-source/marshmellow-roaster",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/phjq2icaq91xf3fwl8bh6jcbsqawzk7w-source/marshmellow-roaster",
+        "path": "/nix/store/71haclfwy1f9bvnm8nwz1yx49vw7xs98-source/marshmellow-roaster",
         "type": "path"
       }
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1640418986,
-        "narHash": "sha256-a8GGtxn2iL3WAkY5H+4E0s3Q7XJt6bTOvos9qqxT5OQ=",
+        "lastModified": 1641463613,
+        "narHash": "sha256-xZN9igqdZvnhSeTx8OlGby/OaYQHwgXVrBrPW0gLEh8=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "5c37ad87222cfc1ec36d6cd1364514a9efc2f7f2",
+        "rev": "77fda7f672726e1a95c8cd200f27bccfc86c870b",
         "type": "github"
       },
       "original": {
@@ -32,11 +47,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1639985577,
-        "narHash": "sha256-QqnQ7rFBxnD/rR9RNTUq88H4JaI70L5Iog4CK+ZhbOk=",
+        "lastModified": 1641463613,
+        "narHash": "sha256-xZN9igqdZvnhSeTx8OlGby/OaYQHwgXVrBrPW0gLEh8=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "8021ed2090498ff171ad339c2b2eac73d4755a13",
+        "rev": "77fda7f672726e1a95c8cd200f27bccfc86c870b",
         "type": "github"
       },
       "original": {
@@ -58,11 +73,11 @@
       },
       "locked": {
         "narHash": "sha256-mTFgVu8m297F6F+0SvalP+h252KQanSYdrXWV6z7IfM=",
-        "path": "/nix/store/phjq2icaq91xf3fwl8bh6jcbsqawzk7w-source/virtualbox",
+        "path": "/nix/store/71haclfwy1f9bvnm8nwz1yx49vw7xs98-source/virtualbox",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/phjq2icaq91xf3fwl8bh6jcbsqawzk7w-source/virtualbox",
+        "path": "/nix/store/71haclfwy1f9bvnm8nwz1yx49vw7xs98-source/virtualbox",
         "type": "path"
       }
     }
