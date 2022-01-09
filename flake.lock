@@ -3,8 +3,8 @@
     "erasure": {
       "locked": {
         "dir": "erasure",
-        "lastModified": 1641745006,
-        "narHash": "sha256-Kh+MtFliYr/o9Y4dYkx9LiuLw2M3WFqs3Q4nQg77Nkw=",
+        "lastModified": 1641745337,
+        "narHash": "sha256-eAxAx7xJpoywnEclkh/yweK8TILFH0LjaJ0E7wbcefE=",
         "type": "git",
         "url": "file:///home/mbund/nixos-config"
       },
@@ -20,12 +20,12 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "narHash": "sha256-JoLYVCVs88kDbcr7vGi6hOheip8h0OWjce/h6V+XbAc=",
-        "path": "/nix/store/g9nb7b3qw469i61r2ffmmrgib83qpw1j-source/marshmellow-roaster",
+        "narHash": "sha256-FAmYJKpCRmLasNajh2LgovE9ZL0j66sloecY389j6ns=",
+        "path": "/nix/store/29wh9bfzhvwdp8x9yslkpkbjlhshxb3r-source/marshmellow-roaster",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/g9nb7b3qw469i61r2ffmmrgib83qpw1j-source/marshmellow-roaster",
+        "path": "/nix/store/29wh9bfzhvwdp8x9yslkpkbjlhshxb3r-source/marshmellow-roaster",
         "type": "path"
       }
     },
@@ -73,11 +73,11 @@
       },
       "locked": {
         "narHash": "sha256-mTFgVu8m297F6F+0SvalP+h252KQanSYdrXWV6z7IfM=",
-        "path": "/nix/store/g9nb7b3qw469i61r2ffmmrgib83qpw1j-source/virtualbox",
+        "path": "/nix/store/29wh9bfzhvwdp8x9yslkpkbjlhshxb3r-source/virtualbox",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/g9nb7b3qw469i61r2ffmmrgib83qpw1j-source/virtualbox",
+        "path": "/nix/store/29wh9bfzhvwdp8x9yslkpkbjlhshxb3r-source/virtualbox",
         "type": "path"
       }
     }
