@@ -197,10 +197,10 @@
 
         system.activationScripts.erasure = linkScript;
 
-        boot.initrd.postDeviceCommands = (map (x: let
+        boot.initrd.postDeviceCommands = pkgs.lib.mkBefore (lib.concatMapStrings (x: x + "\n") (map (x: let
           erasure = config.environment.erasure.${x};
           in
-          pkgs.lib.mkBefore ''
+          ''
             mkdir -p /mnt
 
             # We first mount the btrfs root to /mnt
@@ -240,7 +240,7 @@
           ''
         ) (builtins.filter (x:
             let erasure = config.environment.erasure.${x}; in
-            erasure.btrfs.enable && erasure.btrfs.rollback-on-boot) erasures));
+            erasure.btrfs.enable && erasure.btrfs.rollback-on-boot) erasures)));
 
       };
 
