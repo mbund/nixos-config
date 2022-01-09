@@ -149,7 +149,7 @@
           let erasure = config.environment.erasure.${x};
           in map (y: { source = y; destination = concatPaths [ erasure.storage-path y ]; }) erasure.linked
         ) erasures);
-        linkScript = lib.traceVal (lib.concatMapStrings (p: "ln --symbolic --force " + p.destination + " " + p.source + "\n") allLinked);
+        linkScript = lib.concatMapStrings (p: "ln --symbolic --force " + p.destination + " " + p.source + "\n") allLinked;
         
       in {
         environment.systemPackages = (map (x: let
@@ -162,39 +162,85 @@
             runtimeInputs = with pkgs; [ btrfs-progs coreutils gnused ];
             text = ''
               if [ "$EUID" != 0 ]; then
-                  sudo "$0" "$@"
-                  exit $?
-                fi
+                sudo "$0" "$@"
+                exit $?
+              fi
 
-                sudo mkdir -p /mnt
-                sudo mount -o subvol=${erasure.btrfs.mountpoint} ${erasure.btrfs.device} /mnt
+              sudo mkdir -p /mnt
+              sudo mount -o subvol=${erasure.btrfs.mountpoint} ${erasure.btrfs.device} /mnt
 
-                OLD_TRANSID=$(sudo btrfs subvolume find-new /mnt/${erasure.btrfs.rollback-snapshot} 9999999)
-                OLD_TRANSID=''${OLD_TRANSID#transid marker was }
+              OLD_TRANSID=$(sudo btrfs subvolume find-new /mnt/${erasure.btrfs.rollback-snapshot} 9999999)
+              OLD_TRANSID=''${OLD_TRANSID#transid marker was }
 
-                sudo btrfs subvolume find-new "/mnt/${erasure.btrfs.subvolume}" "$OLD_TRANSID" |
-                sed '$d' | # remove last line ("transid marker was...")
-                cut -f17- -d' ' | # remove metadata (inode, file offset, len, etc.)
-                while read -r line; do echo ${lib.escapeShellArg erasure.btrfs.mountpoint}"''${line}"; done | # prepend mountpoint
-                grep -v -f ${ignorefiles} | # ignore ignored paths
-                grep -v -f ${linkedfiles} | # ignore persisted paths
-                sort |
-                uniq |
-                while read -r path; do
+              sudo btrfs subvolume find-new "/mnt/${erasure.btrfs.subvolume}" "$OLD_TRANSID" |
+              sed '$d' | # remove last line ("transid marker was...")
+              cut -f17- -d' ' | # remove metadata (inode, file offset, len, etc.)
+              while read -r line; do echo ${lib.escapeShellArg erasure.btrfs.mountpoint}"''${line}"; done | # prepend mountpoint
+              grep -v -f ${ignorefiles} | # ignore ignored paths
+              grep -v -f ${linkedfiles} | # ignore persisted paths
+              sort |
+              uniq |
+              while read -r path; do
+                if [ -d "$path" ]; then
+                  : # ignore if it is a directory
+                else
                   echo "$path"
-                done
+                fi
+              done
 
-                umount /mnt
+              umount /mnt
             '';
           }
         ) (builtins.filter (x:
             let erasure = config.environment.erasure.${x}; in
             erasure.btrfs.enable && erasure.btrfs.diff-command != "") erasures));
 
-        system.activationScripts.erasure =
+        system.activationScripts.erasure = linkScript;
+
+        boot.initrd.postDeviceCommands = (map (x: let
+          erasure = config.environment.erasure.${x};
+          in
+          pkgs.lib.mkBefore ''
+            mkdir -p /mnt
+
+            # We first mount the btrfs root to /mnt
+            # so we can manipulate btrfs subvolumes.
+            mount -o subvol=/ /dev/mapper/nixos-root /mnt
+
+            # While we're tempted to just delete /root and create
+            # a new snapshot from /root-blank, /root is already
+            # populated at this point with a number of subvolumes,
+            # which makes `btrfs subvolume delete` fail.
+            # So, we remove them first.
+            #
+            # /root contains subvolumes:
+            # - /root/var/lib/portables
+            # - /root/var/lib/machines
+            #
+            # I suspect these are related to systemd-nspawn, but
+            # since I don't use it I'm not 100% sure.
+            # Anyhow, deleting these subvolumes hasn't resulted
+            # in any issues so far, except for fairly
+            # benign-looking errors from systemd-tmpfiles.
+            btrfs subvolume list -o /mnt/root |
+            cut -f9 -d' ' |
+            while read subvolume; do
+              echo "deleting /$subvolume subvolume..."
+              btrfs subvolume delete "/mnt/$subvolume"
+            done &&
+            echo "deleting /root subvolume..." &&
+            btrfs subvolume delete /mnt/root
+
+            echo "restoring blank /root subvolume..."
+            btrfs subvolume snapshot /mnt/root-blank /mnt/root
+
+            # Once we're done rolling back to a blank snapshot,
+            # we can unmount /mnt and continue on the boot process.
+            umount /mnt
           ''
-            ${linkScript}
-          '';
+        ) (builtins.filter (x:
+            let erasure = config.environment.erasure.${x}; in
+            erasure.btrfs.enable && erasure.btrfs.rollback-on-boot) erasures));
 
       };
 

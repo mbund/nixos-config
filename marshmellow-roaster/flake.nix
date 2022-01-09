@@ -134,26 +134,30 @@
             linked = [
               "/etc/machine-id"
               "/etc/nixos"
+              "/etc/NetworkManager/system-connections"
+              "/var/lib/docker"
             ];
 
             ignore = [
-              "/tmp/*"
-              "/root/*"
+              "^/tmp/.*$"
+              "^/root/.cache/nix/.*$"
+              "^/root/.cache/mesa_shader_cache/.*$"
+              "^/var/lib/systemd.*$"
             ];
           };
 
-          environment.etc = {
-            "nixos".source = "/persist/etc/nixos";
-            "NetworkManager/system-connections".source = "/persist/etc/NetworkManager/system-connections";
+#           environment.etc = {
+#             "nixos".source = "/persist/etc/nixos";
+#             "NetworkManager/system-connections".source = "/persist/etc/NetworkManager/system-connections";
 #            "machine-id".source = "/persist/etc/machine-id";
-          };
+#           };
 
-          systemd.tmpfiles.rules = [
+#           systemd.tmpfiles.rules = [
 #            "L /etc/nixos - - - - /persist/etc/nixos"
 #            "L /etc/NetworkManager/system-connections - - - - /persist/etc/NetworkManager/system-connections"
 #            "L /etc/machine-id - - - - /persist/etc/machine-id"
-            "L /var/lib/docker - - - - /persist/var/lib/docker"
-          ];
+#             "L /var/lib/docker - - - - /persist/var/lib/docker"
+#           ];
 
           # environment.persistence."/persist" = {
           #   directories = [
