@@ -205,6 +205,10 @@
           erasure = config.environment.erasure.${x};
           in
           ''
+            # btrfs state erasure
+            # Taken from:
+            # https://mt-caret.github.io/blog/posts/2020-06-29-optin-state.html
+            
             mkdir -p /mnt
 
             # We first mount the btrfs root to /mnt

@@ -40,45 +40,7 @@
           };
 
           environment.systemPackages = with pkgs; [
-            git vim cryptsetup 
-      
-            # (writeShellApplication {
-            #   name = "btrfs-diff";
-            #   runtimeInputs = [ btrfs-progs coreutils gnused ];
-            #   text = ''
-            #     if [ "$EUID" != 0 ]; then
-            #       sudo "$0" "$@"
-            #       exit $?
-            #     fi
-
-            #     sudo mkdir -p /mnt
-            #     sudo mount -o subvol=/ /dev/mapper/nixos-root /mnt
-
-            #     OLD_TRANSID=$(sudo btrfs subvolume find-new /mnt/root-blank 9999999)
-            #     OLD_TRANSID=''${OLD_TRANSID#transid marker was }
-
-            #     sudo btrfs subvolume find-new "/mnt/root" "$OLD_TRANSID" |
-            #     sed '$d' |
-            #     cut -f17- -d' ' |
-            #     sort |
-            #     uniq |
-            #     grep -v -f /etc/nixos/marshmellow-roaster/ignore |
-            #     while read -r path; do
-            #       path="/$path"
-            #       # if [ -L "$path" ]; then
-            #       #  : # The path is a symbolic link, so is probably handled by NixOS already
-            #       # elif [ -d "$path" ]; then
-            #       #  : # The path is a directory, ignore
-            #       # else
-            #       #  echo "$path"
-            #       # fi
-                  
-            #       echo "$path"
-            #     done
-
-            #     umount /mnt
-            #   '';
-            # })
+            git vim cryptsetup
           ];
 
           networking = {
@@ -145,30 +107,6 @@
               "^/var/lib/systemd.*$"
             ];
           };
-
-#           environment.etc = {
-#             "nixos".source = "/persist/etc/nixos";
-#             "NetworkManager/system-connections".source = "/persist/etc/NetworkManager/system-connections";
-#            "machine-id".source = "/persist/etc/machine-id";
-#           };
-
-#           systemd.tmpfiles.rules = [
-#            "L /etc/nixos - - - - /persist/etc/nixos"
-#            "L /etc/NetworkManager/system-connections - - - - /persist/etc/NetworkManager/system-connections"
-#            "L /etc/machine-id - - - - /persist/etc/machine-id"
-#             "L /var/lib/docker - - - - /persist/var/lib/docker"
-#           ];
-
-          # environment.persistence."/persist" = {
-          #   directories = [
-          #     "/etc/nixos"
-          #     "/etc/NetworkManager/system-connections"
-          #     "/var/lib/docker"
-          #   ];
-          #   files = [
-          #     "/etc/machine-id" # journalctl fails to find logs from past boots
-          #   ];
-          # };
           
           security.sudo.extraConfig = ''
             # rollback results in sudo lectures after each reboot
