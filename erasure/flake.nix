@@ -149,7 +149,11 @@
           let erasure = config.environment.erasure.${x};
           in map (y: { source = y; destination = concatPaths [ erasure.storage-path y ]; }) erasure.linked
         ) erasures);
-        linkScript = lib.concatMapStrings (p: "ln --symbolic --force " + p.destination + " " + p.source + "\n") allLinked;
+        linkScript = lib.concatMapStrings (p: ''
+          mkdir -p ${lib.escapeShellArg (builtins.dirOf p.destination)}
+          mkdir -p ${lib.escapeShellArg (builtins.dirOf p.source)}
+          ln --symbolic --force ${lib.escapeShellArg p.destination} ${lib.escapeShellArg p.source}
+        '') allLinked;
         
       in {
         environment.systemPackages = (map (x: let
