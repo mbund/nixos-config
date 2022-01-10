@@ -74,10 +74,7 @@
     enable = true;
     version = 2;
     device = "/dev/disk/by-id/ata-ST500LM012_HN-M500MBB_S2TDJB0C230612";
-    # device = "/dev/disk/by-id/wwn-0x50004cf206dcba65";
-    # device = "/dev/sda";
     enableCryptodisk = true;
-    # extraGrubInstallArgs = [ "--modules=luks2 cryptodisk" ];
   };
   
   # hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

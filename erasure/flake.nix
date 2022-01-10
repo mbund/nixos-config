@@ -115,6 +115,12 @@
                     Regex per line of paths that should be ignored when running `filesystem-diff`.
                   '';
                 };
+
+                copy-over = lib.mkOption {
+                  type = lib.types.bool;
+                  default = true;
+                };
+
               };
             })
           );
@@ -145,21 +151,30 @@
           in
             prefix + path;
 
-        allLinked = builtins.concatLists (map (x:
-          let erasure = config.environment.erasure.${x};
-          in map (y: { source = y; destination = concatPaths [ erasure.storage-path y ]; }) erasure.linked
+        allLinked = builtins.concatLists (map (name:
+          let erasure = config.environment.erasure.${name};
+          in map (p: { path = concatPaths [ p ]; persisted-path = concatPaths [ erasure.storage-path p ]; isDirectory = lib.hasSuffix "/" p; copy-over = erasure.copy-over; }) erasure.linked
         ) erasures);
         linkScript = lib.concatMapStrings (p: ''
-          mkdir -p ${lib.escapeShellArg (builtins.dirOf p.destination)}
-          mkdir -p ${lib.escapeShellArg (builtins.dirOf p.source)}
-          ln --symbolic --force ${lib.escapeShellArg p.destination} ${lib.escapeShellArg p.source}
+          # persist ${p.path + (if p.isDirectory then "/" else "")}
+          if [[ ! "$(readlink -f ${lib.escapeShellArg p.path})" == ${lib.escapeShellArg p.persisted-path} ]]; then
+            mkdir -p ${lib.escapeShellArg ((x: if !p.isDirectory then builtins.dirOf x else x) p.persisted-path)}
+            mkdir -p ${lib.escapeShellArg ((x: if !p.isDirectory then builtins.dirOf x else x) p.path)}
+            # mkdir -p ${lib.escapeShellArg (builtins.dirOf p.path)}
+          ${if p.copy-over then ''
+            ${pkgs.rsync}/bin/rsync -a ${lib.escapeShellArg ((x: if p.isDirectory then x + "/" else x) p.path)} ${lib.escapeShellArg ((x: if p.isDirectory then x + "/" else x) p.persisted-path)}
+            rm -rf ${lib.escapeShellArg p.path}
+          '' else ""}
+            ln -sf ${lib.escapeShellArg p.persisted-path} ${lib.escapeShellArg p.path}
+          fi
+
         '') allLinked;
         
       in {
-        environment.systemPackages = (map (x: let
-          erasure = config.environment.erasure.${x};
+        environment.systemPackages = (map (name: let
+          erasure = config.environment.erasure.${name};
           ignorefiles = builtins.toFile ("erasure-ignore-" + erasure.name) (lib.concatMapStrings (x: x + "\n") erasure.ignore);
-          linkedfiles = builtins.toFile ("erasure-ignore-linked-" + erasure.name) (lib.concatMapStrings (x: x + "\n") erasure.linked);
+          linkedfiles = builtins.toFile ("erasure-ignore-linked-" + erasure.name) (lib.concatMapStrings (x: "^" + x + "\n") erasure.linked);
           in
           pkgs.writeShellApplication {
             name = erasure.btrfs.diff-command;
@@ -199,7 +214,7 @@
             let erasure = config.environment.erasure.${x}; in
             erasure.btrfs.enable && erasure.btrfs.diff-command != "") erasures));
 
-        system.activationScripts.erasure = linkScript;
+        system.activationScripts.erasure = lib.traceVal linkScript;
 
         boot.initrd.postDeviceCommands = pkgs.lib.mkBefore (lib.concatMapStrings (x: x + "\n") (map (x: let
           erasure = config.environment.erasure.${x};

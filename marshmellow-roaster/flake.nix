@@ -40,7 +40,7 @@
           };
 
           environment.systemPackages = with pkgs; [
-            git vim cryptsetup
+            git vim cryptsetup virt-manager
           ];
 
           networking = {
@@ -54,7 +54,7 @@
           users.users = {
             mbund = {
               isNormalUser = true;
-              extraGroups = [ "wheel" "networkmanager" ];
+              extraGroups = [ "wheel" "networkmanager" "libvirtd" ];
               uid = 1000;
               initialPassword = "mbund";
             };
@@ -79,7 +79,12 @@
             };
             pulse.enable = true;
           };
+          
+          # Virtualization
+          boot.extraModprobeConfig = "options kvm_intel nested=1";
+          virtualisation.libvirtd.enable = true;
 
+          # Docker
           virtualisation.docker.enable = true;
 
           environment.erasure."root" = {
@@ -95,16 +100,16 @@
 
             linked = [
               "/etc/machine-id"
-              "/etc/nixos"
-              "/etc/NetworkManager/system-connections"
-              "/var/lib/docker"
+              "/etc/nixos/"
+              "/etc/NetworkManager/system-connections/"
+              "/var/lib/docker/"
             ];
 
             ignore = [
               "^/tmp/.*$"
               "^/root/.cache/nix/.*$"
               "^/root/.cache/mesa_shader_cache/.*$"
-              "^/var/lib/systemd.*$"
+              "^/var/lib/systemd/.*$"
             ];
           };
           
