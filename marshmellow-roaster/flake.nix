@@ -1,7 +1,7 @@
 {
   description = "marshmellow-roaster NixOS Configuration";
 
-  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+  inputs.nixpkgs.url = "nixpkgs";
   inputs.erasure.url = "flake:system?dir=erasure";
 
   outputs = { self, nixpkgs, erasure }:
@@ -98,7 +98,12 @@
               rollback-snapshot = "root-blank";
             };
 
+            backup-dir = "/persist/erasure-backup";
+
             linked = [
+              "/etc/zzzz-folder/"
+              "/etc/zzz-folder/"
+              "/etc/zz-fake-folder"
               "/etc/machine-id"
               "/etc/nixos/"
               "/etc/NetworkManager/system-connections/"

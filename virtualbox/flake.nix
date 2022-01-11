@@ -1,7 +1,7 @@
 {
   description = "Virtualbox NixOS Configuration";
 
-  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+  inputs.nixpkgs.url = "nixpkgs";
 
   outputs = { self, nixpkgs }:
   {
