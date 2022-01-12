@@ -153,65 +153,58 @@
         # implementation
 
         script = builtins.concatStringsSep "\n" (builtins.concatLists (map (erasure:
-          if erasure.backup-dir != "" then [ "mkdir -p ${erasure.backup-dir}\n" ] else []
+          (if erasure.backup-dir != "" then [ "mkdir -p ${lib.escapeShellArg erasure.backup-dir}\n" ] else [])
           ++
 
-          map (p:
+          (map (p:
           let
             path = concatPaths [ p ];
             persisted-path = concatPaths [ erasure.storage-path p ];
+            isDirectory = lib.hasSuffix "/" p;
           in
           ''
             if [[ ! "$(readlink -f ${lib.escapeShellArg path})" == ${lib.escapeShellArg persisted-path} ]]; then
-              mkdir -p ${lib.escapeShellArg (builtins.dirOf path)}
-              mkdir -p ${lib.escapeShellArg (persisted-path)}
-              
-              ${if erasure.copy-over then ''
-              if [[ -e ${lib.escapeShellArg path} ]]; then
-                ${pkgs.rsync}/bin/rsync -a --remove-source-files --delete ${lib.escapeShellArg (path + "/")} ${lib.escapeShellArg (persisted-path + "/")}
-                rm -rf ${lib.escapeShellArg path}
-              fi
-              '' else ""}
+              mkdir -p ${lib.escapeShellArg (builtins.dirOf path)} ${lib.escapeShellArg (builtins.dirOf persisted-path)}
 
-              ln -sf ${lib.escapeShellArg persisted-path} ${lib.escapeShellArg path}
-            fi
-          '')
-          (builtins.filter (p: lib.hasSuffix "/" p) erasure.linked)
-          ++
-          
-          map (p:
-          let
-            path = concatPaths [ p ];
-            persisted-path = concatPaths [ erasure.storage-path p ];
-          in
-          ''
-            if [[ ! "$(readlink -f ${lib.escapeShellArg path})" == ${lib.escapeShellArg persisted-path} ]]; then
-              mkdir -p ${lib.escapeShellArg (builtins.dirOf path)}
-              mkdir -p ${lib.escapeShellArg (builtins.dirOf persisted-path)}
-              
-              ${if erasure.copy-over then ''
               if [[ -e ${lib.escapeShellArg path} ]]; then
-                if [[ -d ${lib.escapeShellArg path} ]]; then # we expect there to be a symlink to a file but currently there is a directory. Overwrite it.
-                ${if erasure.backup-dir != "" then ''
-                  ${pkgs.rsync}/bin/rsync -a --remove-source-files --delete ${lib.escapeShellArg (path + "/")} ${lib.escapeShellArg (persisted-path + "/")}
-                '' else ""}
-                  rm -rf ${lib.escapeShellArg path}
-                else
-                  cp ${lib.escapeShellArg path} ${lib.escapeShellArg persisted-path}
-                  rm -f ${lib.escapeShellArg path}
+                if [[ -d ${lib.escapeShellArg path} ]]; then
+                  ${if isDirectory then ''
+                    # There is a directory there, and we want a directory there, move it into there
+                    mkdir -p ${lib.escapeShellArg (persisted-path)}
+                    shopt -s dotglob
+                    mv -f ${(lib.escapeShellArg path) + "/*"} ${(lib.escapeShellArg persisted-path) + "/"}
+                    shopt -u dotglob
+                    rm -rf ${lib.escapeShellArg path} || true # delete whatever was there previously
+                  '' else if erasure.backup-dir != "" then ''
+                    # There is a directory there, but we want a file there, back it up
+                    mv -f ${lib.escapeShellArg path} ${lib.escapeShellArg erasure.backup-dir}
+                  '' else ""}
                 fi
-              fi
-              '' else ""}
 
+                if [[ -f ${lib.escapeShellArg path} ]]; then
+                  ${if isDirectory then ''
+                    # There is a file there, but we want a directory there, back it up
+                    mkdir -p ${lib.escapeShellArg (persisted-path)}
+                    mv -f ${lib.escapeShellArg path} ${lib.escapeShellArg erasure.backup-dir}
+                  '' else if erasure.backup-dir != "" then ''
+                    # There is a file there, and we want a file there, move it
+                    mv -f ${lib.escapeShellArg path} ${lib.escapeShellArg persisted-path}
+                  '' else ""}
+                fi
+              else
+                ${if isDirectory then "mkdir -p ${lib.escapeShellArg (persisted-path)}" else ""}
+                :
+              fi
+  
               ln -sf ${lib.escapeShellArg persisted-path} ${lib.escapeShellArg path}
             fi
           '')
-          (builtins.filter (p: ! lib.hasSuffix "/" p) erasure.linked)
+          erasure.linked)
 
         ) erasures));
 
         packages = lib.flatten (map (erasure: 
-          if erasure.btrfs.enable && erasure.diff-command then [
+          if erasure.btrfs.enable && erasure.btrfs.diff-command != "" then [
             (pkgs.writeShellApplication {
               name = erasure.btrfs.diff-command;
               runtimeInputs = with pkgs; [ btrfs-progs coreutils gnused ];
@@ -264,7 +257,7 @@
 
             # We first mount the btrfs root to /mnt
             # so we can manipulate btrfs subvolumes.
-            mount -o subvol=${erasure.mountpoint} ${erasure.btrfs.device} /mnt
+            mount -o subvol=${erasure.btrfs.mountpoint} ${erasure.btrfs.device} /mnt
 
             # While we're tempted to just delete /root and create
             # a new snapshot from /root-blank, /root is already
@@ -281,17 +274,17 @@
             # Anyhow, deleting these subvolumes hasn't resulted
             # in any issues so far, except for fairly
             # benign-looking errors from systemd-tmpfiles.
-            btrfs subvolume list -o /mnt/${erasure.subvolume} |
+            btrfs subvolume list -o /mnt/${erasure.btrfs.subvolume} |
             cut -f9 -d' ' |
             while read subvolume; do
               echo "deleting /$subvolume subvolume..."
               btrfs subvolume delete "/mnt/$subvolume"
             done &&
-            echo "deleting /${erasure.subvolume} subvolume..." &&
-            btrfs subvolume delete /mnt/${erasure.subvolume}
+            echo "deleting /${erasure.btrfs.subvolume} subvolume..." &&
+            btrfs subvolume delete /mnt/${erasure.btrfs.subvolume}
 
-            echo "restoring blank /${erasure.subvolume} subvolume..."
-            btrfs subvolume snapshot /mnt/${erasure.rollback-snapshot} /mnt/${erasure.subvolume}
+            echo "restoring blank /${erasure.btrfs.subvolume} subvolume..."
+            btrfs subvolume snapshot /mnt/${erasure.btrfs.rollback-snapshot} /mnt/${erasure.btrfs.subvolume}
 
             # Once we're done rolling back to a blank snapshot,
             # we can unmount /mnt and continue on the boot process.
@@ -304,7 +297,7 @@
         # Please do not put a lib.traceVal in here. It makes evaluation take like over 5 minutes.
         # This took too long to debug and I don't want to go through that again so heed this warning, future self.
 
-        system.activationScripts.erasure = script;
+        system.activationScripts.erasure = lib.traceVal script;
         environment.systemPackages = packages;
         boot.initrd.postDeviceCommands = postDeviceCommands;
       };

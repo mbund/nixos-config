@@ -102,6 +102,12 @@
             backup-dir = "/persist/erasure-backup";
 
             linked = [
+              "/etc/zz1"
+              "/etc/zz2"
+              "/etc/zz3/"
+              "/etc/zz4/"
+              "/etc/zz5"
+              "/etc/zz6/"
               "/etc/machine-id"
               "/etc/nixos/"
               "/etc/NetworkManager/system-connections/"
