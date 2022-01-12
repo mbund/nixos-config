@@ -3,15 +3,15 @@
     "erasure": {
       "locked": {
         "dir": "erasure",
-        "lastModified": 1641820746,
-        "narHash": "sha256-WU/MhT7p2QqxC/TVS4gsGV4atWCulDhyoXW1NuvUJqs=",
+        "lastModified": 1641943852,
+        "narHash": "sha256-DJADPqHQ2brhN2yiJ7Aao+s4mUZnTOfBWJ6B5ISaqiQ=",
         "type": "git",
-        "url": "file:///home/mbund/nixos-config"
+        "url": "file:///home/mbund/nixos-config?dir=erasure"
       },
       "original": {
         "dir": "erasure",
-        "id": "system",
-        "type": "indirect"
+        "type": "git",
+        "url": "file:///home/mbund/nixos-config?dir=erasure"
       }
     },
     "marshmellow-roaster": {
@@ -20,12 +20,12 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "narHash": "sha256-b1B+ZXikMy7g16vQkzXi5g7c1s27WrbTyjXUh2C7DAk=",
-        "path": "/nix/store/a4pgmsxcwic63jr38b76wfrzsczjalbv-source/marshmellow-roaster",
+        "narHash": "sha256-uIlMvBJK9L1ham/a140fkqajy3AmjuJhH+YCqmwd6dg=",
+        "path": "/nix/store/s0rkb7ay6lim5cncfidkxxj7f7ir18lh-source/marshmellow-roaster",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/a4pgmsxcwic63jr38b76wfrzsczjalbv-source/marshmellow-roaster",
+        "path": "/nix/store/s0rkb7ay6lim5cncfidkxxj7f7ir18lh-source/marshmellow-roaster",
         "type": "path"
       }
     },
@@ -69,11 +69,11 @@
       },
       "locked": {
         "narHash": "sha256-ZJd4oT9Ckfadcqmep4oOOE7CwdXKFOthuyHi2J4SuaQ=",
-        "path": "/nix/store/a4pgmsxcwic63jr38b76wfrzsczjalbv-source/virtualbox",
+        "path": "/nix/store/s0rkb7ay6lim5cncfidkxxj7f7ir18lh-source/virtualbox",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/a4pgmsxcwic63jr38b76wfrzsczjalbv-source/virtualbox",
+        "path": "/nix/store/s0rkb7ay6lim5cncfidkxxj7f7ir18lh-source/virtualbox",
         "type": "path"
       }
     }
