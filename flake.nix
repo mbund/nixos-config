@@ -4,10 +4,16 @@
   inputs = {
     virtualbox.url = "./virtualbox";
     marshmellow-roaster.url = "./marshmellow-roaster";
+    iso.url = "./iso";
   };
 
-  outputs = { self, virtualbox, marshmellow-roaster }:
+  outputs = { self, ... }@inputs:
   {
-    nixosConfigurations = virtualbox.nixosConfigurations // marshmellow-roaster.nixosConfigurations;
+    nixosConfigurations = inputs.virtualbox.nixosConfigurations //
+                          inputs.marshmellow-roaster.nixosConfigurations;
+
+    packages.x86_64-linux = {
+      iso = inputs.iso.defaultPackage.x86_64-linux;
+    };
   };
 }

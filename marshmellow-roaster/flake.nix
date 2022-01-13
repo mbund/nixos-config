@@ -2,8 +2,8 @@
   description = "marshmellow-roaster NixOS Configuration";
 
   inputs.nixpkgs.url = "nixpkgs";
-  #inputs.erasure.url = "flake:system?dir=erasure";
-  inputs.erasure.url = "/home/mbund/nixos-config/erasure";
+  inputs.erasure.url = "flake:system?dir=erasure";
+  #inputs.erasure.url = "/home/mbund/nixos-config/erasure";
 
   outputs = { self, nixpkgs, erasure }:
   {
@@ -102,12 +102,6 @@
             backup-dir = "/persist/erasure-backup";
 
             linked = [
-              "/etc/zz1"
-              "/etc/zz2"
-              "/etc/zz3/"
-              "/etc/zz4/"
-              "/etc/zz5"
-              "/etc/zz6/"
               "/etc/machine-id"
               "/etc/nixos/"
               "/etc/NetworkManager/system-connections/"
