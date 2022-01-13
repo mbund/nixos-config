@@ -110,14 +110,8 @@
                   '';
                 };
 
-                copy-over = lib.mkOption {
-                  type = lib.types.bool;
-                  default = true;
-                };
-
                 backup-dir = lib.mkOption {
                   type = lib.types.str;
-                  default = "";
                 };
 
               };
@@ -153,7 +147,9 @@
         # implementation
 
         script = builtins.concatStringsSep "\n" (builtins.concatLists (map (erasure:
-          (if erasure.backup-dir != "" then [ "mkdir -p ${lib.escapeShellArg erasure.backup-dir}\n" ] else [])
+          (if erasure.backup-dir != "" then [ ''
+            mkdir -p ${lib.escapeShellArg erasure.backup-dir}
+          '' ] else [])
           ++
 
           (map (p:
@@ -163,42 +159,44 @@
             isDirectory = lib.hasSuffix "/" p;
           in
           ''
-            if [[ ! "$(readlink -f ${lib.escapeShellArg path})" == ${lib.escapeShellArg persisted-path} ]]; then
+            if [[ "$(readlink -f ${lib.escapeShellArg path})" != ${lib.escapeShellArg persisted-path} ]]; then
+	            echo "persisting ${lib.escapeShellArg path}"
               mkdir -p ${lib.escapeShellArg (builtins.dirOf path)} ${lib.escapeShellArg (builtins.dirOf persisted-path)}
 
               if [[ -e ${lib.escapeShellArg path} ]]; then
-                if [[ -d ${lib.escapeShellArg path} ]]; then
+
+                # [[ ! $(find -- ${lib.escapeShellArg path} -prune -type d -empty) ]] && echo "c" && rm -rf ${lib.escapeShellArg path}
+
+		            if [[ -d ${lib.escapeShellArg path} ]]; then
                   ${if isDirectory then ''
                     # There is a directory there, and we want a directory there, move it into there
-                    mkdir -p ${lib.escapeShellArg (persisted-path)}
-                    shopt -s dotglob
-                    mv -f ${(lib.escapeShellArg path) + "/*"} ${(lib.escapeShellArg persisted-path) + "/"}
-                    shopt -u dotglob
-                    rm -rf ${lib.escapeShellArg path} || true # delete whatever was there previously
+                    mv -f ${lib.escapeShellArg path} ${lib.escapeShellArg persisted-path} || true
+                    rm -rf ${lib.escapeShellArg path} # delete whatever was there previously so we can later overwrite it with a symlink
                   '' else if erasure.backup-dir != "" then ''
                     # There is a directory there, but we want a file there, back it up
-                    mv -f ${lib.escapeShellArg path} ${lib.escapeShellArg erasure.backup-dir}
+                    [ ! $(mv -f ${lib.escapeShellArg path} ${lib.escapeShellArg erasure.backup-dir}) ] && echo "cannot back up file that will be overwritten!"
                   '' else ""}
                 fi
 
                 if [[ -f ${lib.escapeShellArg path} ]]; then
                   ${if isDirectory then ''
                     # There is a file there, but we want a directory there, back it up
-                    mkdir -p ${lib.escapeShellArg (persisted-path)}
-                    mv -f ${lib.escapeShellArg path} ${lib.escapeShellArg erasure.backup-dir}
+                    mkdir -p ${lib.escapeShellArg persisted-path}
+                    [ ! $(mv -f ${lib.escapeShellArg path} ${lib.escapeShellArg erasure.backup-dir}) ] && echo "cannot back up directory that will be overwritten!"
                   '' else if erasure.backup-dir != "" then ''
                     # There is a file there, and we want a file there, move it
-                    mv -f ${lib.escapeShellArg path} ${lib.escapeShellArg persisted-path}
+                    mv -f ${lib.escapeShellArg path} ${lib.escapeShellArg persisted-path} || true
                   '' else ""}
                 fi
               else
-                ${if isDirectory then "mkdir -p ${lib.escapeShellArg (persisted-path)}" else ""}
+                ${if isDirectory then "mkdir -p ${lib.escapeShellArg persisted-path}" else ""}
                 :
               fi
   
               ln -sf ${lib.escapeShellArg persisted-path} ${lib.escapeShellArg path}
             fi
-          '')
+          ''
+          )
           erasure.linked)
 
         ) erasures));
@@ -297,7 +295,7 @@
         # Please do not put a lib.traceVal in here. It makes evaluation take like over 5 minutes.
         # This took too long to debug and I don't want to go through that again so heed this warning, future self.
 
-        system.activationScripts.erasure = lib.traceVal script;
+        system.activationScripts.erasure = script;
         environment.systemPackages = packages;
         boot.initrd.postDeviceCommands = postDeviceCommands;
       };

@@ -41,6 +41,7 @@
           };
 
           environment.systemPackages = with pkgs; [
+	    gparted
             git vim cryptsetup virt-manager
           ];
 
@@ -103,8 +104,8 @@
 
             linked = [
               "/etc/machine-id"
-              "/etc/nixos/"
               "/etc/NetworkManager/system-connections/"
+              "/etc/nixos/"
               "/var/lib/docker/"
             ];
 
