@@ -2,8 +2,19 @@
 
   description = "NixOS opt in state, erasure on boot";
 
-  outputs = { self }: {
+  inputs = {
+    nixpkgs.url = "nixpkgs";
+
+    impermanence = {
+      url = "github:nix-community/impermanence";
+      inputs.nixpkgs.url = "nixpkgs";
+    };
+  };
+
+  outputs = { self, ... }@inputs: {
     nixosModule = { pkgs, config, lib, ... }: {
+      imports = [ inputs.impermanence.nixosModules.impermanence ];
+
       options = {
         environment.erasure = lib.mkOption {
           default = { };
@@ -87,15 +98,37 @@
                   default = [ ];
                 };
 
-                linked = lib.mkOption {
+                paths = lib.mkOption {
+                  type = lib.types.listOf lib.types.str;
+                  default = [ ];
+                  example = [
+                    "/etc/machine-id"
+                    "/etc/nixos/"
+                  ];
+                  description = ''
+                    Files and folders that should be put into persistent storage.
+                  '';
+                };
+
+                directories = lib.mkOption {
                   type = lib.types.listOf lib.types.str;
                   default = [ ];
                   example = [
                     "/etc/nixos"
+                  ];
+                  description = ''
+                    Folders that should be put into persistent storage.
+                  '';
+                };
+
+                files = lib.mkOption {
+                  type = lib.types.listOf lib.types.str;
+                  default = [ ];
+                  example = [
                     "/etc/machine-id"
                   ];
                   description = ''
-                    Files and folders that should be put into persistent storage.
+                    Files that should be put into persistent storage.
                   '';
                 };
 
@@ -108,10 +141,6 @@
                   description = ''
                     Regex per line of paths that should be ignored when running `filesystem-diff`.
                   '';
-                };
-
-                backup-dir = lib.mkOption {
-                  type = lib.types.str;
                 };
 
               };
@@ -146,61 +175,6 @@
 
         # implementation
 
-        script = builtins.concatStringsSep "\n" (builtins.concatLists (map (erasure:
-          (if erasure.backup-dir != "" then [ ''
-            mkdir -p ${lib.escapeShellArg erasure.backup-dir}
-          '' ] else [])
-          ++
-
-          (map (p:
-          let
-            path = concatPaths [ p ];
-            persisted-path = concatPaths [ erasure.storage-path p ];
-            isDirectory = lib.hasSuffix "/" p;
-          in
-          ''
-            if [[ "$(readlink -f ${lib.escapeShellArg path})" != ${lib.escapeShellArg persisted-path} ]]; then
-	            echo "persisting ${lib.escapeShellArg path}"
-              mkdir -p ${lib.escapeShellArg (builtins.dirOf path)} ${lib.escapeShellArg (builtins.dirOf persisted-path)}
-
-              if [[ -e ${lib.escapeShellArg path} ]]; then
-
-                # [[ ! $(find -- ${lib.escapeShellArg path} -prune -type d -empty) ]] && echo "c" && rm -rf ${lib.escapeShellArg path}
-
-		            if [[ -d ${lib.escapeShellArg path} ]]; then
-                  ${if isDirectory then ''
-                    # There is a directory there, and we want a directory there, move it into there
-                    mv -f ${lib.escapeShellArg path} ${lib.escapeShellArg persisted-path} || true
-                    rm -rf ${lib.escapeShellArg path} # delete whatever was there previously so we can later overwrite it with a symlink
-                  '' else if erasure.backup-dir != "" then ''
-                    # There is a directory there, but we want a file there, back it up
-                    [ ! $(mv -f ${lib.escapeShellArg path} ${lib.escapeShellArg erasure.backup-dir}) ] && echo "cannot back up file that will be overwritten!"
-                  '' else ""}
-                fi
-
-                if [[ -f ${lib.escapeShellArg path} ]]; then
-                  ${if isDirectory then ''
-                    # There is a file there, but we want a directory there, back it up
-                    mkdir -p ${lib.escapeShellArg persisted-path}
-                    [ ! $(mv -f ${lib.escapeShellArg path} ${lib.escapeShellArg erasure.backup-dir}) ] && echo "cannot back up directory that will be overwritten!"
-                  '' else if erasure.backup-dir != "" then ''
-                    # There is a file there, and we want a file there, move it
-                    mv -f ${lib.escapeShellArg path} ${lib.escapeShellArg persisted-path} || true
-                  '' else ""}
-                fi
-              else
-                ${if isDirectory then "mkdir -p ${lib.escapeShellArg persisted-path}" else ""}
-                :
-              fi
-  
-              ln -sf ${lib.escapeShellArg persisted-path} ${lib.escapeShellArg path}
-            fi
-          ''
-          )
-          erasure.linked)
-
-        ) erasures));
-
         packages = lib.flatten (map (erasure: 
           if erasure.btrfs.enable && erasure.btrfs.diff-command != "" then [
             (pkgs.writeShellApplication {
@@ -209,7 +183,7 @@
               text =
                 let
                   ignorefiles = builtins.toFile ("erasure-ignore-" + erasure.name) (lib.concatMapStrings (path: path + "\n") erasure.ignore);
-                  linkedfiles = builtins.toFile ("erasure-ignore-linked-" + erasure.name) (lib.concatMapStrings (path: "^" + path + "\n") erasure.linked);
+                  linkedfiles = builtins.toFile ("erasure-ignore-linked-" + erasure.name) (lib.concatMapStrings (path: "^" + path + "\n") erasure.paths);
                 in ''
                 if [ "$EUID" != 0 ]; then
                   sudo "$0" "$@"
@@ -295,7 +269,16 @@
         # Please do not put a lib.traceVal in here. It makes evaluation take like over 5 minutes.
         # This took too long to debug and I don't want to go through that again so heed this warning, future self.
 
-        system.activationScripts.erasure = script;
+        environment.persistence = builtins.listToAttrs (map (erasure:
+          {
+            name = erasure.storage-path;
+            value = {
+              directories = (builtins.filter (path: lib.hasSuffix "/" path) erasure.paths) ++ erasure.directories;
+              files = (builtins.filter (path: ! lib.hasSuffix "/" path) erasure.paths) ++ erasure.files;
+            };
+          }
+        ) erasures);
+
         environment.systemPackages = packages;
         boot.initrd.postDeviceCommands = postDeviceCommands;
       };

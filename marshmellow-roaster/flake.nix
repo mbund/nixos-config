@@ -100,9 +100,7 @@
               rollback-snapshot = "root-blank";
             };
 
-            backup-dir = "/persist/erasure-backup";
-
-            linked = [
+            paths = [
               "/etc/machine-id"
               "/etc/NetworkManager/system-connections/"
               "/etc/nixos/"
