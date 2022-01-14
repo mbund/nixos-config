@@ -7,8 +7,8 @@
       },
       "locked": {
         "dir": "erasure",
-        "lastModified": 1642092883,
-        "narHash": "sha256-2YPNU9nafWzhuPRNZitq3CPYDOtvk+86+k0OfW9C6aQ=",
+        "lastModified": 1642094858,
+        "narHash": "sha256-X2LzTvpPOW7xsMMft4yrr4Dqs6dzlGvbOcKJUqfM+bw=",
         "type": "git",
         "url": "file:///home/mbund/nixos-config"
       },
@@ -40,11 +40,11 @@
       },
       "locked": {
         "narHash": "sha256-JulRn/vJ1JqdxymRmFaATUIm7Yyl6pPI7rYI8+L6zk8=",
-        "path": "/nix/store/mmsrpja3vyc627764b2ypynyjnfr7aml-source/iso",
+        "path": "/nix/store/vb1ah5knqgw4mw0iim31c62xiyxmh4vf-source/iso",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/mmsrpja3vyc627764b2ypynyjnfr7aml-source/iso",
+        "path": "/nix/store/vb1ah5knqgw4mw0iim31c62xiyxmh4vf-source/iso",
         "type": "path"
       }
     },
@@ -54,12 +54,12 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "narHash": "sha256-rjt1asTLYdMM5wIWN0Ctp9Efth14/WMWm1qnH0zjPNo=",
-        "path": "/nix/store/mmsrpja3vyc627764b2ypynyjnfr7aml-source/marshmellow-roaster",
+        "narHash": "sha256-4MVEbHUizGAsOL6XK6K1fvNzd65eTAYCkB13ZJcA4Qo=",
+        "path": "/nix/store/vb1ah5knqgw4mw0iim31c62xiyxmh4vf-source/marshmellow-roaster",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/mmsrpja3vyc627764b2ypynyjnfr7aml-source/marshmellow-roaster",
+        "path": "/nix/store/vb1ah5knqgw4mw0iim31c62xiyxmh4vf-source/marshmellow-roaster",
         "type": "path"
       }
     },
@@ -169,11 +169,11 @@
       },
       "locked": {
         "narHash": "sha256-ZJd4oT9Ckfadcqmep4oOOE7CwdXKFOthuyHi2J4SuaQ=",
-        "path": "/nix/store/mmsrpja3vyc627764b2ypynyjnfr7aml-source/virtualbox",
+        "path": "/nix/store/vb1ah5knqgw4mw0iim31c62xiyxmh4vf-source/virtualbox",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/mmsrpja3vyc627764b2ypynyjnfr7aml-source/virtualbox",
+        "path": "/nix/store/vb1ah5knqgw4mw0iim31c62xiyxmh4vf-source/virtualbox",
         "type": "path"
       }
     }

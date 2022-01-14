@@ -120,27 +120,10 @@
             Defaults lecture = never
           '';
 
-          fonts = {
-            # fontDir.enable = true;
-            fonts = with pkgs; [
-              # nerdfonts
-            ];
-          };
-
           system = {
-            # Auto updating nix config. More useful for embedded systems
-            # that we want to change remotely...
-            autoUpgrade = {
-              enable = false;
-              allowReboot = true;
-              flake = "github:mbund/nixos-config";
-              flags = [
-                "--recreate-lock-file"
-                "--no-write-lock-file"
-                "-L" # print build logs
-              ];
-              dates = "daily";
-            };
+            # Copy over full nixos-config to `/var/run/current-system/full-config/`
+            # (available to the currently active derivation for safety/debugging)
+            extraSystemBuilderCmds = "cp -rf ${./.} $out/full-config";
 
             # This value determines the NixOS release from which the default
             # settings for stateful data, like file locations and database versions
