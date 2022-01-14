@@ -41,8 +41,7 @@
           };
 
           environment.systemPackages = with pkgs; [
-	    gparted
-            git vim cryptsetup virt-manager
+            git vim cryptsetup
           ];
 
           networking = {
@@ -72,6 +71,9 @@
             };
             desktopManager.plasma5.enable = true;
           };
+
+          # services.dbus.packages = [ pkgs.gnome3.dconf ];
+          programs.dconf.enable = true;
 
           services.pipewire = {
             enable = true;

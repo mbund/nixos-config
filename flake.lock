@@ -7,8 +7,8 @@
       },
       "locked": {
         "dir": "erasure",
-        "lastModified": 1642094858,
-        "narHash": "sha256-X2LzTvpPOW7xsMMft4yrr4Dqs6dzlGvbOcKJUqfM+bw=",
+        "lastModified": 1642127401,
+        "narHash": "sha256-CcCwHEiYDG3y0ol8MxaXn0SiF4j5uNhl3Gap80GuDUo=",
         "type": "git",
         "url": "file:///home/mbund/nixos-config"
       },
@@ -39,12 +39,12 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "narHash": "sha256-JulRn/vJ1JqdxymRmFaATUIm7Yyl6pPI7rYI8+L6zk8=",
-        "path": "/nix/store/vb1ah5knqgw4mw0iim31c62xiyxmh4vf-source/iso",
+        "narHash": "sha256-TOqRKMEvzlEPUJj1Zl8CbGCCVcznUeqClxDMCmGY4VQ=",
+        "path": "/nix/store/v01gl0k2s2iadb85b2s1vbhaqbxry6yl-source/iso",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/vb1ah5knqgw4mw0iim31c62xiyxmh4vf-source/iso",
+        "path": "/nix/store/v01gl0k2s2iadb85b2s1vbhaqbxry6yl-source/iso",
         "type": "path"
       }
     },
@@ -54,12 +54,12 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "narHash": "sha256-4MVEbHUizGAsOL6XK6K1fvNzd65eTAYCkB13ZJcA4Qo=",
-        "path": "/nix/store/vb1ah5knqgw4mw0iim31c62xiyxmh4vf-source/marshmellow-roaster",
+        "narHash": "sha256-aX9tRPR+94srNupIjZGllwPTqiQw2sbEOWsMkKnVDO8=",
+        "path": "/nix/store/v01gl0k2s2iadb85b2s1vbhaqbxry6yl-source/marshmellow-roaster",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/vb1ah5knqgw4mw0iim31c62xiyxmh4vf-source/marshmellow-roaster",
+        "path": "/nix/store/v01gl0k2s2iadb85b2s1vbhaqbxry6yl-source/marshmellow-roaster",
         "type": "path"
       }
     },
@@ -169,11 +169,11 @@
       },
       "locked": {
         "narHash": "sha256-ZJd4oT9Ckfadcqmep4oOOE7CwdXKFOthuyHi2J4SuaQ=",
-        "path": "/nix/store/vb1ah5knqgw4mw0iim31c62xiyxmh4vf-source/virtualbox",
+        "path": "/nix/store/v01gl0k2s2iadb85b2s1vbhaqbxry6yl-source/virtualbox",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/vb1ah5knqgw4mw0iim31c62xiyxmh4vf-source/virtualbox",
+        "path": "/nix/store/v01gl0k2s2iadb85b2s1vbhaqbxry6yl-source/virtualbox",
         "type": "path"
       }
     }

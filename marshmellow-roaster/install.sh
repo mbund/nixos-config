@@ -55,3 +55,9 @@ mkdir -p /mnt/etc/nixos
 nixos-generate-config --root /mnt --show-hardware-config > /mnt/etc/nixos/hardware-configuration.nix
 cd /mnt/etc/nixos
 git clone https://github.com/mbund/nixos-config .
+nix registry add system git+file:///etc/nixos
+
+echo "Run the following commands to install after your tweaking"
+echo "sudo nixos-install --flake /etc/nixos#marshmellow-roaster"
+echo "Then after booted in run:"
+echo "nix registry add system git+file:///etc/nixos"
