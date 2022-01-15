@@ -3,11 +3,9 @@
   description = "NixOS opt in state, erasure on boot";
 
   inputs = {
-    nixpkgs.url = "nixpkgs";
-
     impermanence = {
       url = "github:nix-community/impermanence";
-      inputs.nixpkgs.url = "nixpkgs";
+      inputs.nixpkgs.url = "flake:nixpkgs";
     };
   };
 

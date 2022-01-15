@@ -1,9 +1,8 @@
 {
   description = "marshmellow-roaster NixOS Configuration";
 
-  inputs.nixpkgs.url = "nixpkgs";
+  inputs.nixpkgs.url = "flake:nixpkgs";
   inputs.erasure.url = "flake:system?dir=erasure";
-  #inputs.erasure.url = "/home/mbund/nixos-config/erasure";
 
   outputs = { self, nixpkgs, erasure }:
   {
@@ -32,6 +31,8 @@
               # https://nixos.org/manual/nix/stable/package-management/garbage-collection.html
               keep-outputs = true
               keep-derivations = true
+
+              warn-dirty = false
             '';
             gc = {
               automatic = true;
@@ -72,7 +73,6 @@
             desktopManager.plasma5.enable = true;
           };
 
-          # services.dbus.packages = [ pkgs.gnome3.dconf ];
           programs.dconf.enable = true;
 
           services.pipewire = {

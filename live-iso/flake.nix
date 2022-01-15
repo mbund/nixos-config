@@ -2,10 +2,9 @@
   description = "Live ISO confiugration";
 
   inputs = {
-    nixpkgs.url = "nixpkgs";
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.url = "flake:nixpkgs";
     };
   };
 

@@ -4,7 +4,7 @@
   inputs = {
     virtualbox.url = "./virtualbox";
     marshmellow-roaster.url = "./marshmellow-roaster";
-    iso.url = "./iso";
+    live-iso.url = "./live-iso";
   };
 
   outputs = { self, ... }@inputs:
@@ -13,7 +13,7 @@
                           inputs.marshmellow-roaster.nixosConfigurations;
 
     packages.x86_64-linux = {
-      iso = inputs.iso.defaultPackage.x86_64-linux;
+      live-iso = inputs.live-iso.defaultPackage.x86_64-linux;
     };
   };
 }

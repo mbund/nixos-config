@@ -1,7 +1,7 @@
 {
   description = "Virtualbox NixOS Configuration";
 
-  inputs.nixpkgs.url = "nixpkgs";
+  inputs.nixpkgs.url = "flake:nixpkgs";
 
   outputs = { self, nixpkgs }:
   {
