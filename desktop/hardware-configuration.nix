@@ -32,7 +32,7 @@
       fsType = "ext4";
     };
 
-    "/boot/efi" {
+    "/boot/efi" = {
       device = "/dev/disk/by-label/UEFI-ESP";
       fsType = "vfat";
     };
