@@ -6,17 +6,17 @@ if [ "$EUID" != 0 ]; then
   exit $?
 fi
 
-sgdisk --zap-all /dev/sda
+sgdisk --zap-all /dev/nvme0n1
 
-sgdisk -n 0:0:+32MiB -t 0:ef00 /dev/sda
+sgdisk -n 0:0:+32MiB -t 0:ef00 /dev/nvme0n1
 
-sgdisk -n 0:0:+128MiB /dev/sda
-mkfs.ext4 -L bootloader /dev/sda2
+sgdisk -n 0:0:+128MiB /dev/nvme0n1
+mkfs.ext4 -L bootloader /dev/nvme0n1p2
 
-sgdisk -n 0:0:0 /dev/sda
+sgdisk -n 0:0:0 /dev/nvme0n1
 # must be `pbkdf2` for grub, in the future `argon2id` will be better
-cryptsetup luksFormat /dev/sda3 --pbkdf pbkdf2
-cryptsetup luksOpen /dev/sda3 nixos-root
+cryptsetup luksFormat /dev/nvme0n1p3 --pbkdf pbkdf2
+cryptsetup luksOpen /dev/nvme0n1p3 nixos-root
 mkfs.btrfs /dev/mapper/nixos-root
 
 mkdir -p /mnt
@@ -45,10 +45,10 @@ mount /dev/disk/by-label/bootloader /mnt/boot
 
 # Get nixos configuration
 mkdir -p /mnt/etc/nixos
-nixos-generate-config --root /mnt --show-hardware-config > /mnt/etc/nixos/hardware-configuration.nix
 cd /mnt/etc/nixos
 git clone https://github.com/mbund/nixos-config .
-nix registry add system git+file:///etc/nixos
+nixos-generate-config --root /mnt --show-hardware-config > /mnt/etc/nixos/hardware-configuration.nix
+# nix registry add system git+file:///etc/nixos
 
 echo "Run the following commands to install after your tweaking"
 echo "sudo nixos-install --flake /etc/nixos#desktop"
