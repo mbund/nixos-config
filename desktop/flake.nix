@@ -34,6 +34,7 @@
 
               accept-flake-config = true
               warn-dirty = false
+              allow-import-from-derivation = true
             '';
             gc = {
               automatic = true;
@@ -68,7 +69,9 @@
             };
           };
 
-          # required on the system level for nvidia drivers
+          # required on the system level for
+          # - nvidia drivers
+          # - steam
           nixpkgs.config.allowUnfree = true;
 
           services.xserver = {
@@ -81,6 +84,8 @@
             };
             desktopManager.plasma5.enable = true;
           };
+
+          programs.steam.enable = true;
 
           programs.dconf.enable = true;
 
