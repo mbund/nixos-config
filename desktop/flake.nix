@@ -85,6 +85,9 @@
             desktopManager.plasma5.enable = true;
           };
 
+          hardware.bluetooth.enable = true;
+          services.xserver.wacom.enable = true;
+
           programs.steam.enable = true;
 
           programs.dconf.enable = true;
