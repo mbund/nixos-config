@@ -55,7 +55,8 @@
           time.timeZone = "America/New_York";
 
           users.groups = {
-            nixos-configurator.gid = 1001;
+            # make a new group for the files in /etc/nixos so some users are allowed to edit it
+            nixos-configurator = { };
           };
 
           users.users = {
@@ -67,12 +68,13 @@
             };
           };
 
+          # required on the system level for nvidia drivers
           nixpkgs.config.allowUnfree = true;
 
           services.xserver = {
             enable = true;
             videoDrivers = [ "nvidia" ];
-            displayManager.defaultSession = "plasmawayland";
+            # displayManager.defaultSession = "plasmawayland";
             displayManager.sddm = {
               enable = true;
               settings.Wayland.SessionDir = "${pkgs.plasma5Packages.plasma-workspace}/share/wayland-sessions";
