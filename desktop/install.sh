@@ -37,6 +37,13 @@ umount /mnt
 # Mount root /mnt
 mount -o subvol=root,compress=zstd,noatime /dev/mapper/nixos-root /mnt
 
+# Create and mount subvolumes
+mkdir -p /mnt/{home,nix,persist,var/log}
+mount -o subvol=home,compress=zstd /dev/mapper/nixos-root /mnt/home
+mount -o subvol=nix,compress=zstd,noatime /dev/mapper/nixos-root /mnt/nix
+mount -o subvol=persist,compress=zstd,noatime /dev/mapper/nixos-root /mnt/persist
+mount -o subvol=log,compress=zstd,noatime /dev/mapper/nixos-root /mnt/var/log
+
 # Create swapfile
 mkdir -p /mnt/swap
 mount -o subvol=swap,compress=none,noatime /dev/mapper/nixos-root /mnt/swap
@@ -56,10 +63,10 @@ mkdir -p /mnt/etc/nixos
 cd /mnt/etc/nixos
 git clone https://github.com/mbund/nixos-config .
 nixos-generate-config --root /mnt --show-hardware-config > /mnt/etc/nixos/hardware-configuration.nix
-# nix registry add system git+file:///etc/nixos
+# nix registry add system git+file:///mnt/etc/nixos
 
 echo "Run the following commands to install after your tweaking"
-echo "sudo nixos-install --flake /etc/nixos#desktop"
+echo "sudo nixos-install --flake /mnt/etc/nixos#desktop --recreate-lock-file --no-root-password"
 echo "Then after booted in run:"
 echo "nix registry pin nixpkgs"
 echo "nix registry add system git+file:///etc/nixos"
