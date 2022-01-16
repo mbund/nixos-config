@@ -13,7 +13,7 @@ sgdisk -n 0:0:+128MiB /dev/nvme0n1
 mkfs.ext4 -L boot /dev/nvme0n1p1
 
 # UEFI ESP
-sgdisk -n 0:0:+32MiB -t 0:ef00 /dev/nvme0n1
+sgdisk -n 0:0:+64MiB -t 0:ef00 /dev/nvme0n1
 mkfs.vfat -F 32 -n UEFI-ESP /dev/nvme0n1p2
 
 # / (root)
