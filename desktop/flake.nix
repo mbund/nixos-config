@@ -54,10 +54,14 @@
 
           time.timeZone = "America/New_York";
 
+          users.groups = {
+            nixos-configurator.gid = 1001;
+          };
+
           users.users = {
             mbund = {
               isNormalUser = true;
-              extraGroups = [ "wheel" "networkmanager" "libvirtd" ];
+              extraGroups = [ "wheel" "networkmanager" "libvirtd" "nixos-configurator" ];
               uid = 1000;
               initialPassword = "mbund";
             };

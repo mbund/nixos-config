@@ -6,12 +6,12 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "narHash": "sha256-hZizhQ7MpJ7Irx9t1ysykiGCJl8331Es+heOLtJF0y8=",
-        "path": "/mnt/nix/store/16m17ln66l3waj3r592dspkri5nkp702-source/desktop",
+        "narHash": "sha256-xAYciuDsMfnzZjjZu4fcwJUzoACC9xuJp406Qg6wE2Q=",
+        "path": "/nix/store/zzz2gf6p8k71wvb545i8bi8ghb4p49i0-source/desktop",
         "type": "path"
       },
       "original": {
-        "path": "/mnt/nix/store/16m17ln66l3waj3r592dspkri5nkp702-source/desktop",
+        "path": "/nix/store/zzz2gf6p8k71wvb545i8bi8ghb4p49i0-source/desktop",
         "type": "path"
       }
     },
@@ -88,11 +88,11 @@
       },
       "locked": {
         "narHash": "sha256-WYLDHGHBkDaHYLUr1BI/u7pcRVSIVBlH2JXImdqqYRM=",
-        "path": "/mnt/nix/store/16m17ln66l3waj3r592dspkri5nkp702-source/live-iso",
+        "path": "/nix/store/zzz2gf6p8k71wvb545i8bi8ghb4p49i0-source/live-iso",
         "type": "path"
       },
       "original": {
-        "path": "/mnt/nix/store/16m17ln66l3waj3r592dspkri5nkp702-source/live-iso",
+        "path": "/nix/store/zzz2gf6p8k71wvb545i8bi8ghb4p49i0-source/live-iso",
         "type": "path"
       }
     },
@@ -103,11 +103,11 @@
       },
       "locked": {
         "narHash": "sha256-oUHGF8GUO8NbDmwPrmNyi5VgwzxZ8ZHExOIrqXRshoY=",
-        "path": "/mnt/nix/store/16m17ln66l3waj3r592dspkri5nkp702-source/marshmellow-roaster",
+        "path": "/nix/store/zzz2gf6p8k71wvb545i8bi8ghb4p49i0-source/marshmellow-roaster",
         "type": "path"
       },
       "original": {
-        "path": "/mnt/nix/store/16m17ln66l3waj3r592dspkri5nkp702-source/marshmellow-roaster",
+        "path": "/nix/store/zzz2gf6p8k71wvb545i8bi8ghb4p49i0-source/marshmellow-roaster",
         "type": "path"
       }
     },
@@ -231,11 +231,11 @@
       },
       "locked": {
         "narHash": "sha256-L/b9HeGVH3AgeaKCAWvGG0g8YX6Ef7X2nd92Hum648c=",
-        "path": "/mnt/nix/store/16m17ln66l3waj3r592dspkri5nkp702-source/virtualbox",
+        "path": "/nix/store/zzz2gf6p8k71wvb545i8bi8ghb4p49i0-source/virtualbox",
         "type": "path"
       },
       "original": {
-        "path": "/mnt/nix/store/16m17ln66l3waj3r592dspkri5nkp702-source/virtualbox",
+        "path": "/nix/store/zzz2gf6p8k71wvb545i8bi8ghb4p49i0-source/virtualbox",
         "type": "path"
       }
     }

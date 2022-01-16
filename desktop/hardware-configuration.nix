@@ -65,7 +65,7 @@
   # Encryption
   boot.initrd.luks.devices = {
     "nixos-root" = {
-      device = "/dev/disk/by-uuid/081abc31-cd74-4e5c-979d-0f3ad182e935";
+      device = "/dev/disk/by-uuid/ad3f0a0f-93ac-40c6-a294-279c70347d4e";
     };
   };
 
