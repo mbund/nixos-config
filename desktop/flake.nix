@@ -114,13 +114,20 @@
               "/etc/NetworkManager/system-connections/"
               "/etc/nixos/"
               "/var/lib/docker/"
+              "/var/lib/libvirt/"
             ];
 
             ignore = [
               "^/tmp/.*$"
-              "^/root/.cache/nix/.*$"
-              "^/root/.cache/mesa_shader_cache/.*$"
+              "^/var/lib/nixos/.*$"
+              "^/var/lib/NetworkManager/.*$"
+              "^/etc/NetworkManager/.*$"
+              "^/root/.cache/.*$"
               "^/var/lib/systemd/.*$"
+              "^/var/cache/.*$"
+              "^/var/lib/sddm/\\.cache/.*$"
+              "^/etc/pam\\.d/.*$"
+              "^/etc/tmpfiles\\.d/.*$"
             ];
           };
           
