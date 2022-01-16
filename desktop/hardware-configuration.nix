@@ -28,8 +28,13 @@
     };
 
     "/boot" = {
-      device = "/dev/disk/by-label/bootloader";
+      device = "/dev/disk/by-label/boot";
       fsType = "ext4";
+    };
+
+    "/boot/efi" {
+      device = "/dev/disk/by-label/UEFI-ESP";
+      fsType = "vfat";
     };
 
     "/swap" = {
@@ -72,9 +77,8 @@
   # Bootloader
   boot.loader = {
     efi.canTouchEfiVariables = true;
+    efi.efiSysMountPoint = "/boot/efi";
     grub = {
-      enable = true;
-      version = 2;
       device = "nodev";
       efiSupport = true;
       enableCryptodisk = true;
@@ -82,5 +86,5 @@
   };
 
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  hardware.enableRedistributableFirmware = true;
+  hardware.enableRedistributableFirmware = lib.mkDefault true;
 }

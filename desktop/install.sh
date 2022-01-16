@@ -8,11 +8,15 @@ fi
 
 sgdisk --zap-all /dev/nvme0n1
 
-sgdisk -n 0:0:+32MiB -t 0:ef00 /dev/nvme0n1
-
+# /boot
 sgdisk -n 0:0:+128MiB /dev/nvme0n1
-mkfs.ext4 -L bootloader /dev/nvme0n1p2
+mkfs.ext4 -L boot /dev/nvme0n1p1
 
+# UEFI ESP
+sgdisk -n 0:0:+32MiB -t 0:ef00 /dev/nvme0n1
+mkfs.vfat -F 32 -n UEFI-ESP /dev/nvme0n1p2
+
+# / (root)
 sgdisk -n 0:0:0 /dev/nvme0n1
 # must be `pbkdf2` for grub, in the future `argon2id` will be better
 cryptsetup luksFormat /dev/nvme0n1p3 --pbkdf pbkdf2
@@ -41,7 +45,11 @@ chattr +C /mnt/swap/swapfile
 
 # Mount bootloader
 mkdir -p /mnt/boot
-mount /dev/disk/by-label/bootloader /mnt/boot
+mount /dev/disk/by-label/boot /mnt/boot
+
+# Mount UEFI ESP partition
+mkdir -p /mnt/boot/efi
+mount /dev/disk/by-label/UEFI-ESP /mnt/boot/efi
 
 # Get nixos configuration
 mkdir -p /mnt/etc/nixos
