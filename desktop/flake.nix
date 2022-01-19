@@ -74,13 +74,16 @@
           # - steam
           nixpkgs.config.allowUnfree = true;
 
+          # if wayland is enabled but not supported well (looking at you, nvidia) then
+          # it wall cause a systemd timeout
           services.xserver = {
             enable = true;
             videoDrivers = [ "nvidia" ];
             # displayManager.defaultSession = "plasmawayland";
             displayManager.sddm = {
               enable = true;
-              settings.Wayland.SessionDir = "${pkgs.plasma5Packages.plasma-workspace}/share/wayland-sessions";
+              autoNumlock = true;
+              # settings.Wayland.SessionDir = "${pkgs.plasma5Packages.plasma-workspace}/share/wayland-sessions";
             };
             desktopManager.plasma5.enable = true;
           };
@@ -140,6 +143,12 @@
               "^/etc/tmpfiles\\.d/.*$"
             ];
           };
+
+          systemd.extraConfig = ''
+            # this isn't some super powerful server running a million things, a service will
+            # either stop in milliseconds or fail so the default 90s is way too long
+            DefaultTimeoutStopSec=10s
+          '';
           
           security.sudo.extraConfig = ''
             # rollback results in sudo lectures after each reboot
