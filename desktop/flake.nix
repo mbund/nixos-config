@@ -11,6 +11,9 @@
       
       modules = [
         erasure.nixosModule
+        ./libvirt.nix
+        ./vfio.nix
+        ./virtualization.nix
         ({ pkgs, ... }:
         {
 
@@ -103,10 +106,12 @@
             };
             pulse.enable = true;
           };
-          
-          # Virtualization
-          boot.extraModprobeConfig = "options kvm_intel nested=1";
-          virtualisation.libvirtd.enable = true;
+
+          virtualisation.libvirtd = {
+            enable = true;
+            qemu.ovmf.enable = true;
+            qemu.runAsRoot = false;
+          };
 
           # Docker
           virtualisation.docker.enable = true;

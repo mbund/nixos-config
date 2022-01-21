@@ -50,6 +50,9 @@
     };
   };
 
+  # enable fstrim because I am running on an ssd
+  services.fstrim.enable = true;
+
   # Create swapfile
   swapDevices = [
     {
