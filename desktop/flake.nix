@@ -11,9 +11,6 @@
       
       modules = [
         erasure.nixosModule
-        ./libvirt.nix
-        ./vfio.nix
-        ./virtualization.nix
         ({ pkgs, ... }:
         {
 
@@ -46,9 +43,15 @@
             };
           };
 
+          boot.loader.grub.configurationLimit = 10;
+
           environment.systemPackages = with pkgs; [
             git vim
+            libsecret
           ];
+
+          programs.ssh.askPassword = pkgs.lib.mkForce "${pkgs.ksshaskpass.out}/bin/ksshaskpass";
+          programs.seahorse.enable = true;
 
           networking = {
             hostName = "mbund-desktop";
@@ -91,6 +94,10 @@
             desktopManager.plasma5.enable = true;
           };
 
+          services.gnome.gnome-keyring.enable = true;
+          security.pam.services.login.enableGnomeKeyring = true;
+          security.pam.services.sddm.enableGnomeKeyring = true;
+
           hardware.bluetooth.enable = true;
           services.xserver.wacom.enable = true;
 
@@ -131,6 +138,7 @@
               "/etc/machine-id"
               "/etc/NetworkManager/system-connections/"
               "/etc/nixos/"
+              "/var/lib/bluetooth/"
               "/var/lib/docker/"
               "/var/lib/libvirt/"
             ];
