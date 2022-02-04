@@ -21,17 +21,11 @@ jobs:
     - name: Install nix
       uses: cachix/install-nix-action@v16
 
-#     - name: Build ISO
-#       id: iso
-#       run: |
-#         nix build .#live-iso
-#         cp result/iso/mbund-nixos-live.iso mbund-nixos-live.iso
-#         echo "::set-output name=mbund-nixos-live-iso-hash::$(sha512sum mbund-nixos-live.iso | cut -d " " -f 1)"
-
-    - name: Build ISO - Temp for testing
+    - name: Build ISO
       id: iso
       run: |
-        echo 'this is a test' > mbund-nixos-live.iso
+        nix build .#live-iso
+        cp result/iso/mbund-nixos-live.iso mbund-nixos-live.iso
         echo "::set-output name=mbund-nixos-live-iso-hash::$(sha512sum mbund-nixos-live.iso | cut -d " " -f 1)"
 
     - name: Release
