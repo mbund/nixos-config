@@ -25,28 +25,14 @@ jobs:
         cp result/iso/mbund-nixos-live.iso mbund-nixos-live.iso
         echo "::set-output name=mbund-nixos-live-iso-hash::$(sha512sum mbund-nixos-live.iso | cut -d " " -f 1)"
 
-    - name: Create release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Release
+      uses: softprops/action-gh-release@v1
       with:
-        tag_name: ${{ steps.date.outputs.date }}
-        release_name: ${{ steps.date.outputs.date }}
+        files: |
+          mbund-nixos-live.iso
         body: |
           SHA-512 checksum of the Live ISO: ${{ steps.iso.outputs.mbund-nixos-live-iso-hash }}.
-        draft: false
-        prerelease: false
-
-    - name: Upload Release Asset
-      id: upload-release-asset
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: mbund-nixos-live.iso
-        asset_name: mbund-nixos-live-${{ steps.date.outputs.date }}.iso
-        asset_content_type: application/x-iso9660-image
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Clean up releases
       uses: dev-drprasad/delete-older-releases@v0.1.0
