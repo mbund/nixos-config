@@ -123,6 +123,8 @@
           hardware.bluetooth.enable = true;
           services.xserver.wacom.enable = true;
 
+          # 32bit opengl required for lutris epic games store
+          hardware.opengl.driSupport32Bit = true;
           programs.steam.enable = true;
 
           programs.dconf.enable = true;
