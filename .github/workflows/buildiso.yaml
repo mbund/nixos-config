@@ -11,7 +11,9 @@ jobs:
     steps:
     - name: Get current date
       id: date
-      run: echo "::set-output name=date::$(date +'%F %H:%M')"
+      run: |
+        echo "::set-output name=tag-date::$(date +'release/%F/%H.%M')"
+        echo "::set-output name=date::$(date +'%F %H:%M')"
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -39,7 +41,7 @@ jobs:
           mbund-nixos-live.iso
         body: |
           SHA-512 checksum of the Live ISO: ${{ steps.iso.outputs.mbund-nixos-live-iso-hash }}.
-        tag_name: ${{ steps.date.outputs.date }}
+        tag_name: ${{ steps.date.outputs.tag-date }}
         name: ${{ steps.date.outputs.date }}
         token: ${{ secrets.GITHUB_TOKEN }}
 
