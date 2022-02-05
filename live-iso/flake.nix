@@ -4,19 +4,33 @@
   inputs = {
     nixos-generators = {
       url = "github:nix-community/nixos-generators";
-      inputs.nixpkgs.url = "flake:nixpkgs";
+      inputs.nixpkgs.url = "nixpkgs";
     };
-    nixpkgs.url = "flake:nixpkgs";
+
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.url = "nixpkgs";
+    };
+
+    home = {
+      url = "github:mbund/nix-home?dir=mbund";
+      inputs = {
+        common.url = "github:mbund/nix-home?dir=common";
+        cli.url = "github:mbund/nix-home?dir=cli";
+        plasma.url = "github:mbund/nix-home?dir=plasma";
+        firefox.url = "github:mbund/nix-home?dir=firefox";
+      };
+    };
+
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 
-  outputs = { self, nixpkgs, nixos-generators }:
+  outputs = { self, nixpkgs, nixos-generators, home-manager, home }:
   {
-    defaultPackage.x86_64-linux = nixos-generators.nixosGenerate {
-      pkgs = import nixpkgs {
-        system = "x86_64-linux";
-        config.allowUnfree = true;
-      };
-      format = "iso";
+    # nix build .#nixosConfigurations.live-iso.config.system.build.isoImage
+    nixosConfigurations.live-iso = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      
       modules = [
         ({ pkgs, lib, config, modulesPath, ... }: {
 
@@ -90,12 +104,14 @@
             };
           };
 
+          nixpkgs.config.allowUnfree = true;
+
           # if wayland is enabled but not supported well (looking at you, nvidia) then
           # it wall cause a systemd timeout
           services.xserver = {
             enable = true;
-            videoDrivers = [ "intel" "amd" "nvidia" ];
-            # displayManager.defaultSession = "plasmawayland";
+            # videoDrivers = [ "intel" "amd" "nvidia" ];
+            displayManager.defaultSession = "plasmawayland";
             displayManager.sddm = {
               enable = true;
               autoNumlock = true;
@@ -111,6 +127,40 @@
             xkbOptions = "caps:swapescape";
           };
 
+          programs.adb.enable = true;
+
+          programs.kdeconnect.enable = true;
+
+          services.gnome.gnome-keyring.enable = true;
+          security.pam.services.login.enableGnomeKeyring = true;
+          security.pam.services.sddm.enableGnomeKeyring = true;
+
+          hardware.bluetooth.enable = true;
+          services.xserver.wacom.enable = true;
+
+          # 32bit opengl required for lutris epic games store
+          hardware.opengl.driSupport32Bit = true;
+          programs.steam.enable = true;
+
+          programs.dconf.enable = true;
+
+          services.pipewire = {
+            enable = true;
+            alsa = {
+              enable = true;
+              support32Bit = true; # this is probably not necessary
+            };
+            pulse.enable = true;
+          };
+
+          virtualisation.libvirtd = {
+            enable = true;
+            qemu.ovmf.enable = true;
+            qemu.runAsRoot = false;
+          };
+
+          # Docker
+          virtualisation.docker.enable = true;
 
           isoImage.isoName = "mbund-nixos-live.iso";
 
@@ -156,7 +206,10 @@
           };
 
         })
+
+        home-manager.nixosModule home.homeNixOSModules."mbund@live-iso"
       ];
     };
+
   };
 }

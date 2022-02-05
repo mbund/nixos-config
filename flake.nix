@@ -12,10 +12,7 @@
   {
     nixosConfigurations = inputs.virtualbox.nixosConfigurations //
                           inputs.marshmellow-roaster.nixosConfigurations //
-                          inputs.desktop.nixosConfigurations;
-
-    packages.x86_64-linux = {
-      live-iso = inputs.live-iso.defaultPackage.x86_64-linux;
-    };
+                          inputs.desktop.nixosConfigurations //
+                          inputs.live-iso.nixosConfigurations;
   };
 }
