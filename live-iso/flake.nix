@@ -2,11 +2,6 @@
   description = "Live ISO confiugration";
 
   inputs = {
-    nixos-generators = {
-      url = "github:nix-community/nixos-generators";
-      inputs.nixpkgs.url = "nixpkgs";
-    };
-
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.url = "nixpkgs";
@@ -25,7 +20,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 
-  outputs = { self, nixpkgs, nixos-generators, home-manager, home }:
+  outputs = { self, nixpkgs, home-manager, home }:
   {
     # nix build .#nixosConfigurations.live-iso.config.system.build.isoImage
     nixosConfigurations.live-iso = nixpkgs.lib.nixosSystem {

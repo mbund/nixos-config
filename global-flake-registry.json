@@ -2,20 +2,6 @@
   "flakes": [
     {
       "from": {
-        "id": "nixpkgs",
-        "type": "indirect"
-      },
-      "to": {
-        "lastModified": 1643401735,
-        "narHash": "sha256-ASWQEjw560OMNwp2mKW3Ejlt+FgrKvUJ9y3hQ4c1bw0=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "fe580dcffa4a82da576cc61f27c9996b8bda115e",
-        "type": "github"
-      }
-    },
-    {
-      "from": {
         "id": "nur",
         "type": "indirect"
       },
@@ -25,6 +11,20 @@
         "owner": "nix-community",
         "repo": "NUR",
         "rev": "f31604b87cdec970afd18245fc93e2fad119097e",
+        "type": "github"
+      }
+    },
+    {
+      "from": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      },
+      "to": {
+        "lastModified": 1644099022,
+        "narHash": "sha256-yShLxHD5NpYTgUdLpP5aRafdhqo0L+B6ZYu+IozTOnw=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "d6c7f5045fb235e83c03ad67b3c4798f6636ac9c",
         "type": "github"
       }
     }
