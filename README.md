@@ -9,5 +9,5 @@ All of my systems that run NixOS are in one repository, and are all referenced f
 
 ## Install
 TODO: Document installation process
-
+TODO: Explain github actions
 TODO: Make install script
