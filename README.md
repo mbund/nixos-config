@@ -1,4 +1,6 @@
-# nixos-config
+![License](https://img.shields.io/github/license/mbund/nixos-config?color=dgreen&style=flat-square) ![Size](https://img.shields.io/github/repo-size/mbund/nixos-config?color=red&label=size&style=flat-square) [![NixOS](https://img.shields.io/badge/NixOS-unstable-9cf.svg?style=flat-square&logo=NixOS&logoColor=white)](https://nixos.org)  
+
+## About
 My NixOS configuration. Check out how I manage my home files [here](https://github.com/mbund/nix-home).
 
 ## Philosophy
@@ -9,5 +11,7 @@ All of my systems that run NixOS are in one repository, and are all referenced f
 
 ## Install
 TODO: Document installation process
+
 TODO: Explain github actions
+
 TODO: Make install script
