@@ -17,15 +17,12 @@ jobs:
         remove-dotnet: 'true'
         remove-android: 'true'
         remove-haskell: 'true'
-        build-mount-path: '/home/runner/work'
 
     - name: Bind mount /nix
       run: |
-        ls -l /home/runner/work
-        sudo mkdir -p /home/runner/work/nix
+        mkdir -p $GITHUB_WORKSPACE/nix
         sudo mkdir -p /nix
-        sudo mount --bind /nix /home/runner/work/nix
-        ls -l /home/runner/work
+        sudo mount --bind /nix $GITHUB_WORKSPACE/nix
         
     - name: Get current date
       id: date
@@ -34,6 +31,8 @@ jobs:
         
     - name: Checkout
       uses: actions/checkout@v2
+      with:
+        path: 'nixos-config'
 
     - name: Install nix
       uses: cachix/install-nix-action@v16
@@ -41,7 +40,7 @@ jobs:
     - name: Build ISO
       id: iso
       run: |
-        nix build .#nixosConfigurations.live-iso.config.system.build.isoImage
+        nix build ./nixos-config#nixosConfigurations.live-iso.config.system.build.isoImage
         cp result/iso/mbund-nixos-live.iso mbund-nixos-live.iso
         echo "::set-output name=mbund-nixos-live-iso-hash::$(sha512sum mbund-nixos-live.iso | cut -d " " -f 1)"
 
