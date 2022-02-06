@@ -19,20 +19,22 @@ jobs:
         truncate --size 5G result/iso/mbund-nixos-live.iso
         echo "::set-output name=mbund-nixos-live-iso-hash::$(sha512sum result/iso/mbund-nixos-live.iso | cut -d " " -f 1)"
 
-    - name: Split ISO
-      run: |
-        split -b 2000000000 result/iso/mbund-nixos-live.iso mbund-nixos-live-
-        ls -l
+#     - name: Split ISO
+#       run: |
+#         split -b 2000000000 result/iso/mbund-nixos-live.iso mbund-nixos-live-
+#         ls -l
 
     - name: Release
       uses: "marvinpinto/action-automatic-releases@latest"
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "latest"
-        prerelease: true
-        title: "Development Build"
+        prerelease: false
+        title: "ISOs"
         files: |
-          mbund-nixos-live-*
+          result/iso/mbund-nixos-live.iso
+          
+#           mbund-nixos-live-*
 
 #     - name: Release
 #       uses: softprops/action-gh-release@v1
