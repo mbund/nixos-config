@@ -21,6 +21,7 @@ jobs:
     - name: Bind mount /nix
       run: |
         mkdir -p $GITHUB_WORKSPACE/nix
+        sudo mkdir -p /nix
         sudo mount --bind $GITHUB_WORKSPACE/nix /nix
         df -h
         
