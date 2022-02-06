@@ -21,7 +21,7 @@ jobs:
 
     - name: Split ISO
       run: |
-        split -b 2147483646 result/iso/mbund-nixos-live.iso mbund-nixos-live-
+        split -b $((2147483647 - 256)) result/iso/mbund-nixos-live.iso mbund-nixos-live-
         ls -l
 
     - name: Release
