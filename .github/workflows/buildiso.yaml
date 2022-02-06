@@ -9,6 +9,12 @@ jobs:
     if: (startsWith(github.event.head_commit.message, 'buildiso:') || (github.event_name == 'schedule'))
     runs-on: ubuntu-latest
     steps:
+    - name: Get current date
+      id: date
+      run: |
+        echo "::set-output name=tag-date::$(date +'release/%F/%H.%M')"
+        echo "::set-output name=date::$(date +'%F %H:%M')"
+        
     - name: Maximize build space
       uses: easimon/maximize-build-space@master
       with:
@@ -24,11 +30,6 @@ jobs:
         sudo mkdir -p /nix
         sudo mount --bind $GITHUB_WORKSPACE/nix /nix
         
-    - name: Get current date
-      id: date
-      run: |
-        echo "::set-output name=date::$(date +'%F %H:%M')"
-        
     - name: Checkout
       uses: actions/checkout@v2
       with:
@@ -38,20 +39,38 @@ jobs:
       uses: cachix/install-nix-action@v16
 
     - name: Build ISO
-      id: iso
       run: |
         nix build ./nixos-config#nixosConfigurations.live-iso.config.system.build.isoImage
         cp result/iso/mbund-nixos-live.iso mbund-nixos-live.iso
+
+    - name: ISO metadata
+      id: iso_metadata
+      run: |
         echo "::set-output name=mbund-nixos-live-iso-hash::$(sha512sum mbund-nixos-live.iso | cut -d " " -f 1)"
+
+    - name: Split ISO
+      run: |
+        split -b 2147483647 result/iso/mbund-nixos-live.iso mbund-nixos-live-
 
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          mbund-nixos-live.iso
+          mbund-nixos-live-*
         body: |
-          SHA-512 checksum of the Live ISO: ${{ steps.iso.outputs.mbund-nixos-live-iso-hash }}.
-        tag_name: autobuild
+          The iso is distributed in 2gb binary chunks, and must be each separately downloaded and reconstructed locally.
+          
+          On Windows:
+          ```
+          copy /b mbund-nixos-live-aa mbund-nixos-live-ab mbund-nixos-live-ac mbund-nixos-live.iso
+          ```
+          On *nix:
+          ```
+          cat mbund-nixos-live-a{a..c} > mbund-nixos-live.iso
+          ```
+          SHA-512 checksum of the Live ISO: ${{ steps.iso_metadata.outputs.mbund-nixos-live-iso-hash }}.
+          
+        tag_name: ${{ steps.date.outputs.tag-date }}
         name: ${{ steps.date.outputs.date }}
         token: ${{ secrets.GITHUB_TOKEN }}
 
