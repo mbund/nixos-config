@@ -17,34 +17,44 @@ jobs:
       run: |
         mkdir -p result/iso
         truncate --size 5G result/iso/mbund-nixos-live.iso
-        shred --iterations 1 result/iso/mbund-nixos-live.iso
         echo "::set-output name=mbund-nixos-live-iso-hash::$(sha512sum result/iso/mbund-nixos-live.iso | cut -d " " -f 1)"
 
     - name: Split ISO
       run: |
         split -b 2000000000 result/iso/mbund-nixos-live.iso mbund-nixos-live-
+        ls -l
 
     - name: Release
-      uses: softprops/action-gh-release@v1
+      uses: "marvinpinto/action-automatic-releases@latest"
       with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "latest"
+        prerelease: true
+        title: "Development Build"
         files: |
           mbund-nixos-live-*
-        body: |
-          The iso is distributed in 2gb binary chunks, and must be each separately downloaded and reconstructed locally.
+
+#     - name: Release
+#       uses: softprops/action-gh-release@v1
+#       with:
+#         files: |
+#           mbund-nixos-live-*
+#         body: |
+#           The iso is distributed in 2gb binary chunks, and must be each separately downloaded and reconstructed locally.
           
-          powershell:
-          ```
-          copy /b mbund-nixos-live-aa mbund-nixos-live-ab mbund-nixos-live-ac mbund-nixos-live.iso
-          ```
-          *nix:
-          ```
-          cat mbund-nixos-live-a{a..c} > mbund-nixos-live.iso
-          ```
-          SHA-512 checksum of the Live ISO: ${{ steps.iso_metadata.outputs.mbund-nixos-live-iso-hash }}.
+#           powershell:
+#           ```
+#           copy /b mbund-nixos-live-aa mbund-nixos-live-ab mbund-nixos-live-ac mbund-nixos-live.iso
+#           ```
+#           *nix:
+#           ```
+#           cat mbund-nixos-live-a{a..c} > mbund-nixos-live.iso
+#           ```
+#           SHA-512 checksum of the Live ISO: ${{ steps.iso_metadata.outputs.mbund-nixos-live-iso-hash }}.
           
-        tag_name: ${{ steps.date.outputs.tag-date }}
-        name: ${{ steps.date.outputs.date }}
-        token: ${{ secrets.GITHUB_TOKEN }}
+#         tag_name: ${{ steps.date.outputs.tag-date }}
+#         name: ${{ steps.date.outputs.date }}
+#         token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Clean up releases
       uses: dev-drprasad/delete-older-releases@v0.1.0
