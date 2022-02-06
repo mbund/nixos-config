@@ -50,7 +50,7 @@ jobs:
 
     - name: Split ISO
       run: |
-        split -b 2147483647 result/iso/mbund-nixos-live.iso mbund-nixos-live-
+        split -b 2000000000 result/iso/mbund-nixos-live.iso mbund-nixos-live-
 
     - name: Release
       uses: softprops/action-gh-release@v1
@@ -60,11 +60,11 @@ jobs:
         body: |
           The iso is distributed in 2gb binary chunks, and must be each separately downloaded and reconstructed locally.
           
-          On Windows:
+          powershell:
           ```
           copy /b mbund-nixos-live-aa mbund-nixos-live-ab mbund-nixos-live-ac mbund-nixos-live.iso
           ```
-          On *nix:
+          *nix:
           ```
           cat mbund-nixos-live-a{a..c} > mbund-nixos-live.iso
           ```
