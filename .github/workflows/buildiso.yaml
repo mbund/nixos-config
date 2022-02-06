@@ -21,9 +21,11 @@ jobs:
 
     - name: Bind mount /nix
       run: |
+        ls -l /home/runner/work
         sudo mkdir -p /home/runner/work/nix
         sudo mkdir -p /nix
         sudo mount --bind /nix /home/runner/work/nix
+        ls -l /home/runner/work
         
     - name: Get current date
       id: date
