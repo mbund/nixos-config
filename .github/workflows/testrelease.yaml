@@ -1,9 +1,9 @@
-name: "Build NixOS ISOs"
+name: "Test split and release"
 on:
   pull_request:
   push:
 jobs:
-  buildiso:
+  release:
     runs-on: ubuntu-latest
     steps:
     - name: Get current date
@@ -15,8 +15,9 @@ jobs:
     - name: Produce temp file
       id: iso_metadata
       run: |
-        echo "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" > mbund-nixos-live.iso
-        echo "::set-output name=mbund-nixos-live-iso-hash::$(sha512sum mbund-nixos-live.iso | cut -d " " -f 1)"
+        mkdir -p result/iso
+        echo "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" > result/iso/mbund-nixos-live.iso
+        echo "::set-output name=mbund-nixos-live-iso-hash::$(sha512sum result/iso/mbund-nixos-live.iso | cut -d " " -f 1)"
 
     - name: Split ISO
       run: |
