@@ -9,11 +9,6 @@ jobs:
     if: (startsWith(github.event.head_commit.message, 'buildiso:') || (github.event_name == 'schedule'))
     runs-on: ubuntu-latest
     steps:
-    - name: Debugging 1
-      run: |
-        echo pwd: $(pwd)
-        echo GITHUB_WORKSPACE: $GITHUB_WORKSPACE
-        
     - name: Maximize build space
       uses: easimon/maximize-build-space@master
       with:
@@ -22,16 +17,17 @@ jobs:
         remove-dotnet: 'true'
         remove-android: 'true'
         remove-haskell: 'true'
+
+    - name: Bind mount /nix
+      run: |
+        mkdir -p $GITHUB_WORKSPACE/nix
+        sudo mount --bind $GITHUB_WORKSPACE/nix /nix
+        df -h
         
     - name: Get current date
       id: date
       run: |
         echo "::set-output name=date::$(date +'%F %H:%M')"
-    
-    - name: Debugging 2
-      run: |
-        echo pwd: $(pwd)
-        echo GITHUB_WORKSPACE: $GITHUB_WORKSPACE
         
     - name: Checkout
       uses: actions/checkout@v2
