@@ -9,6 +9,15 @@ jobs:
     if: (startsWith(github.event.head_commit.message, 'buildiso:') || (github.event_name == 'schedule'))
     runs-on: ubuntu-latest
     steps:
+    - name: Maximize build space
+      uses: easimon/maximize-build-space@master
+      with:
+        root-reserve-mb: 512
+        swap-size-mb: 1024
+        remove-dotnet: 'true'
+        remove-android: 'true'
+        remove-haskell: 'true'
+        
     - name: Get current date
       id: date
       run: |
