@@ -41,38 +41,25 @@ jobs:
     - name: Build ISO
       run: |
         nix build ./nixos-config#nixosConfigurations.live-iso.config.system.build.isoImage
-        cp result/iso/mbund-nixos-live.iso mbund-nixos-live.iso
 
     - name: ISO metadata
       id: iso_metadata
       run: |
-        echo "::set-output name=mbund-nixos-live-iso-hash::$(sha512sum mbund-nixos-live.iso | cut -d " " -f 1)"
+        echo "::set-output name=mbund-nixos-live-iso-hash::$(sha512sum result/iso/mbund-nixos-live.iso | cut -d " " -f 1)"
 
     - name: Split ISO
       run: |
-        split -b 2000000000 result/iso/mbund-nixos-live.iso mbund-nixos-live-
+        split -b $((2147483647 - 1024)) result/iso/mbund-nixos-live.iso mbund-nixos-live-part-
 
     - name: Release
-      uses: softprops/action-gh-release@v1
+      uses: "marvinpinto/action-automatic-releases@latest"
       with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "${{ steps.date.outputs.tag-date }}"
+        prerelease: false
+        title: "ISOs"
         files: |
-          mbund-nixos-live-*
-        body: |
-          The iso is distributed in 2gb binary chunks, and must be each separately downloaded and reconstructed locally.
-          
-          powershell:
-          ```
-          copy /b mbund-nixos-live-aa mbund-nixos-live-ab mbund-nixos-live-ac mbund-nixos-live.iso
-          ```
-          *nix:
-          ```
-          cat mbund-nixos-live-a{a..c} > mbund-nixos-live.iso
-          ```
-          SHA-512 checksum of the Live ISO: ${{ steps.iso_metadata.outputs.mbund-nixos-live-iso-hash }}.
-          
-        tag_name: ${{ steps.date.outputs.tag-date }}
-        name: ${{ steps.date.outputs.date }}
-        token: ${{ secrets.GITHUB_TOKEN }}
+          mbund-nixos-live-part-*
 
     - name: Clean up releases
       uses: dev-drprasad/delete-older-releases@v0.1.0
