@@ -12,9 +12,8 @@ jobs:
     - name: Get current date
       id: date
       run: |
-        echo "::set-output name=tag-date::$(date +'release/%F/%H.%M')"
         echo "::set-output name=date::$(date +'%F %H:%M')"
-        
+
     - name: Maximize build space
       uses: easimon/maximize-build-space@master
       with:
@@ -29,7 +28,7 @@ jobs:
         mkdir -p $GITHUB_WORKSPACE/nix
         sudo mkdir -p /nix
         sudo mount --bind $GITHUB_WORKSPACE/nix /nix
-        
+
     - name: Checkout
       uses: actions/checkout@v2
       with:
@@ -42,29 +41,17 @@ jobs:
       run: |
         nix build ./nixos-config#nixosConfigurations.live-iso.config.system.build.isoImage
 
-    - name: ISO metadata
-      id: iso_metadata
-      run: |
-        echo "::set-output name=mbund-nixos-live-iso-hash::$(sha512sum result/iso/mbund-nixos-live.iso | cut -d " " -f 1)"
-
     - name: Split ISO
       run: |
-        split -b $((2147483647 - 1024)) result/iso/mbund-nixos-live.iso mbund-nixos-live-part-
+        split -b $((2147483647 - 8192)) result/iso/mbund-nixos-live.iso mbund-nixos-live-part-
+        ls -lh
 
     - name: Release
       uses: "marvinpinto/action-automatic-releases@latest"
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "${{ steps.date.outputs.tag-date }}"
-        prerelease: false
+        automatic_release_tag: "latest"
+        prerelease: true
         title: "ISOs"
         files: |
           mbund-nixos-live-part-*
-
-    - name: Clean up releases
-      uses: dev-drprasad/delete-older-releases@v0.1.0
-      with:
-        keep_latest: 3
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
