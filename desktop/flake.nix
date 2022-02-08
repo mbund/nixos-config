@@ -45,7 +45,6 @@
               flake-registry = /etc/nixos/global-flake-registry.json
               accept-flake-config = true
               warn-dirty = false
-              allow-import-from-derivation = true
             '';
             gc = {
               automatic = true;
@@ -58,7 +57,6 @@
 
           environment.systemPackages = with pkgs; [
             git vim
-            libsecret
           ];
 
           programs.ssh.askPassword = pkgs.lib.mkForce "${pkgs.ksshaskpass.out}/bin/ksshaskpass";
@@ -86,10 +84,10 @@
             };
           };
 
-          # required on the system level for
-          # - nvidia drivers
-          # - steam
-          nixpkgs.config.allowUnfree = true;
+          nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
+            "steam" "steam-original" "steam-runtime"
+            "nvidia-x11" "nvidia-settings"
+          ];
 
           # if wayland is enabled but not supported well (looking at you, nvidia) then
           # it wall cause a systemd timeout

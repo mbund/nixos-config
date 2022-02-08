@@ -5,14 +5,15 @@
     virtualbox.url = "./virtualbox";
     marshmellow-roaster.url = "./marshmellow-roaster";
     desktop.url = "./desktop";
-    live-iso.url = "./live-iso";
+    nixos-installer.url = "./nixos-installer";
   };
 
-  outputs = { self, ... }@inputs:
-  {
-    nixosConfigurations = inputs.virtualbox.nixosConfigurations //
-                          inputs.marshmellow-roaster.nixosConfigurations //
-                          inputs.desktop.nixosConfigurations //
-                          inputs.live-iso.nixosConfigurations;
+  outputs = { self, ... }@inputs: with inputs; {
+    nixosConfigurations =
+      virtualbox.nixosConfigurations //
+      marshmellow-roaster.nixosConfigurations //
+      desktop.nixosConfigurations //
+      nixos-installer.nixosConfigurations;
+
   };
 }
