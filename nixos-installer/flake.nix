@@ -8,20 +8,13 @@
     };
 
     home = {
-      url = "path:/home/mbund/nix-home/nixos-installer";
+      url = "github:mbund/nix-home?dir=nixos-installer";
       inputs = {
-        common.url = "path:/home/mbund/nix-home/common";
-        cli.url = "path:/home/mbund/nix-home/cli";
-        plasma.url = "path:/home/mbund/nix-home/plasma";
-        firefox.url = "path:/home/mbund/nix-home/firefox";
+        common.url = "github:mbund/nix-home?dir=common";
+        cli.url = "github:mbund/nix-home?dir=cli";
+        plasma.url = "github:mbund/nix-home?dir=plasma";
+        firefox.url = "github:mbund/nix-home?dir=firefox";
       };
-      # url = "github:mbund/nix-home?dir=nixos";
-      # inputs = {
-      #   common.url = "github:mbund/nix-home?dir=common";
-      #   cli.url = "github:mbund/nix-home?dir=cli";
-      #   plasma.url = "github:mbund/nix-home?dir=plasma";
-      #   firefox.url = "github:mbund/nix-home?dir=firefox";
-      # };
     };
 
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
