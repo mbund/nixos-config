@@ -44,6 +44,7 @@
 
   environment.systemPackages = with pkgs; [
     git
+    gparted
   ];
 
   networking = {
