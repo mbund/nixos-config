@@ -9,13 +9,19 @@
         "zsh-syntax-highlighting": "zsh-syntax-highlighting"
       },
       "locked": {
-        "narHash": "sha256-/TAbtVZ/eGNXEo0vM1M4vDsZe4/bYVBdVVtyUUWWZpQ=",
-        "path": "/home/mbund/nix-home/cli",
-        "type": "path"
+        "dir": "cli",
+        "lastModified": 1644341713,
+        "narHash": "sha256-kPlSY749Wp21qHT5wJNB7AeQ9CrcCHFLcALmysdKhmI=",
+        "owner": "mbund",
+        "repo": "nix-home",
+        "rev": "ade6e4d4de39e019faf53dbf480ff2d23140f7ea",
+        "type": "github"
       },
       "original": {
-        "path": "/home/mbund/nix-home/cli",
-        "type": "path"
+        "dir": "cli",
+        "owner": "mbund",
+        "repo": "nix-home",
+        "type": "github"
       }
     },
     "cmp-npm": {
@@ -36,13 +42,19 @@
     },
     "common": {
       "locked": {
-        "narHash": "sha256-+OKIW3iLwM3/SOrP0urk4nLl8Wyvr5iWCVkPyb1oWlw=",
-        "path": "/home/mbund/nix-home/common",
-        "type": "path"
+        "dir": "common",
+        "lastModified": 1644341713,
+        "narHash": "sha256-kPlSY749Wp21qHT5wJNB7AeQ9CrcCHFLcALmysdKhmI=",
+        "owner": "mbund",
+        "repo": "nix-home",
+        "rev": "ade6e4d4de39e019faf53dbf480ff2d23140f7ea",
+        "type": "github"
       },
       "original": {
-        "path": "/home/mbund/nix-home/common",
-        "type": "path"
+        "dir": "common",
+        "owner": "mbund",
+        "repo": "nix-home",
+        "type": "github"
       }
     },
     "desktop": {
@@ -52,11 +64,11 @@
       },
       "locked": {
         "narHash": "sha256-yA+iVqpAYYGdQ/ivWvL+fpQgIfKRq1ojq2WNNXlm8hM=",
-        "path": "/nix/store/dkr2arsz9ilavb8xi8hqd8lsmry97max-source/desktop",
+        "path": "/nix/store/8xaql480s9sb56xns7ay6wf00rrj92xd-source/desktop",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/dkr2arsz9ilavb8xi8hqd8lsmry97max-source/desktop",
+        "path": "/nix/store/8xaql480s9sb56xns7ay6wf00rrj92xd-source/desktop",
         "type": "path"
       }
     },
@@ -118,13 +130,19 @@
         "nur": "nur"
       },
       "locked": {
-        "narHash": "sha256-xemPfiE43wSBZ+MQzvha/PXabxPXJxwU6kKKqR3te+0=",
-        "path": "/home/mbund/nix-home/firefox",
-        "type": "path"
+        "dir": "firefox",
+        "lastModified": 1644341713,
+        "narHash": "sha256-kPlSY749Wp21qHT5wJNB7AeQ9CrcCHFLcALmysdKhmI=",
+        "owner": "mbund",
+        "repo": "nix-home",
+        "rev": "ade6e4d4de39e019faf53dbf480ff2d23140f7ea",
+        "type": "github"
       },
       "original": {
-        "path": "/home/mbund/nix-home/firefox",
-        "type": "path"
+        "dir": "firefox",
+        "owner": "mbund",
+        "repo": "nix-home",
+        "type": "github"
       }
     },
     "fluent-icons": {
@@ -153,13 +171,19 @@
         "plasma": "plasma"
       },
       "locked": {
-        "narHash": "sha256-HjPQyiC/ZQNT8K0Nx6XGPHTCZbI29jkW8ZtIqRQ2pfE=",
-        "path": "/home/mbund/nix-home/nixos-installer",
-        "type": "path"
+        "dir": "nixos-installer",
+        "lastModified": 1644341713,
+        "narHash": "sha256-kPlSY749Wp21qHT5wJNB7AeQ9CrcCHFLcALmysdKhmI=",
+        "owner": "mbund",
+        "repo": "nix-home",
+        "rev": "ade6e4d4de39e019faf53dbf480ff2d23140f7ea",
+        "type": "github"
       },
       "original": {
-        "path": "/home/mbund/nix-home/nixos-installer",
-        "type": "path"
+        "dir": "nixos-installer",
+        "owner": "mbund",
+        "repo": "nix-home",
+        "type": "github"
       }
     },
     "home-manager": {
@@ -167,11 +191,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1644255659,
-        "narHash": "sha256-VuPFOttrBRTOJqPY5yboxVdk1xZjSSlOSDDbBCMKioo=",
+        "lastModified": 1644346464,
+        "narHash": "sha256-hS8hwbr/PflMIfTWTmB7Xo5jIrsWhSAqtz5XXxPa0zQ=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "1ca6293c8fb1dbe13c48fe518440c288256cd562",
+        "rev": "e2aa1f598674aa9c06f28f5db60b89f37f1e961b",
         "type": "github"
       },
       "original": {
@@ -185,11 +209,11 @@
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
-        "lastModified": 1644255659,
-        "narHash": "sha256-VuPFOttrBRTOJqPY5yboxVdk1xZjSSlOSDDbBCMKioo=",
+        "lastModified": 1644346464,
+        "narHash": "sha256-hS8hwbr/PflMIfTWTmB7Xo5jIrsWhSAqtz5XXxPa0zQ=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "1ca6293c8fb1dbe13c48fe518440c288256cd562",
+        "rev": "e2aa1f598674aa9c06f28f5db60b89f37f1e961b",
         "type": "github"
       },
       "original": {
@@ -251,11 +275,11 @@
       },
       "locked": {
         "narHash": "sha256-jYH+ySV/7ZXB9nqRZWCsl2PZsxU1xMgWDQvodVBl6mI=",
-        "path": "/nix/store/dkr2arsz9ilavb8xi8hqd8lsmry97max-source/marshmellow-roaster",
+        "path": "/nix/store/8xaql480s9sb56xns7ay6wf00rrj92xd-source/marshmellow-roaster",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/dkr2arsz9ilavb8xi8hqd8lsmry97max-source/marshmellow-roaster",
+        "path": "/nix/store/8xaql480s9sb56xns7ay6wf00rrj92xd-source/marshmellow-roaster",
         "type": "path"
       }
     },
@@ -266,12 +290,12 @@
         "nixpkgs": "nixpkgs_7"
       },
       "locked": {
-        "narHash": "sha256-vczp6STA/4r8j0E4m/THtYHvGq6D/B03vDCirW34awM=",
-        "path": "/nix/store/dkr2arsz9ilavb8xi8hqd8lsmry97max-source/nixos-installer",
+        "narHash": "sha256-lFVy7FNuDRX/6SO2/MEKRXs6/IdUoLc7vMVIoQFvR7Q=",
+        "path": "/nix/store/8xaql480s9sb56xns7ay6wf00rrj92xd-source/nixos-installer",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/dkr2arsz9ilavb8xi8hqd8lsmry97max-source/nixos-installer",
+        "path": "/nix/store/8xaql480s9sb56xns7ay6wf00rrj92xd-source/nixos-installer",
         "type": "path"
       }
     },
@@ -333,11 +357,11 @@
     },
     "nixpkgs_5": {
       "locked": {
-        "lastModified": 1644033087,
-        "narHash": "sha256-beskas17YPhrcnanzywake9/z+k+xOWmavW24YUN8ng=",
+        "lastModified": 1644359234,
+        "narHash": "sha256-u/sBnRgrFrn9W8gZMS6vN3ZnJsoTvbws968TpqwlDJQ=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "9f697d60e4d9f08eacf549502528bfaed859d33b",
+        "rev": "c5051e2b5fe9fab43a64f0e0d06b62c81a890b90",
         "type": "github"
       },
       "original": {
@@ -363,11 +387,11 @@
     },
     "nixpkgs_7": {
       "locked": {
-        "lastModified": 1644033087,
-        "narHash": "sha256-beskas17YPhrcnanzywake9/z+k+xOWmavW24YUN8ng=",
+        "lastModified": 1644359234,
+        "narHash": "sha256-u/sBnRgrFrn9W8gZMS6vN3ZnJsoTvbws968TpqwlDJQ=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "9f697d60e4d9f08eacf549502528bfaed859d33b",
+        "rev": "c5051e2b5fe9fab43a64f0e0d06b62c81a890b90",
         "type": "github"
       },
       "original": {
@@ -428,13 +452,19 @@
         "one-dark-kde-theme": "one-dark-kde-theme"
       },
       "locked": {
-        "narHash": "sha256-sGFuiDU5vV+/NlqOvs279UKIV06JE+Vni23TrYP6hWY=",
-        "path": "/home/mbund/nix-home/plasma",
-        "type": "path"
+        "dir": "plasma",
+        "lastModified": 1644341713,
+        "narHash": "sha256-kPlSY749Wp21qHT5wJNB7AeQ9CrcCHFLcALmysdKhmI=",
+        "owner": "mbund",
+        "repo": "nix-home",
+        "rev": "ade6e4d4de39e019faf53dbf480ff2d23140f7ea",
+        "type": "github"
       },
       "original": {
-        "path": "/home/mbund/nix-home/plasma",
-        "type": "path"
+        "dir": "plasma",
+        "owner": "mbund",
+        "repo": "nix-home",
+        "type": "github"
       }
     },
     "root": {
@@ -467,11 +497,11 @@
       },
       "locked": {
         "narHash": "sha256-L/b9HeGVH3AgeaKCAWvGG0g8YX6Ef7X2nd92Hum648c=",
-        "path": "/nix/store/dkr2arsz9ilavb8xi8hqd8lsmry97max-source/virtualbox",
+        "path": "/nix/store/8xaql480s9sb56xns7ay6wf00rrj92xd-source/virtualbox",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/dkr2arsz9ilavb8xi8hqd8lsmry97max-source/virtualbox",
+        "path": "/nix/store/8xaql480s9sb56xns7ay6wf00rrj92xd-source/virtualbox",
         "type": "path"
       }
     },

@@ -13,6 +13,11 @@
     "${modulesPath}/installer/cd-dvd/channel.nix"
   ];
 
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
+  # Needed for https://github.com/NixOS/nixpkgs/issues/58959
+  boot.supportedFilesystems = lib.mkForce [ "btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs" ];
+
   nix = {
     settings = {
       auto-optimise-store = true;
@@ -44,6 +49,8 @@
 
   environment.systemPackages = with pkgs; [
     git
+    vim
+    gparted
   ];
 
   networking = {
