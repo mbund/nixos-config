@@ -41,8 +41,8 @@ jobs:
       id: build-installer-iso
       run: |
         nix build ./nixos-config#nixosConfigurations.installer-iso.config.system.build.isoImage
-        cp result/iso/nixos-installer.iso nixos-installer.iso
-        echo "::set-output name=nixos-installer-iso-hash::$(sha512sum nixos-installer.iso | cut -d " " -f 1)"
+        cp result/iso/nixos-installer-*.iso .
+        echo "::set-output name=nixos-installer-iso-hash::$(sha512sum nixos-installer-*.iso | cut -d " " -f 1)"
 
     - name: Release nixos-installer.iso
       uses: softprops/action-gh-release@v1
@@ -52,21 +52,20 @@ jobs:
         body: |
           Custom NixOS installer iso, including the latest kernel and other updates, along with flakes enabled out of the box.
 
-          SHA-512 checksum of `nixos-installer.iso`: `${{ steps.build-installer-iso.outputs.nixos-installer-iso-hash }}`
+          SHA-512 checksum: `${{ steps.build-installer-iso.outputs.nixos-installer-iso-hash }}`
 
         token: ${{ secrets.GITHUB_TOKEN }}
         files: |
-          nixos-installer.iso
-
+          nixos-installer-*.iso
 
     - name: Build nixos-installer-riced.iso
       id: build-installer-riced-iso
       run: |
         nix build ./nixos-config#nixosConfigurations.installer-iso-riced.config.system.build.isoImage
-        cp result/iso/nixos-installer-riced.iso nixos-installer-riced.iso
-        echo "::set-output name=nixos-installer-riced-iso-hash::$(sha512sum nixos-installer-riced.iso | cut -d " " -f 1)"
+        cp result/iso/nixos-installer-riced-*.iso .
+        echo "::set-output name=nixos-installer-riced-iso-hash::$(sha512sum nixos-installer-riced-*.iso | cut -d " " -f 1)"
 
-    - name: Release nixos-installer-riced.iso
+    - name: Release nixos-installer-riced-*.iso
       uses: softprops/action-gh-release@v1
       with:
         name: Installer Riced
@@ -74,9 +73,8 @@ jobs:
         body: |
           Custom NixOS installer iso, including the latest kernel and other updates, along with flakes enabled out of the box. This one (riced) includes my own quality of life additions (such as zsh & friends instead of bash).
 
-          SHA-512 checksum of `nixos-installer-riced.iso`: `${{ steps.build-installer-riced-iso.outputs.nixos-installer-riced-iso-hash }}`
+          SHA-512 checksum: `${{ steps.build-installer-riced-iso.outputs.nixos-installer-riced-iso-hash }}`
 
         token: ${{ secrets.GITHUB_TOKEN }}
         files: |
-          nixos-installer-riced.iso
-
+          nixos-installer-riced-*.iso
