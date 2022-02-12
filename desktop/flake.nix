@@ -56,7 +56,8 @@
           boot.loader.grub.configurationLimit = 10;
 
           environment.systemPackages = with pkgs; [
-            git vim
+            git
+            vim
           ];
 
           programs.ssh.askPassword = pkgs.lib.mkForce "${pkgs.ksshaskpass.out}/bin/ksshaskpass";
@@ -78,7 +79,7 @@
           users.users = {
             mbund = {
               isNormalUser = true;
-              extraGroups = [ "wheel" "networkmanager" "libvirtd" "nixos-configurator" "adbusers" ];
+              extraGroups = [ "wheel" "nixos-configurator" "networkmanager" "libvirtd" "kvm" "adbusers" ];
               uid = 1000;
               initialPassword = "mbund";
             };
@@ -103,8 +104,8 @@
 
             desktopManager.plasma5 = {
               enable = true;
-              # useQtScaling = true;
-              # runUsingSystemd = true;
+              useQtScaling = true;
+              runUsingSystemd = true;
             };
 
             xkbOptions = "caps:swapescape";
@@ -120,6 +121,14 @@
 
           hardware.bluetooth.enable = true;
           services.xserver.wacom.enable = true;
+          services.printing = {
+            enable = true;
+            drivers = with pkgs; [
+              gutenprint
+              gutenprintBin
+              hplip
+            ];
+          };
 
           # 32bit opengl required for lutris epic games store
           hardware.opengl.driSupport32Bit = true;
