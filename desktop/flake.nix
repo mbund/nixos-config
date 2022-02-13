@@ -1,7 +1,7 @@
 {
   description = "Main desktop NixOS Configuration";
 
-  inputs.nixpkgs.url = "nixpkgs";
+  inputs.nixpkgs.url = "flake:nixpkgs";
   inputs.erasure.url = "github:mbund/nix-erasure";
 
   outputs = { self, nixpkgs, erasure }:

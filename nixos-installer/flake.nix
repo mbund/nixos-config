@@ -4,7 +4,7 @@
   inputs = {
     home-manager = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.url = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     home = {
@@ -17,17 +17,10 @@
       };
     };
 
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "flake:nixpkgs";
   };
 
   outputs = { self, nixpkgs, home-manager, home }:
-  let
-    pkgs = import nixpkgs { system = "x86_64-linux"; };
-
-    currentTime = nixpkgs.lib.removeSuffix "\n" (builtins.readFile (pkgs.runCommand "current-time" { }
-      "date +'%F-%H-%M' > $out"
-    ));
-  in
   {
     # nix build .#nixosConfigurations.installer-iso.config.system.build.isoImage
     nixosConfigurations.installer-iso = nixpkgs.lib.nixosSystem {
@@ -35,7 +28,7 @@
 
       modules = [
         ({ ... }: {
-          isoImage.isoName = "nixos-installer-${currentTime}.iso";
+          isoImage.isoName = "nixos-installer.iso";
         })
 
         ./nixos-installer.nix
@@ -48,7 +41,7 @@
 
       modules = [
         ({ ... }: {
-          isoImage.isoName = "nixos-installer-riced-${currentTime}.iso";
+          isoImage.isoName = "nixos-installer-riced.iso";
 
           services.xserver.xkbOptions = "caps:swapescape";
         })
