@@ -84,7 +84,7 @@
   services.xserver = {
     enable = true;
 
-    displayManager.defaultSession = "plasmawayland";
+    # displayManager.defaultSession = "plasmawayland";
 
     displayManager.autoLogin = {
       enable = true;
@@ -106,10 +106,6 @@
 
   documentation.enable = false;
   documentation.nixos.enable = false;
-
-  services.gnome.gnome-keyring.enable = true;
-  security.pam.services.login.enableGnomeKeyring = true;
-  security.pam.services.sddm.enableGnomeKeyring = true;
 
   hardware.bluetooth.enable = true;
 
