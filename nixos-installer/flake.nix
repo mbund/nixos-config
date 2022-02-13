@@ -32,7 +32,7 @@
     # nix build .#nixosConfigurations.installer-iso.config.system.build.isoImage
     nixosConfigurations.installer-iso = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      
+
       modules = [
         ({ ... }: {
           isoImage.isoName = "nixos-installer-${currentTime}.iso";
@@ -45,7 +45,7 @@
     # nix build .#nixosConfigurations.installer-iso-riced.config.system.build.isoImage
     nixosConfigurations.installer-iso-riced = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      
+
       modules = [
         ({ ... }: {
           isoImage.isoName = "nixos-installer-riced-${currentTime}.iso";

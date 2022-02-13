@@ -8,7 +8,7 @@
   {
     nixosConfigurations.marshmellow-roaster = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      
+
       modules = [
         erasure.nixosModule
         ({ pkgs, ... }:
@@ -96,7 +96,7 @@
             };
             pulse.enable = true;
           };
-          
+
           # Virtualization
           boot.extraModprobeConfig = "options kvm_intel nested=1";
           virtualisation.libvirtd.enable = true;
@@ -129,7 +129,7 @@
               "^/var/lib/systemd/.*$"
             ];
           };
-          
+
           security.sudo.extraConfig = ''
             # rollback results in sudo lectures after each reboot
             Defaults lecture = never

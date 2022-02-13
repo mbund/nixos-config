@@ -9,7 +9,7 @@
       system = "x86_64-linux";
       modules = [
         ({ pkgs, ... }: {
-          
+
           imports = [
             ./hardware-configuration.nix
           ];

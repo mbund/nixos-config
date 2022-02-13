@@ -8,7 +8,7 @@
   {
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      
+
       modules = [
         erasure.nixosModule
         ({ pkgs, ... }:
@@ -54,14 +54,12 @@
           };
 
           boot.loader.grub.configurationLimit = 10;
+          boot.kernelPackages = pkgs.linuxPackages_latest;
 
           environment.systemPackages = with pkgs; [
             git
             vim
           ];
-
-          programs.ssh.askPassword = pkgs.lib.mkForce "${pkgs.ksshaskpass.out}/bin/ksshaskpass";
-          programs.seahorse.enable = true;
 
           networking = {
             hostName = "mbund-desktop";
@@ -115,12 +113,15 @@
 
           programs.kdeconnect.enable = true;
 
-          services.gnome.gnome-keyring.enable = true;
-          security.pam.services.login.enableGnomeKeyring = true;
-          security.pam.services.sddm.enableGnomeKeyring = true;
+          # services.gnome.gnome-keyring.enable = true;
+          # security.pam.services.login.enableGnomeKeyring = true;
+          # security.pam.services.sddm.enableGnomeKeyring = true;
+          # programs.ssh.askPassword = pkgs.lib.mkForce "${pkgs.ksshaskpass.out}/bin/ksshaskpass";
+          # programs.seahorse.enable = true;
 
           hardware.bluetooth.enable = true;
           services.xserver.wacom.enable = true;
+
           services.printing = {
             enable = true;
             drivers = with pkgs; [
@@ -151,7 +152,6 @@
             qemu.runAsRoot = false;
           };
 
-          # Docker
           virtualisation.docker.enable = true;
 
           environment.erasure."root" = {
@@ -193,7 +193,7 @@
             # either stop in milliseconds or fail so the default 90s is way too long
             DefaultTimeoutStopSec=10s
           '';
-          
+
           security.sudo.extraConfig = ''
             # rollback results in sudo lectures after each reboot
             Defaults lecture = never
