@@ -43,7 +43,7 @@ jobs:
       run: |
         nix build ./nixos-config#nixosConfigurations.installer-iso.config.system.build.isoImage
         cp result/iso/nixos-installer.iso nixos-installer-${{ steps.date.outputs.iso-date }}.iso
-        echo "::set-output name=nixos-installer-iso-hash::$(sha512sum nixos-installer-*.iso | cut -d " " -f 1)"
+        echo "::set-output name=nixos-installer-iso-hash::$(sha512sum result/iso/nixos-installer.iso | cut -d " " -f 1)"
 
     - name: Release nixos-installer.iso
       uses: softprops/action-gh-release@v1
