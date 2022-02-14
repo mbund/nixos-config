@@ -12,7 +12,8 @@ jobs:
     - name: Get current date
       id: date
       run: |
-        echo "::set-output name=date::$(date +'%F %H:%M')"
+        echo "::set-output name=tag-date::$(date +'release/%F/%H.%M')"
+        echo "::set-output name=iso-date::$(date +'%F-%H-%M')"
 
     - name: Maximize build space
       uses: easimon/maximize-build-space@master
@@ -41,40 +42,23 @@ jobs:
       id: build-installer-iso
       run: |
         nix build ./nixos-config#nixosConfigurations.installer-iso.config.system.build.isoImage
-        cp result/iso/nixos-installer-*.iso .
+        cp result/iso/nixos-installer.iso nixos-installer-${{ steps.date.outputs.iso-date }}.iso
         echo "::set-output name=nixos-installer-iso-hash::$(sha512sum nixos-installer-*.iso | cut -d " " -f 1)"
 
     - name: Release nixos-installer.iso
       uses: softprops/action-gh-release@v1
       with:
         name: Installer
-        tag_name: installer-iso-latest
+        tag_name: ${{ steps.date.outputs.tag-date }}
         body: |
-          Custom NixOS installer iso, including the latest kernel and other updates, along with flakes enabled out of the box.
+          Custom NixOS installer iso, including the following goodies:
+          - The latest Linux kernel, for maximum compatibility
+          - Nix Flakes enabled out of the box
+          - `zsh` with syntax highlighting, completion, etc. (still POSIX just nicer)
+          - `vim` with sane defaults and syntax highlighting for the Nix Expression Language
 
           SHA-512 checksum: `${{ steps.build-installer-iso.outputs.nixos-installer-iso-hash }}`
 
         token: ${{ secrets.GITHUB_TOKEN }}
         files: |
           nixos-installer-*.iso
-
-    - name: Build nixos-installer-riced.iso
-      id: build-installer-riced-iso
-      run: |
-        nix build ./nixos-config#nixosConfigurations.installer-iso-riced.config.system.build.isoImage
-        cp result/iso/nixos-installer-riced-*.iso .
-        echo "::set-output name=nixos-installer-riced-iso-hash::$(sha512sum nixos-installer-riced-*.iso | cut -d " " -f 1)"
-
-    - name: Release nixos-installer-riced-*.iso
-      uses: softprops/action-gh-release@v1
-      with:
-        name: Installer Riced
-        tag_name: installer-riced-iso-latest
-        body: |
-          Custom NixOS installer iso, including the latest kernel and other updates, along with flakes enabled out of the box. This one (riced) includes my own quality of life additions (such as zsh & friends instead of bash).
-
-          SHA-512 checksum: `${{ steps.build-installer-riced-iso.outputs.nixos-installer-riced-iso-hash }}`
-
-        token: ${{ secrets.GITHUB_TOKEN }}
-        files: |
-          nixos-installer-riced-*.iso
