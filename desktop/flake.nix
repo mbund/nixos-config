@@ -131,6 +131,12 @@
             ];
           };
 
+          # automatic printer detection
+          services.avahi = {
+            enable = true;
+            nssmdns = true;
+          };
+
           # 32bit opengl required for lutris epic games store
           hardware.opengl.driSupport32Bit = true;
           programs.steam.enable = true;
