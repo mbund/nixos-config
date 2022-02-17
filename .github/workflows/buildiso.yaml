@@ -12,6 +12,7 @@ jobs:
     - name: Get current date
       id: date
       run: |
+        echo "::set-output name=release-name-date::$(date +'%Y%m%d%H%M')"
         echo "::set-output name=tag-date::$(date +'release/%F/%H.%M')"
         echo "::set-output name=iso-date::$(date +'%F-%H-%M')"
 
@@ -48,13 +49,13 @@ jobs:
     - name: Release nixos-installer.iso
       uses: softprops/action-gh-release@v1
       with:
-        name: Installer
+        name: Installer ISO ${{ steps.date.outputs.release-name-date }}
         tag_name: ${{ steps.date.outputs.tag-date }}
         body: |
           Custom NixOS installer iso, including the following goodies:
           - The latest Linux kernel, for maximum compatibility
           - Nix Flakes enabled out of the box
-          - `zsh` with syntax highlighting, completion, etc. (still POSIX just nicer)
+          - `zsh` with syntax highlighting, completion, etc. (still a POSIX shell just nicer)
           - `vim` with sane defaults and syntax highlighting for the Nix Expression Language
 
           SHA-512 checksum: `${{ steps.build-installer-iso.outputs.nixos-installer-iso-hash }}`
