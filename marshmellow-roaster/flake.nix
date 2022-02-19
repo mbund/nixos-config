@@ -1,8 +1,11 @@
 {
   description = "marshmellow-roaster NixOS Configuration";
 
-  inputs.nixpkgs.url = "flake:nixpkgs";
-  inputs.erasure.url = "github:mbund/nix-erasure";
+  inputs = {
+    erasure.url = "github:mbund/nix-erasure";
+
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+  };
 
   outputs = { self, nixpkgs, erasure }:
   {
