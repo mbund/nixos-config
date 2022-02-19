@@ -21,6 +21,7 @@
             ./hardware-configuration.nix
           ];
 
+          # Nix options
           nix = {
             settings = {
               auto-optimise-store = true;
@@ -55,28 +56,34 @@
               options = "";
             };
           };
+          nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
+            "steam" "steam-original" "steam-runtime"
+            "nvidia-x11" "nvidia-settings"
+          ];
 
+          # Hardware options
           boot.loader.grub.configurationLimit = 10;
           boot.kernelPackages = pkgs.linuxPackages_latest;
 
-          environment.systemPackages = with pkgs; [
-            git
-            vim
-          ];
-
+          # Networking options
           networking = {
             hostName = "mbund-desktop";
             useDHCP = false;
             networkmanager.enable = true;
           };
+          services.openssh = {
+            enable = true;
+          };
+          networking.firewall.allowedTCPPorts = [
+            22   # ssh
+            5900 # vnc
+          ];
 
-          time.timeZone = "America/New_York";
-
+          # User options
           users.groups = {
             # make a new group for the files in /etc/nixos so some users are allowed to edit it
             nixos-configurator = { };
           };
-
           users.users = {
             mbund = {
               isNormalUser = true;
@@ -86,13 +93,7 @@
             };
           };
 
-          nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
-            "steam" "steam-original" "steam-runtime"
-            "nvidia-x11" "nvidia-settings"
-          ];
-
-          # if wayland is enabled but not supported well (looking at you, nvidia) then
-          # it wall cause a systemd timeout
+          # Desktop options
           services.xserver = {
             enable = true;
             videoDrivers = [ "nvidia" ];
@@ -111,20 +112,11 @@
 
             xkbOptions = "caps:swapescape";
           };
-
-          programs.adb.enable = true;
-
-          programs.kdeconnect.enable = true;
-
-          # services.gnome.gnome-keyring.enable = true;
-          # security.pam.services.login.enableGnomeKeyring = true;
-          # security.pam.services.sddm.enableGnomeKeyring = true;
-          # programs.ssh.askPassword = pkgs.lib.mkForce "${pkgs.ksshaskpass.out}/bin/ksshaskpass";
-          # programs.seahorse.enable = true;
-
           hardware.bluetooth.enable = true;
           services.xserver.wacom.enable = true;
-
+          programs.dconf.enable = true;
+          programs.kdeconnect.enable = true;
+          programs.adb.enable = true;
           services.printing = {
             enable = true;
             drivers = with pkgs; [
@@ -133,19 +125,37 @@
               hplip
             ];
           };
-
-          # automatic printer detection
           services.avahi = {
             enable = true;
             nssmdns = true;
           };
+          environment.systemPackages = with pkgs; [
+            git
+            vim
+          ];
+          time.timeZone = "America/New_York";
 
-          # 32bit opengl required for lutris epic games store
+          # Keychain options
+          services.gnome.gnome-keyring.enable = true;
+          programs.seahorse.enable = true;
+          security.pam.services.login = {
+            enableKwallet = true;
+            enableGnomeKeyring = true;
+          };
+          security.pam.services.sddm = {
+            enableKwallet = true;
+            enableGnomeKeyring = true;
+          };
+          programs.ssh.askPassword = pkgs.lib.mkForce "${pkgs.ksshaskpass.out}/bin/ksshaskpass";
+
+          # Steam
           hardware.opengl.driSupport32Bit = true;
           programs.steam.enable = true;
 
-          programs.dconf.enable = true;
+          # Docker
+          virtualisation.docker.enable = true;
 
+          # Multimedia
           services.pipewire = {
             enable = true;
             alsa = {
@@ -155,14 +165,14 @@
             pulse.enable = true;
           };
 
+          # Virtualization
           virtualisation.libvirtd = {
             enable = true;
             qemu.ovmf.enable = true;
             qemu.runAsRoot = false;
           };
 
-          virtualisation.docker.enable = true;
-
+          # Opt-in state erasure
           environment.erasure."root" = {
             storage-path = "/persist";
 
@@ -197,6 +207,7 @@
             ];
           };
 
+          # Misc
           systemd.extraConfig = ''
             # this isn't some super powerful server running a million things, a service will
             # either stop in milliseconds or fail so the default 90s is way too long

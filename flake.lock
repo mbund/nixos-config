@@ -6,12 +6,12 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "narHash": "sha256-wxD+R1m6C+n7xc59BKEmSzbdJ4hXFW6TPa+lxiKL3Cw=",
-        "path": "/nix/store/qklsxy2dvfbhzalmhj8pnhxn1hv2kyim-source/desktop",
+        "narHash": "sha256-vDvFTRfWxYRqj5zhfPhFkO9qgTwiiQCl+CCfB3Z/eUI=",
+        "path": "/nix/store/78piivwm11qfnqziw87jinz9xcvpxknj-source/desktop",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/qklsxy2dvfbhzalmhj8pnhxn1hv2kyim-source/desktop",
+        "path": "/nix/store/78piivwm11qfnqziw87jinz9xcvpxknj-source/desktop",
         "type": "path"
       }
     },
@@ -109,11 +109,11 @@
       },
       "locked": {
         "narHash": "sha256-U7wfQWw8wDH9bqRFEx2qmVRNJomsuPCellcgzukLzvc=",
-        "path": "/nix/store/qklsxy2dvfbhzalmhj8pnhxn1hv2kyim-source/marshmellow-roaster",
+        "path": "/nix/store/78piivwm11qfnqziw87jinz9xcvpxknj-source/marshmellow-roaster",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/qklsxy2dvfbhzalmhj8pnhxn1hv2kyim-source/marshmellow-roaster",
+        "path": "/nix/store/78piivwm11qfnqziw87jinz9xcvpxknj-source/marshmellow-roaster",
         "type": "path"
       }
     },
@@ -124,11 +124,11 @@
       },
       "locked": {
         "narHash": "sha256-UxA4W/S34aJItd1tvzptbv6YQ/GrzYc/5pNtmK23u90=",
-        "path": "/nix/store/qklsxy2dvfbhzalmhj8pnhxn1hv2kyim-source/nixos-installer",
+        "path": "/nix/store/78piivwm11qfnqziw87jinz9xcvpxknj-source/nixos-installer",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/qklsxy2dvfbhzalmhj8pnhxn1hv2kyim-source/nixos-installer",
+        "path": "/nix/store/78piivwm11qfnqziw87jinz9xcvpxknj-source/nixos-installer",
         "type": "path"
       }
     },
@@ -210,11 +210,11 @@
       },
       "locked": {
         "narHash": "sha256-rqbJM8uXpTo3e9h6jJBL14p/wQWL2vCCZbIqMmaQGJI=",
-        "path": "/nix/store/qklsxy2dvfbhzalmhj8pnhxn1hv2kyim-source/virtualbox",
+        "path": "/nix/store/78piivwm11qfnqziw87jinz9xcvpxknj-source/virtualbox",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/qklsxy2dvfbhzalmhj8pnhxn1hv2kyim-source/virtualbox",
+        "path": "/nix/store/78piivwm11qfnqziw87jinz9xcvpxknj-source/virtualbox",
         "type": "path"
       }
     }
