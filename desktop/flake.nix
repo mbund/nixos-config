@@ -177,6 +177,7 @@
               support32Bit = true; # this is probably not necessary
             };
             pulse.enable = true;
+            jack.enable = true;
           };
 
           # Virtualization
