@@ -80,16 +80,24 @@
           ];
 
           # User options
+          users.mutableUsers = false;
           users.groups = {
             # make a new group for the files in /etc/nixos so some users are allowed to edit it
             nixos-configurator = { };
+            mbund = { };
           };
           users.users = {
             mbund = {
               isNormalUser = true;
-              extraGroups = [ "wheel" "nixos-configurator" "networkmanager" "libvirtd" "kvm" "adbusers" ];
+              group = "mbund";
+              extraGroups = [
+                "users" "wheel" "nixos-configurator"
+                "audio" "video" "render"
+                "networkmanager" "libvirtd" "kvm" "adbusers"
+              ];
               uid = 1000;
               initialPassword = "mbund";
+              passwordFile = "/home/mbund/.password"; # mkpasswd -m sha-512 > /home/mbund/.password
             };
           };
 
@@ -97,6 +105,12 @@
           services.xserver = {
             enable = true;
             videoDrivers = [ "nvidia" ];
+
+            displayManager.autoLogin = {
+              enable = true;
+              user = "mbund";
+            };
+
             # displayManager.defaultSession = "plasmawayland";
             displayManager.sddm = {
               enable = true;
