@@ -173,7 +173,6 @@
               programs.ssh.askPassword = pkgs.lib.mkForce "${pkgs.ksshaskpass.out}/bin/ksshaskpass";
 
               # Steam
-              hardware.opengl.driSupport32Bit = true;
               programs.steam.enable = true;
 
               # Docker
@@ -265,4 +264,17 @@
       };
     };
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
