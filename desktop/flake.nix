@@ -94,27 +94,32 @@
                   isNormalUser = true;
                   group = "mbund";
                   extraGroups = [
-                    "users"
-                    "wheel"
-                    "nixos-configurator"
                     "audio"
                     "video"
                     "render"
+
+                    "users"
+                    "wheel"
+
+                    "nixos-configurator"
                     "networkmanager"
                     "libvirtd"
+                    "docker"
                     "kvm"
                     "adbusers"
                   ];
                   uid = 1000;
-                  initialPassword = "mbund";
-                  passwordFile = "/home/mbund/.password"; # mkpasswd -m sha-512 > /home/mbund/.password
+                  passwordFile = "/persist/etc/mbund-passwd"; # mkpasswd -m sha-512 > /persist/etc/mbund-passwd
                 };
               };
 
               # Desktop options
               services.xserver = {
                 enable = true;
-                videoDrivers = [ "nvidia" ];
+                videoDrivers = [
+                  "nvidia"
+                  # "nouveau"
+                ];
 
                 displayManager.autoLogin = {
                   enable = true;
@@ -159,6 +164,19 @@
               ];
               time.timeZone = "America/New_York";
 
+              programs.sway = {
+                enable = true;
+                wrapperFeatures.gtk = true; # so that gtk works properly
+                extraPackages = with pkgs; [
+                  swaylock
+                  swayidle
+                  wl-clipboard
+                  mako # notification daemon
+                  alacritty # Alacritty is the default terminal in the config
+                  dmenu # Dmenu is the default in the config but i recommend wofi since its wayland native
+                ];
+              };
+
               # Keychain options
               services.gnome.gnome-keyring.enable = true;
               programs.seahorse.enable = true;
@@ -187,8 +205,6 @@
                 };
                 pulse.enable = true;
                 jack.enable = true;
-                # wireplumber.enable = true;
-                media-session.enable = true;
               };
 
               # Virtualization
@@ -264,17 +280,4 @@
       };
     };
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 

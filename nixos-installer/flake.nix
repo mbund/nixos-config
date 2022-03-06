@@ -31,7 +31,9 @@
               "${modulesPath}/installer/cd-dvd/channel.nix"
             ];
 
+            # Build the iso with the kernel that works best for you
             boot.kernelPackages = pkgs.linuxPackages_latest;
+            # boot.kernelPackages = pkgs.linuxKernel.packages.linux_4_19;
 
             # Needed for https://github.com/NixOS/nixpkgs/issues/58959
             boot.supportedFilesystems = lib.mkForce [ "btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs" ];
