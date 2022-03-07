@@ -10,7 +10,7 @@ The only things that should be configured here are system-wide or root-only acti
 All of my systems that run NixOS are in one repository, and are all referenced from the root flake. Each individual system is a sub-flake defining their `nixosConfigurations`.
 
 ## Install
-Take a look at my [modern nix guide for full installation instructions](https://github.com/mbund/modern-nix-guide/wiki/Installation). You'll probably want to use [my installer ISO](https://github.com/mbund/nixos-config/releases) or [make your own](https://github.com/mbund/nixos-config#custom-iso)
+Take a look at my [modern nix guide for full installation instructions](https://github.com/mbund/modern-nix-guide/wiki/Installation). You'll probably want to use [my installer ISO](https://github.com/mbund/nixos-config/releases) or [make your own](https://github.com/mbund/nixos-config#custom-iso). You can find the exact shell commands that I used to generate each of my systems by each `install.sh` file you can find, for example `desktop/install.sh` is how my current desktop was installed. Note that I am still learning myself and the exact way that I installed my current systems is flawed, so you should really consult the modern nix guide for best practice.
 
 ## Custom ISO
 If you do not want to use my custom ISO, you can build a custom one yourself. Here are some reasons why you might want to do that.
