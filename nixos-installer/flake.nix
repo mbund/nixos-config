@@ -71,6 +71,8 @@
               git
               gparted
               firefox
+              wget
+              curl
             ];
 
             networking = {
