@@ -5,6 +5,7 @@
     virtualbox.url = "./virtualbox";
     marshmellow-roaster.url = "./marshmellow-roaster";
     desktop.url = "./desktop";
+    zephyr.url = "./zephyr";
     nixos-installer.url = "./nixos-installer";
 
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -14,9 +15,11 @@
   outputs = { self, nixpkgs, flake-utils, ... }@inputs: with inputs; {
     nixosConfigurations =
       virtualbox.nixosConfigurations //
-        marshmellow-roaster.nixosConfigurations //
-        desktop.nixosConfigurations //
-        nixos-installer.nixosConfigurations;
+      marshmellow-roaster.nixosConfigurations //
+      desktop.nixosConfigurations //
+      zephyr.nixosConfigurations //
+      nixos-installer.nixosConfigurations //
+      { };
 
   } // flake-utils.lib.eachDefaultSystem (system:
     let
