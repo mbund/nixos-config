@@ -57,6 +57,11 @@
                 };
               };
 
+              nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
+                "nvidia-x11"
+                "nvidia-settings"
+              ];
+
               # Hardware options
               boot.kernelPackages = pkgs.linuxPackages_latest;
 
@@ -105,6 +110,35 @@
                 };
               };
 
+              # Desktop options
+              services.xserver = {
+                enable = true;
+                videoDrivers = [
+                  "nvidia"
+                ];
+
+                displayManager.autoLogin = {
+                  enable = true;
+                  user = "mbund";
+                };
+
+                # displayManager.defaultSession = "plasmawayland";
+                displayManager.sddm = {
+                  enable = true;
+                  autoNumlock = true;
+                  settings.Wayland.SessionDir = "${pkgs.plasma5Packages.plasma-workspace}/share/wayland-sessions";
+                };
+
+                desktopManager.plasma5 = {
+                  enable = true;
+                  useQtScaling = true;
+                  runUsingSystemd = true;
+                };
+
+                exportConfiguration = true;
+
+                xkbOptions = "caps:swapescape";
+              };
               hardware.bluetooth.enable = true;
               programs.dconf.enable = true;
               programs.adb.enable = true;
