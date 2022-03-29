@@ -14,7 +14,7 @@
 
         modules = [
           erasure.nixosModule
-          ({ pkgs, ... }:
+          ({ pkgs, config, ... }:
             {
 
               imports = [
@@ -114,6 +114,8 @@
               };
 
               # Desktop options
+              hardware.nvidia.modesetting.enable = true;
+              # hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.beta;
               services.xserver = {
                 enable = true;
                 videoDrivers = [
@@ -138,6 +140,12 @@
                   useQtScaling = true;
                   runUsingSystemd = true;
                 };
+
+                exportConfiguration = true;
+                deviceSection = ''
+                  Option "AllowSHMPixmaps" "on"
+                  Option "DRI3" "on"
+                '';
 
                 xkbOptions = "caps:swapescape";
               };
