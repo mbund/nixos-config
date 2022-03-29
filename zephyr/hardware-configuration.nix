@@ -65,13 +65,13 @@
   # Encryption
   boot.initrd.luks.devices = {
     "nixos-root" = {
-      device = "";
+      device = "/dev/disk/by-uuid/eaef915e-bb23-43a2-948c-3962485e6903";
     };
   };
 
   # Kernel
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
-  boot.kernelModules = [ "kvm-amd" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usb_storage" "sd_mod" "sr_mod" "rtsx_pci_sdmmc" ];
+  boot.kernelModules = [ "kvm-intel" ];
 
   # Bootloader
   boot.loader = {
@@ -84,6 +84,7 @@
     };
   };
 
+  powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   hardware.enableRedistributableFirmware = lib.mkDefault true;
 }
