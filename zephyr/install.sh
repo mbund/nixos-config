@@ -3,8 +3,6 @@
 set -e
 set -x
 
-# MAKE SURE TO CHANGE /dev/sda to proper drive
-
 # Enforce running as root
 if [ "$EUID" != 0 ]; then
   sudo "$0" "$@"
@@ -64,23 +62,24 @@ mount /dev/disk/by-label/boot /mnt/boot
 mkdir -p /mnt/boot/efi
 mount /dev/disk/by-label/UEFI-ESP /mnt/boot/efi
 
+mkdir -p /mnt/persist/etc
 echo "Asking for user password"
 mkpasswd -m sha-512 > /mnt/persist/etc/mbund-passwd
 
 # Get nixos configuration
 mkdir -p /mnt/etc/nixos
 
-
 # BY HAND
+# git clone https://github.com/mbund/nixos-config .
 # cd /mnt/etc/nixos
 
 # sudo nixos-generate-config --root /mnt --show-hardware-config
 
 # write your system flake.nix and hardware-configuration here
-# sudo nixos-install --flake /mnt/etc/nixos#desktop --recreate-lock-file --no-root-password
+# sudo nixos-install --flake /mnt/etc/nixos#zephyr --recreate-lock-file --no-root-password
 
 # on reboot, you'll need to redownload your flake.nix and hardware-configuration.nix back into /etc/nixos because the erasure module will delete it
 
 # then when you make changes to your system do
-# sudo nixos-rebuild switch --flake /mnt/etc/nixos#desktop
+# sudo nixos-rebuild switch --flake /mnt/etc/nixos#zephyr
 
