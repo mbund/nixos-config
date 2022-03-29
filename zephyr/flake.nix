@@ -9,7 +9,7 @@
 
   outputs = { self, nixpkgs, erasure }:
     {
-      nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.zephyr = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
 
         modules = [
