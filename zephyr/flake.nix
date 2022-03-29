@@ -69,6 +69,8 @@
               networking = {
                 hostName = "zephyr";
                 useDHCP = false;
+                interfaces.enp3s0f1.useDHCP = true;
+                interfaces.wlp2s0.useDHCP = true;
                 networkmanager.enable = true;
               };
               services.openssh = {
