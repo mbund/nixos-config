@@ -65,7 +65,7 @@
   # Encryption
   boot.initrd.luks.devices = {
     "nixos-root" = {
-      device = "/dev/disk/by-uuid/eaef915e-bb23-43a2-948c-3962485e6903";
+      device = "/dev/disk/by-uuid/";
     };
   };
 
@@ -74,14 +74,11 @@
   boot.kernelModules = [ "kvm-intel" ];
 
   # Bootloader
-  boot.loader = {
-    efi.canTouchEfiVariables = true;
-    efi.efiSysMountPoint = "/boot/efi";
-    grub = {
-      device = "nodev";
-      efiSupport = true;
-      enableCryptodisk = true;
-    };
+  boot.loader.grub = {
+    enable = true;
+    version = 2;
+    device = "/dev/disk/by-id/";
+    enableCryptodisk = true;
   };
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";

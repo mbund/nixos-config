@@ -11,13 +11,12 @@ fi
 
 sgdisk --zap-all /dev/sda
 
+# BIOS boot
+sgdisk -n 0:0:+2MiB -t 0:ef02 /dev/sda
+
 # /boot
 sgdisk -n 0:0:+8GiB /dev/sda
 mkfs.ext4 -L boot /dev/sda1
-
-# UEFI ESP
-sgdisk -n 0:0:+512MiB -t 0:ef00 /dev/sda
-mkfs.vfat -F 32 -n UEFI-ESP /dev/sda2
 
 # / (root)
 sgdisk -n 0:0:0 /dev/sda
@@ -58,10 +57,7 @@ chattr +C /mnt/swap/swapfile
 mkdir -p /mnt/boot
 mount /dev/disk/by-label/boot /mnt/boot
 
-# Mount UEFI ESP partition
-mkdir -p /mnt/boot/efi
-mount /dev/disk/by-label/UEFI-ESP /mnt/boot/efi
-
+# Set up user password
 mkdir -p /mnt/persist/etc
 echo "Asking for user password"
 mkpasswd -m sha-512 > /mnt/persist/etc/mbund-passwd
