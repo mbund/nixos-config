@@ -16,7 +16,7 @@ sgdisk -n 0:0:+2MiB -t 0:ef02 /dev/sda
 
 # /boot
 sgdisk -n 0:0:+8GiB /dev/sda
-mkfs.ext4 -L boot /dev/sda1
+mkfs.ext4 -L boot /dev/sda2
 
 # / (root)
 sgdisk -n 0:0:0 /dev/sda
