@@ -32,11 +32,6 @@
       fsType = "ext4";
     };
 
-    "/boot/efi" = {
-      device = "/dev/disk/by-label/UEFI-ESP";
-      fsType = "vfat";
-    };
-
     "/swap" = {
       device = "/dev/mapper/nixos-root";
       fsType = "btrfs";
@@ -65,7 +60,7 @@
   # Encryption
   boot.initrd.luks.devices = {
     "nixos-root" = {
-      device = "/dev/disk/by-uuid/402225bf-2ee5-43ff-80e1-43c668dd0867";
+      device = "/dev/disk/by-uuid/";
     };
   };
 
