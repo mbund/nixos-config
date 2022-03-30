@@ -65,7 +65,7 @@
   # Encryption
   boot.initrd.luks.devices = {
     "nixos-root" = {
-      device = "/dev/disk/by-uuid/";
+      device = "/dev/disk/by-uuid/402225bf-2ee5-43ff-80e1-43c668dd0867";
     };
   };
 
@@ -77,7 +77,7 @@
   boot.loader.grub = {
     enable = true;
     version = 2;
-    device = "/dev/disk/by-id/";
+    device = "/dev/disk/by-id/ata-ST1000LM024_HN-M101MBB_S32XJ9EH611653";
     enableCryptodisk = true;
   };
 
