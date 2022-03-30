@@ -116,30 +116,10 @@
               services.xserver = {
                 enable = true;
                 videoDrivers = [
+                  "intel"
                   "nvidia"
                 ];
-
-                displayManager.autoLogin = {
-                  enable = true;
-                  user = "mbund";
-                };
-
-                # displayManager.defaultSession = "plasmawayland";
-                displayManager.sddm = {
-                  enable = true;
-                  autoNumlock = true;
-                  settings.Wayland.SessionDir = "${pkgs.plasma5Packages.plasma-workspace}/share/wayland-sessions";
-                };
-
-                desktopManager.plasma5 = {
-                  enable = true;
-                  useQtScaling = true;
-                  runUsingSystemd = true;
-                };
-
                 exportConfiguration = true;
-
-                xkbOptions = "caps:swapescape";
               };
               hardware.bluetooth.enable = true;
               programs.dconf.enable = true;
@@ -161,6 +141,13 @@
                 vim
               ];
               time.timeZone = "America/New_York";
+
+              # Keychain options
+              services.gnome.gnome-keyring.enable = true;
+              programs.seahorse.enable = true;
+              security.pam.services.login = {
+                enableGnomeKeyring = true;
+              };
 
               # Docker
               virtualisation.docker.enable = true;
@@ -212,7 +199,6 @@
                   "^/root/.cache/.*$"
                   "^/var/lib/systemd/.*$"
                   "^/var/cache/.*$"
-                  "^/var/lib/sddm/\\.cache/.*$"
                   "^/etc/pam\\.d/.*$"
                   "^/etc/tmpfiles\\.d/.*$"
                 ];
