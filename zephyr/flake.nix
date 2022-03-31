@@ -119,6 +119,7 @@
                   "intel"
                   "nvidia"
                 ];
+                displayManager.startx.enable = true;
                 exportConfiguration = true;
               };
               hardware.bluetooth.enable = true;
