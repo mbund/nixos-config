@@ -65,7 +65,7 @@
   };
 
   # Kernel
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usb_storage" "sd_mod" "sr_mod" "rtsx_pci_sdmmc" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usb_storage" "sd_mod" "sr_mod" "rtsx_pci_sdmmc" "rtl8821ae" "r8169" ];
   boot.kernelModules = [ "kvm-intel" ];
 
   # Bootloader
@@ -74,6 +74,27 @@
     version = 2;
     device = "/dev/disk/by-id/ata-ST1000LM024_HN-M101MBB_S32XJ9EH611653";
     enableCryptodisk = true;
+  };
+
+  # Network remote decrpyt
+  boot.initrd.network.enable = true;
+  boot.initrd.network.ssh = {
+    enable = true;
+    port = 2222;
+
+    # Connect to server with our generated key, then provide the decryption password
+    # ssh -i ~/.ssh/unlock_luks_zephyr -t -p 2222 root@my_server_address "read -s PASSWORD; echo \$PASSWORD > /crypt-ramfs/passphrase"
+
+    authorizedKeys = [
+      # Generate keys on each client that we want to be able to connect and provide the unlock password
+      # ssh-keygen -t ed25519 -N "" -f ~/.ssh/unlock_luks_zephyr
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEoEanx0weICazylOHAB688WvXHXp3J61ZJAtGLYjcfP mbund@mbund-desktop"
+    ];
+
+    hostKeys = [
+      # sudo ssh-keygen -t ed25519 -N "" -f /etc/secrets/initrd/unlock_luks_host_ed25519_key
+      "/etc/secrets/initrd/unlock_luks_host_ed25519_key"
+    ];
   };
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";

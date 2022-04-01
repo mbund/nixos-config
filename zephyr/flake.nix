@@ -73,9 +73,15 @@
                 interfaces.wlp2s0.useDHCP = true;
                 networkmanager.enable = true;
               };
+
               services.openssh = {
                 enable = true;
               };
+
+              programs.ssh = {
+                startAgent = true;
+              };
+
               networking.firewall.allowedTCPPorts = [
                 22 # ssh
                 5900 # vnc
@@ -189,6 +195,8 @@
                   "/var/lib/bluetooth/"
                   "/var/lib/docker/"
                   "/var/lib/libvirt/"
+                  "/etc/ssh/"
+                  "/etc/secrets/initrd/"
                 ];
 
                 ignore = [

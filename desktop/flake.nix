@@ -73,10 +73,16 @@
                 hostName = "mbund-desktop";
                 useDHCP = false;
                 networkmanager.enable = true;
+
+                extraHosts = ''
+                  192.168.1.103 zephyr
+                '';
               };
+
               services.openssh = {
                 enable = true;
               };
+
               networking.firewall.allowedTCPPorts = [
                 22 # ssh
                 5900 # vnc
