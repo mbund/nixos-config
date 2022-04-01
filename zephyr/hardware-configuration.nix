@@ -97,8 +97,10 @@
     ];
   };
 
-  powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  hardware.enableRedistributableFirmware = lib.mkDefault true;
+  powerManagement.cpuFreqGovernor = "ondemand";
+  services.logind.lidSwitch = "ignore";
+
+  hardware.cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware;
+  hardware.enableRedistributableFirmware = true;
 }
 
