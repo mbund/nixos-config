@@ -6,11 +6,8 @@
         "type": "indirect"
       },
       "to": {
-        "lastModified": 1642464025,
-        "narHash": "sha256-dMh+gKelMjNyza+zZNKgNdCkjhnLdpuyBUBmIZe3Dlk=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "f31604b87cdec970afd18245fc93e2fad119097e",
         "type": "github"
       }
     },
@@ -22,7 +19,6 @@
       "to": {
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "35cd881e3f259836f034330634920aef9c303490",
         "type": "github"
       }
     }
