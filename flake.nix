@@ -26,11 +26,17 @@
       pkgs = import nixpkgs { inherit system; };
     in
     {
-      devShell = pkgs.mkShell {
+      devShells.default = pkgs.mkShell {
         packages = with pkgs; [
           rnix-lsp
         ];
       };
+      
+      packages.pin-global-registry = pkgs.writeShellApplication {
+        name = "pin-global-registry";
+        runtimeInputs = with pkgs; [ jq ];
+        text = builtins.readFile ./pin-global-registry.sh;
+      };     
     }
   );
 }

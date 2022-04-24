@@ -6,11 +6,8 @@
         "type": "indirect"
       },
       "to": {
-        "lastModified": 1650809649,
-        "narHash": "sha256-Y/vm8Y/0dvRJ2wEAKsIvXjAod7b3qUBPwvMfxjAcujk=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "be88ed56fddb16ee028e3c40582a3faebf0b5535",
         "type": "github"
       }
     },
@@ -20,11 +17,8 @@
         "type": "indirect"
       },
       "to": {
-        "lastModified": 1650814856,
-        "narHash": "sha256-bzMwfaUNSfJi93JTgu8EFEhCip7GuSP1arLEyFO8uwE=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "a3c605936a1d4ac47c61c875cf63b3d9e0b4415d",
         "type": "github"
       }
     }
