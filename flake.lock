@@ -1,5 +1,17 @@
 {
   "nodes": {
+    "de": {
+      "locked": {
+        "lastModified": 1,
+        "narHash": "sha256-TSZ8pMzitSeuqpfOEbzBI0vk+nPmpLV4pa8lng+X4I4=",
+        "path": "/nix/store/ywjbn9b984xs3xykwvi7vf8k7bdh7jb8-source/de",
+        "type": "path"
+      },
+      "original": {
+        "path": "/nix/store/ywjbn9b984xs3xykwvi7vf8k7bdh7jb8-source/de",
+        "type": "path"
+      }
+    },
     "desktop": {
       "inputs": {
         "erasure": "erasure",
@@ -7,12 +19,12 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-LmNZRQFF7RENALTxT5/x9raj7e59Ckm5hwGq9y3PaOI=",
-        "path": "/nix/store/3c6261igvscrh4f0hm46w1mhhsm41llv-source/desktop",
+        "narHash": "sha256-QCDvoYYcnWkt4dBCKHrbXtj8/Wia5gOTuOjC6h9lzLw=",
+        "path": "/nix/store/7nzm1s1529208zkb5yc4jg581f0j7sx2-source/desktop",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/3c6261igvscrh4f0hm46w1mhhsm41llv-source/desktop",
+        "path": "/nix/store/7nzm1s1529208zkb5yc4jg581f0j7sx2-source/desktop",
         "type": "path"
       }
     },
@@ -153,17 +165,18 @@
     },
     "marshmellow-roaster": {
       "inputs": {
+        "de": "de",
         "erasure": "erasure_2",
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-+2k7zubttQMSiBxUv38wgz6dH6vw7a5dsWuhF2dIcWI=",
-        "path": "/nix/store/3c6261igvscrh4f0hm46w1mhhsm41llv-source/marshmellow-roaster",
+        "narHash": "sha256-RttvjRw8qmx6X0GTZYkj4kheBlmtJ5SVUNmblSvA6oY=",
+        "path": "/nix/store/7nzm1s1529208zkb5yc4jg581f0j7sx2-source/marshmellow-roaster",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/3c6261igvscrh4f0hm46w1mhhsm41llv-source/marshmellow-roaster",
+        "path": "/nix/store/7nzm1s1529208zkb5yc4jg581f0j7sx2-source/marshmellow-roaster",
         "type": "path"
       }
     },
@@ -175,11 +188,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-j7TkKjvisER1bWR/So+XJj/8dowWeTNCKkuwwo8Maso=",
-        "path": "/nix/store/3c6261igvscrh4f0hm46w1mhhsm41llv-source/nixos-installer",
+        "path": "/nix/store/7nzm1s1529208zkb5yc4jg581f0j7sx2-source/nixos-installer",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/3c6261igvscrh4f0hm46w1mhhsm41llv-source/nixos-installer",
+        "path": "/nix/store/7nzm1s1529208zkb5yc4jg581f0j7sx2-source/nixos-installer",
         "type": "path"
       }
     },
@@ -297,11 +310,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-J92/YStqNUuCTuAE+WTt0WxijEIqAkS33EbEXYb45Os=",
-        "path": "/nix/store/3c6261igvscrh4f0hm46w1mhhsm41llv-source/virtualbox",
+        "path": "/nix/store/7nzm1s1529208zkb5yc4jg581f0j7sx2-source/virtualbox",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/3c6261igvscrh4f0hm46w1mhhsm41llv-source/virtualbox",
+        "path": "/nix/store/7nzm1s1529208zkb5yc4jg581f0j7sx2-source/virtualbox",
         "type": "path"
       }
     },
@@ -313,11 +326,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-sSw0IJtm/R05yNspD2R9mV8bWlxKSm4nWM1/Z1d7FKA=",
-        "path": "/nix/store/3c6261igvscrh4f0hm46w1mhhsm41llv-source/zephyr",
+        "path": "/nix/store/7nzm1s1529208zkb5yc4jg581f0j7sx2-source/zephyr",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/3c6261igvscrh4f0hm46w1mhhsm41llv-source/zephyr",
+        "path": "/nix/store/7nzm1s1529208zkb5yc4jg581f0j7sx2-source/zephyr",
         "type": "path"
       }
     }

@@ -3,17 +3,19 @@
 
   inputs = {
     erasure.url = "github:mbund/nix-erasure";
+    de.url = "./de";
 
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 
-  outputs = { self, nixpkgs, erasure }:
+  outputs = { self, nixpkgs, erasure, ... }@inputs:
     {
       nixosConfigurations.marshmellow-roaster = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
 
         modules = [
           erasure.nixosModule
+          inputs.de
           ({ pkgs, ... }:
             {
 
@@ -80,15 +82,17 @@
                 };
               };
 
+              services.custom-desktop-environment = {
+                enable = true;
+                login-manager = {
+                  enable = true;
+                  default-user = "mbund";
+                };
+              };
+
               services.xserver = {
                 enable = true;
                 videoDrivers = [ "intel" ];
-                displayManager.defaultSession = "plasmawayland";
-                displayManager.sddm = {
-                  enable = true;
-                  settings.Wayland.SessionDir = "${pkgs.plasma5Packages.plasma-workspace}/share/wayland-sessions";
-                };
-                desktopManager.plasma5.enable = true;
               };
 
               programs.dconf.enable = true;
