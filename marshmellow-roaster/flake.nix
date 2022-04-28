@@ -139,14 +139,11 @@
                 pulse.enable = true;
               };
 
-              # Virtualization
-              boot.extraModprobeConfig = "options kvm_intel nested=1";
-              virtualisation.libvirtd.enable = true;
-
               # Docker
               virtualisation.docker.enable = true;
 
               # Virtualization
+              boot.extraModprobeConfig = "options kvm_intel nested=1";
               virtualisation.libvirtd = {
                 enable = true;
                 qemu.ovmf.enable = true;
