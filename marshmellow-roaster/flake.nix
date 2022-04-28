@@ -15,7 +15,7 @@
 
         modules = [
           erasure.nixosModule
-          inputs.de
+          inputs.de.nixosModule
           ({ pkgs, ... }:
             {
 
@@ -73,29 +73,62 @@
 
               time.timeZone = "America/New_York";
 
+              # User options
+              users.mutableUsers = false;
+              users.groups = {
+                # make a new group for the files in /etc/nixos so some users are allowed to edit it
+                nixos-configurator = { };
+                mbund = { };
+              };
+              programs.zsh.enable = true;
               users.users = {
                 mbund = {
                   isNormalUser = true;
-                  extraGroups = [ "wheel" "networkmanager" "libvirtd" ];
+                  group = "mbund";
+                  shell = pkgs.zsh;
+                  extraGroups = [
+                    "audio"
+                    "video"
+                    "render"
+
+                    "users"
+                    "wheel"
+
+                    "nixos-configurator"
+                    "networkmanager"
+                    "libvirtd"
+                    "kvm"
+                    "docker"
+                    "adbusers"
+                  ];
                   uid = 1000;
-                  initialPassword = "mbund";
+                  passwordFile = "/persist/etc/mbund-passwd"; # mkpasswd -m sha-512 > /persist/etc/mbund-passwd
                 };
               };
 
-              services.custom-desktop-environment = {
-                enable = true;
-                login-manager = {
-                  enable = true;
-                  default-user = "mbund";
-                };
-              };
+              services.custom-desktop-environment.enable = true;
 
               services.xserver = {
                 enable = true;
                 videoDrivers = [ "intel" ];
+                displayManager.startx.enable = true;
               };
-
+              hardware.opengl.enable = true;
               programs.dconf.enable = true;
+              programs.adb.enable = true;
+
+              services.printing = {
+                enable = true;
+                drivers = with pkgs; [
+                  gutenprint
+                  gutenprintBin
+                  hplip
+                ];
+              };
+              services.avahi = {
+                enable = true;
+                nssmdns = true;
+              };
 
               services.pipewire = {
                 enable = true;
@@ -112,6 +145,13 @@
 
               # Docker
               virtualisation.docker.enable = true;
+
+              # Virtualization
+              virtualisation.libvirtd = {
+                enable = true;
+                qemu.ovmf.enable = true;
+                qemu.runAsRoot = false;
+              };
 
               environment.erasure."root" = {
                 storage-path = "/persist";

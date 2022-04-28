@@ -95,10 +95,12 @@
                 nixos-configurator = { };
                 mbund = { };
               };
+              programs.zsh.enable = true;
               users.users = {
                 mbund = {
                   isNormalUser = true;
                   group = "mbund";
+                  shell = pkgs.zsh;
                   extraGroups = [
                     "audio"
                     "video"
@@ -110,8 +112,8 @@
                     "nixos-configurator"
                     "networkmanager"
                     "libvirtd"
-                    "docker"
                     "kvm"
+                    "docker"
                     "adbusers"
                   ];
                   uid = 1000;

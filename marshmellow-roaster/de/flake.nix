@@ -2,51 +2,40 @@
   description = "System configurations for custom desktop environment";
 
   outputs = { self, ... }@inputs: {
-    nixosModule = { pkgs, config, lib, ... }: {
+    nixosModule = { pkgs, config, lib, ... }: let
+      cfg = config.services.custom-desktop-environment;
+    in {
 
-      options.services.custom-desktop-environment = lib.mkOption {
-        default = { };
-        type = lib.types.attrsOf (lib.types.submodule ({ ... }: {
-          options = {
+      options.services.custom-desktop-environment = {
+        enable = lib.mkOption {
+          default = false;
+          type = lib.types.bool;
+          description = ''
+            Whether or not to enable the custom desktop environment.
+          '';
+        };
 
-            enable = lib.mkOption {
-              default = false;
-              type = lib.types.bool;
-              description = ''
-                Whether or not to enable the custom desktop environment.
-              '';
-            };
-
-            login-manager = lib.mkOption {
-              default = { };
-              type = lib.types.attrsOf (lib.types.submodule ({ ... }: {
-                options = {
-
-                  enable = lib.mkOption {
-                    default = false;
-                    type = lib.types.bool;
-                    description = ''
-                      Whether or not to enable the recommended login manager for the custom desktop environment.
-                    '';
-                  };
-
-                  default-user = lib.mkOption {
-                    example = "mbund";
-                    type = lib.types.str;
-                    description = ''
-                      Username for the default session to log in to.
-                    '';
-                  };
-
-                };
-              }));
-
-            };
+        login-manager = {
+          enable = lib.mkOption {
+            default = false;
+            type = lib.types.bool;
+            description = ''
+              Whether or not to enable the recommended login manager for the custom desktop environment.
+            '';
           };
-        }));
+
+          default-user = lib.mkOption {
+            example = "mbund";
+            type = lib.types.str;
+            description = ''
+              Username for the default session to log in to.
+            '';
+          };
+
+        };
       };
 
-      config = lib.mkIf config.custom-desktop-environment.enable {
+      config = lib.mkIf cfg.enable {
 
         xdg.portal = {
           enable = true;
@@ -56,14 +45,16 @@
           gtkUsePortal = true;
         };
 
-        services.greetd = lib.mkIf config.custom-desktop-environment.login-manager.enable {
+        hardware.opengl.enable = true;
+        programs.xwayland.enable = true;
+        programs.dconf.enable = true;
+        services.pipewire = {
           enable = true;
-          settings = {
-            default_session = {
-              command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd hikari";
-              user = config.custom-desktop-environment.login-manager.default-user;
-            };
+          alsa = {
+            enable = true;
+            support32Bit = true; # this is probably not necessary
           };
+          pulse.enable = true;
         };
 
       };
