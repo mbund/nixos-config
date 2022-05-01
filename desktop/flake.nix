@@ -5,15 +5,17 @@
     erasure.url = "github:mbund/nix-erasure";
 
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    de.url = "path:/etc/nixos/marshmellow-roaster/de";
   };
 
-  outputs = { self, nixpkgs, erasure }:
+  outputs = { self, nixpkgs, erasure, ... }@inputs:
     {
       nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
 
         modules = [
           erasure.nixosModule
+          inputs.de.nixosModule
           ({ pkgs, config, ... }:
             {
 
@@ -124,6 +126,8 @@
               # Desktop options
               hardware.nvidia.modesetting.enable = true;
               
+              services.custom-desktop-environment.enable = true;
+              hardware.pulseaudio.enable = nixpkgs.lib.mkForce false;
               services.xserver = {
                 enable = true;
                 videoDrivers = [
@@ -135,19 +139,21 @@
                   enable = true;
                   user = "mbund";
                 };
+                
+                displayManager.startx.enable = true;
 
                 # displayManager.defaultSession = "plasmawayland";
-                displayManager.sddm = {
-                  enable = true;
-                  autoNumlock = true;
-                  # settings.Wayland.SessionDir = "${pkgs.plasma5Packages.plasma-workspace}/share/wayland-sessions";
-                };
+                # displayManager.sddm = {
+                #   enable = true;
+                #   autoNumlock = true;
+                #   settings.Wayland.SessionDir = "${pkgs.plasma5Packages.plasma-workspace}/share/wayland-sessions";
+                # };
 
-                desktopManager.plasma5 = {
-                  enable = true;
-                  useQtScaling = true;
-                  runUsingSystemd = true;
-                };
+                # desktopManager.plasma5 = {
+                #   enable = true;
+                #   useQtScaling = true;
+                #   runUsingSystemd = true;
+                # };
 
                 exportConfiguration = true;
                 deviceSection = ''
@@ -180,18 +186,18 @@
               ];
               time.timeZone = "America/New_York";
 
-              programs.sway = {
-                enable = true;
-                wrapperFeatures.gtk = true; # so that gtk works properly
-                extraPackages = with pkgs; [
-                  swaylock
-                  swayidle
-                  wl-clipboard
-                  mako # notification daemon
-                  alacritty # Alacritty is the default terminal in the config
-                  dmenu # Dmenu is the default in the config but i recommend wofi since its wayland native
-                ];
-              };
+              # programs.sway = {
+              #   enable = true;
+              #   wrapperFeatures.gtk = true; # so that gtk works properly
+              #   extraPackages = with pkgs; [
+              #     swaylock
+              #     swayidle
+              #     wl-clipboard
+              #     mako # notification daemon
+              #     alacritty # Alacritty is the default terminal in the config
+              #     dmenu # Dmenu is the default in the config but i recommend wofi since its wayland native
+              #   ];
+              # };
 
               # Keychain options
               services.gnome.gnome-keyring.enable = true;
@@ -200,11 +206,11 @@
                 enableKwallet = true;
                 enableGnomeKeyring = true;
               };
-              security.pam.services.sddm = {
-                enableKwallet = true;
-                enableGnomeKeyring = true;
-              };
-              programs.ssh.askPassword = pkgs.lib.mkForce "${pkgs.ksshaskpass.out}/bin/ksshaskpass";
+              # security.pam.services.sddm = {
+              #   enableKwallet = true;
+              #   enableGnomeKeyring = true;
+              # };
+              # programs.ssh.askPassword = pkgs.lib.mkForce "${pkgs.ksshaskpass.out}/bin/ksshaskpass";
 
               # Steam
               programs.steam.enable = true;

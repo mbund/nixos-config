@@ -2,6 +2,18 @@
   "nodes": {
     "de": {
       "locked": {
+        "lastModified": 1651265958,
+        "narHash": "sha256-Otfr67axcxpOlnYhMc8RHZFlqgbDDFDRCdci0cWc830=",
+        "path": "/etc/nixos/marshmellow-roaster/de",
+        "type": "path"
+      },
+      "original": {
+        "path": "/etc/nixos/marshmellow-roaster/de",
+        "type": "path"
+      }
+    },
+    "de_2": {
+      "locked": {
         "lastModified": 1,
         "narHash": "sha256-Otfr67axcxpOlnYhMc8RHZFlqgbDDFDRCdci0cWc830=",
         "path": "/nix/store/4pmyn8vpnczjjqsxnznkbx6w44026sx5-source/de",
@@ -14,17 +26,18 @@
     },
     "desktop": {
       "inputs": {
+        "de": "de",
         "erasure": "erasure",
         "nixpkgs": "nixpkgs"
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-7oGz5oQjr+cowS269m9pfVL0nyPbS1Mvz7rtLSBVSTY=",
-        "path": "/nix/store/ghdh9jk7n0dha7n1hwdz1fzziparxz5v-source/desktop",
+        "narHash": "sha256-kyJsSw7A2u2Sv9vpSql+bc38sA8ln4xWSVUcoXNf67E=",
+        "path": "/nix/store/awqhs4zjpzmlh6shj3fdq184w6j21qak-source/desktop",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/ghdh9jk7n0dha7n1hwdz1fzziparxz5v-source/desktop",
+        "path": "/nix/store/awqhs4zjpzmlh6shj3fdq184w6j21qak-source/desktop",
         "type": "path"
       }
     },
@@ -165,18 +178,18 @@
     },
     "marshmellow-roaster": {
       "inputs": {
-        "de": "de",
+        "de": "de_2",
         "erasure": "erasure_2",
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-blA8+vjyTUuBY0F1dI1jyL8voDHuZZinOQNYmcMnwK8=",
-        "path": "/nix/store/ghdh9jk7n0dha7n1hwdz1fzziparxz5v-source/marshmellow-roaster",
+        "path": "/nix/store/awqhs4zjpzmlh6shj3fdq184w6j21qak-source/marshmellow-roaster",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/ghdh9jk7n0dha7n1hwdz1fzziparxz5v-source/marshmellow-roaster",
+        "path": "/nix/store/awqhs4zjpzmlh6shj3fdq184w6j21qak-source/marshmellow-roaster",
         "type": "path"
       }
     },
@@ -188,11 +201,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-j7TkKjvisER1bWR/So+XJj/8dowWeTNCKkuwwo8Maso=",
-        "path": "/nix/store/ghdh9jk7n0dha7n1hwdz1fzziparxz5v-source/nixos-installer",
+        "path": "/nix/store/awqhs4zjpzmlh6shj3fdq184w6j21qak-source/nixos-installer",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/ghdh9jk7n0dha7n1hwdz1fzziparxz5v-source/nixos-installer",
+        "path": "/nix/store/awqhs4zjpzmlh6shj3fdq184w6j21qak-source/nixos-installer",
         "type": "path"
       }
     },
@@ -310,11 +323,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-J92/YStqNUuCTuAE+WTt0WxijEIqAkS33EbEXYb45Os=",
-        "path": "/nix/store/ghdh9jk7n0dha7n1hwdz1fzziparxz5v-source/virtualbox",
+        "path": "/nix/store/awqhs4zjpzmlh6shj3fdq184w6j21qak-source/virtualbox",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/ghdh9jk7n0dha7n1hwdz1fzziparxz5v-source/virtualbox",
+        "path": "/nix/store/awqhs4zjpzmlh6shj3fdq184w6j21qak-source/virtualbox",
         "type": "path"
       }
     },
@@ -326,11 +339,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-sSw0IJtm/R05yNspD2R9mV8bWlxKSm4nWM1/Z1d7FKA=",
-        "path": "/nix/store/ghdh9jk7n0dha7n1hwdz1fzziparxz5v-source/zephyr",
+        "path": "/nix/store/awqhs4zjpzmlh6shj3fdq184w6j21qak-source/zephyr",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/ghdh9jk7n0dha7n1hwdz1fzziparxz5v-source/zephyr",
+        "path": "/nix/store/awqhs4zjpzmlh6shj3fdq184w6j21qak-source/zephyr",
         "type": "path"
       }
     }
