@@ -7,6 +7,7 @@
     desktop.url = "./desktop";
     zephyr.url = "./zephyr";
     nixos-installer.url = "./nixos-installer";
+    mbund-gnome.url = "./mbund-gnome";
 
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils = { url = "github:numtide/flake-utils"; inputs.nixpkgs.follows = "nixpkgs"; };
@@ -16,7 +17,7 @@
     nixosConfigurations =
       virtualbox.nixosConfigurations //
       marshmellow-roaster.nixosConfigurations //
-      desktop.nixosConfigurations //
+      desktop.genNixOSConfigurations inputs //
       zephyr.nixosConfigurations //
       nixos-installer.nixosConfigurations //
       { };

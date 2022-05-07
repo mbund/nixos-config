@@ -5,17 +5,16 @@
     erasure.url = "github:mbund/nix-erasure";
 
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    de.url = "path:/etc/nixos/marshmellow-roaster/de";
   };
 
-  outputs = { self, nixpkgs, erasure, ... }@inputs:
-    {
-      nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
+  outputs = { self, nixpkgs, erasure, ... }@inputs: {
+    genNixOSConfigurations = parentInputs: {
+      desktop = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
 
         modules = [
           erasure.nixosModule
-          inputs.de.nixosModule
+          parentInputs.mbund-gnome.nixosModule
           ({ pkgs, config, ... }:
             {
 
@@ -64,6 +63,7 @@
                 "steam-runtime"
                 "nvidia-x11"
                 "nvidia-settings"
+                "hplip"
               ];
 
               # Hardware options
@@ -80,11 +80,7 @@
                   192.168.1.103 zephyr
                 '';
               };
-
-              services.openssh = {
-                enable = true;
-              };
-
+              services.openssh.enable = true;
               networking.firewall.allowedTCPPorts = [
                 22 # ssh
                 5900 # vnc
@@ -124,10 +120,8 @@
               };
 
               # Desktop options
+              services.mbund-gnome.enable = true;
               hardware.nvidia.modesetting.enable = true;
-              
-              services.custom-desktop-environment.enable = true;
-              hardware.pulseaudio.enable = nixpkgs.lib.mkForce false;
               services.xserver = {
                 enable = true;
                 videoDrivers = [
@@ -139,41 +133,21 @@
                   enable = true;
                   user = "mbund";
                 };
-                
-                displayManager.startx.enable = true;
-
-                # displayManager.defaultSession = "plasmawayland";
-                # displayManager.sddm = {
-                #   enable = true;
-                #   autoNumlock = true;
-                #   settings.Wayland.SessionDir = "${pkgs.plasma5Packages.plasma-workspace}/share/wayland-sessions";
-                # };
-
-                # desktopManager.plasma5 = {
-                #   enable = true;
-                #   useQtScaling = true;
-                #   runUsingSystemd = true;
-                # };
 
                 exportConfiguration = true;
                 deviceSection = ''
                   Option "AllowSHMPixmaps" "on"
                   Option "DRI3" "on"
                 '';
-
-                xkbOptions = "caps:swapescape";
               };
-              hardware.bluetooth.enable = true;
-              services.xserver.wacom.enable = true;
-              programs.dconf.enable = true;
-              programs.kdeconnect.enable = true;
               programs.adb.enable = true;
               services.printing = {
                 enable = true;
                 drivers = with pkgs; [
                   gutenprint
                   gutenprintBin
-                  hplip
+                  foo2zjs
+                  # hplipWithPlugin
                 ];
               };
               services.avahi = {
@@ -184,52 +158,11 @@
                 git
                 vim
               ];
+
+              # misc
               time.timeZone = "America/New_York";
-
-              # programs.sway = {
-              #   enable = true;
-              #   wrapperFeatures.gtk = true; # so that gtk works properly
-              #   extraPackages = with pkgs; [
-              #     swaylock
-              #     swayidle
-              #     wl-clipboard
-              #     mako # notification daemon
-              #     alacritty # Alacritty is the default terminal in the config
-              #     dmenu # Dmenu is the default in the config but i recommend wofi since its wayland native
-              #   ];
-              # };
-
-              # Keychain options
-              services.gnome.gnome-keyring.enable = true;
-              programs.seahorse.enable = true;
-              security.pam.services.login = {
-                enableKwallet = true;
-                enableGnomeKeyring = true;
-              };
-              # security.pam.services.sddm = {
-              #   enableKwallet = true;
-              #   enableGnomeKeyring = true;
-              # };
-              # programs.ssh.askPassword = pkgs.lib.mkForce "${pkgs.ksshaskpass.out}/bin/ksshaskpass";
-
-              # Steam
               programs.steam.enable = true;
-
-              # Docker
               virtualisation.docker.enable = true;
-
-              # Multimedia
-              services.pipewire = {
-                enable = true;
-                alsa = {
-                  enable = true;
-                  support32Bit = true; # this is probably not necessary
-                };
-                pulse.enable = true;
-                jack.enable = true;
-              };
-
-              # Virtualization
               virtualisation.libvirtd = {
                 enable = true;
                 qemu.ovmf.enable = true;
@@ -301,5 +234,5 @@
         ];
       };
     };
+  };
 }
-
