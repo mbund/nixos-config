@@ -69,6 +69,13 @@
               # Hardware options
               boot.loader.grub.configurationLimit = 10;
               boot.kernelPackages = pkgs.linuxPackages_latest;
+              hardware.nvidia.modesetting.enable = true;
+              hardware.opengl = {
+                enable = true;
+                extraPackages = with pkgs; [
+                  nvidia-vaapi-driver
+                ];
+              };
 
               # Networking options
               networking = {
@@ -121,7 +128,6 @@
 
               # Desktop options
               services.mbund-gnome.enable = true;
-              hardware.nvidia.modesetting.enable = true;
               services.xserver = {
                 enable = true;
                 videoDrivers = [
