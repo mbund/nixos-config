@@ -12,7 +12,7 @@ jobs:
     - name: Get current date
       id: date
       run: |
-        echo "::set-output name=release-name-date::$(date +'%Y%m%d%H%M')"
+        echo "::set-output name=release-name-date::$(date +'%F-%H-%M')"
         echo "::set-output name=tag-date::$(date +'release/%F/%H.%M')"
         echo "::set-output name=iso-date::$(date +'%F-%H-%M')"
 
