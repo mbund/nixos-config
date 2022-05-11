@@ -37,10 +37,9 @@
             enable = true;
             package = pkgs.gnomeExtensions.gsconnect;
           };
-          environment.systemPackages = with pkgs; with pkgs.gnomeExtensions; [
-            gnome.gnome-tweaks
-            xorg.xprop
-            fildem-global-menu
+          environment.systemPackages = with pkgs.gnome; with pkgs.gnomeExtensions; [
+            gnome-tweaks
+            dconf-editor
             undecorate-window-for-wayland
             blur-my-shell
             gsconnect
