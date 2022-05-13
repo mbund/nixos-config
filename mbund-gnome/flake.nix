@@ -37,13 +37,6 @@
             enable = true;
             package = pkgs.gnomeExtensions.gsconnect;
           };
-          environment.systemPackages = with pkgs.gnome; with pkgs.gnomeExtensions; [
-            gnome-tweaks
-            dconf-editor
-            undecorate-window-for-wayland
-            blur-my-shell
-            gsconnect
-          ];
           services.gnome.gnome-keyring.enable = true;
           programs.seahorse.enable = true;
           security.pam.services.login = {
