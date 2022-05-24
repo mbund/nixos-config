@@ -1,17 +1,5 @@
 {
   "nodes": {
-    "de": {
-      "locked": {
-        "lastModified": 1,
-        "narHash": "sha256-Otfr67axcxpOlnYhMc8RHZFlqgbDDFDRCdci0cWc830=",
-        "path": "/nix/store/4pmyn8vpnczjjqsxnznkbx6w44026sx5-source/de",
-        "type": "path"
-      },
-      "original": {
-        "path": "/nix/store/4pmyn8vpnczjjqsxnznkbx6w44026sx5-source/de",
-        "type": "path"
-      }
-    },
     "desktop": {
       "inputs": {
         "erasure": "erasure",
@@ -20,11 +8,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-AetdGgwX3+LG8qk0ftMvqs3Wl+sI2guV/BIyqtFt5Ng=",
-        "path": "/nix/store/njbavfd222d0a2xg0zpqnd100w221rmz-source/desktop",
+        "path": "/nix/store/7qrmqn0sddvncxmh7yyqp65zcr003cbz-source/desktop",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/njbavfd222d0a2xg0zpqnd100w221rmz-source/desktop",
+        "path": "/nix/store/7qrmqn0sddvncxmh7yyqp65zcr003cbz-source/desktop",
         "type": "path"
       }
     },
@@ -165,30 +153,29 @@
     },
     "marshmellow-roaster": {
       "inputs": {
-        "de": "de",
         "erasure": "erasure_2",
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-blA8+vjyTUuBY0F1dI1jyL8voDHuZZinOQNYmcMnwK8=",
-        "path": "/nix/store/njbavfd222d0a2xg0zpqnd100w221rmz-source/marshmellow-roaster",
+        "narHash": "sha256-GwBnhS8vjnTYsNYoQ2s0Q9Vt8nyf3iQTmKPFHgptNSo=",
+        "path": "/nix/store/7qrmqn0sddvncxmh7yyqp65zcr003cbz-source/marshmellow-roaster",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/njbavfd222d0a2xg0zpqnd100w221rmz-source/marshmellow-roaster",
+        "path": "/nix/store/7qrmqn0sddvncxmh7yyqp65zcr003cbz-source/marshmellow-roaster",
         "type": "path"
       }
     },
     "mbund-gnome": {
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-w/e25sBRnpCdErF1JO+rWUj9gaErw/spd/pcwqEGqEk=",
-        "path": "/nix/store/njbavfd222d0a2xg0zpqnd100w221rmz-source/mbund-gnome",
+        "narHash": "sha256-cp+BnNyh05rpKXILr6cr9YHBDhXiX5cluFi8zOcRJ+c=",
+        "path": "/nix/store/7qrmqn0sddvncxmh7yyqp65zcr003cbz-source/mbund-gnome",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/njbavfd222d0a2xg0zpqnd100w221rmz-source/mbund-gnome",
+        "path": "/nix/store/7qrmqn0sddvncxmh7yyqp65zcr003cbz-source/mbund-gnome",
         "type": "path"
       }
     },
@@ -200,11 +187,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-j7TkKjvisER1bWR/So+XJj/8dowWeTNCKkuwwo8Maso=",
-        "path": "/nix/store/njbavfd222d0a2xg0zpqnd100w221rmz-source/nixos-installer",
+        "path": "/nix/store/7qrmqn0sddvncxmh7yyqp65zcr003cbz-source/nixos-installer",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/njbavfd222d0a2xg0zpqnd100w221rmz-source/nixos-installer",
+        "path": "/nix/store/7qrmqn0sddvncxmh7yyqp65zcr003cbz-source/nixos-installer",
         "type": "path"
       }
     },
@@ -323,11 +310,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-J92/YStqNUuCTuAE+WTt0WxijEIqAkS33EbEXYb45Os=",
-        "path": "/nix/store/njbavfd222d0a2xg0zpqnd100w221rmz-source/virtualbox",
+        "path": "/nix/store/7qrmqn0sddvncxmh7yyqp65zcr003cbz-source/virtualbox",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/njbavfd222d0a2xg0zpqnd100w221rmz-source/virtualbox",
+        "path": "/nix/store/7qrmqn0sddvncxmh7yyqp65zcr003cbz-source/virtualbox",
         "type": "path"
       }
     },
@@ -339,11 +326,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-sSw0IJtm/R05yNspD2R9mV8bWlxKSm4nWM1/Z1d7FKA=",
-        "path": "/nix/store/njbavfd222d0a2xg0zpqnd100w221rmz-source/zephyr",
+        "path": "/nix/store/7qrmqn0sddvncxmh7yyqp65zcr003cbz-source/zephyr",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/njbavfd222d0a2xg0zpqnd100w221rmz-source/zephyr",
+        "path": "/nix/store/7qrmqn0sddvncxmh7yyqp65zcr003cbz-source/zephyr",
         "type": "path"
       }
     }

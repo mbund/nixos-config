@@ -3,7 +3,6 @@
 
   inputs = {
     erasure.url = "github:mbund/nix-erasure";
-    de.url = "./de";
 
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
@@ -15,7 +14,6 @@
 
         modules = [
           erasure.nixosModule
-          inputs.de.nixosModule
           ({ pkgs, ... }:
             {
 
@@ -105,8 +103,6 @@
                   passwordFile = "/persist/etc/mbund-passwd"; # mkpasswd -m sha-512 > /persist/etc/mbund-passwd
                 };
               };
-
-              services.custom-desktop-environment.enable = true;
 
               services.xserver = {
                 enable = true;
@@ -200,4 +196,3 @@
       };
     };
 }
-

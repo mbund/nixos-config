@@ -132,13 +132,7 @@
                 enable = true;
                 videoDrivers = [
                   "nvidia"
-                  # "nouveau"
                 ];
-
-                displayManager.autoLogin = {
-                  enable = true;
-                  user = "mbund";
-                };
 
                 exportConfiguration = true;
                 deviceSection = ''

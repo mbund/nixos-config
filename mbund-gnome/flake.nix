@@ -2,7 +2,7 @@
 
   description = "Gnome based desktop environment";
 
-  outputs = { self, ... }@inputs: {
+  outputs = { ... }@inputs: {
     nixosModule = { pkgs, config, lib, ... }:
       let
         cfg = config.services.mbund-gnome;
@@ -47,6 +47,7 @@
           hardware.bluetooth.enable = true;
           services.xserver.wacom.enable = true;
           hardware.pulseaudio.enable = lib.mkForce false;
+          xdg.portal.gtkUsePortal = true;        
           services.pipewire = {
             enable = true;
             alsa = {
@@ -57,7 +58,7 @@
             jack.enable = true;
           };
           boot.kernelModules = [ "v4l2loopback" ];
-          boot.extraModulePackages = [ config.boot.kernelPackages.v4l2loopback.out ];
+          boot.extraModulePackages = [ config.boot.kernelPackages.v4l2loopback.out ];          
 
         };
       };
