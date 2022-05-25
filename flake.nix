@@ -6,6 +6,7 @@
     marshmellow-roaster.url = "./marshmellow-roaster";
     desktop.url = "./desktop";
     zephyr.url = "./zephyr";
+    thunder.url = "./thunder";
     nixos-installer.url = "./nixos-installer";
     mbund-gnome.url = "./mbund-gnome";
 
@@ -19,6 +20,7 @@
       marshmellow-roaster.nixosConfigurations //
       desktop.genNixOSConfigurations inputs //
       zephyr.nixosConfigurations //
+      thunder.genNixOSConfigurations inputs //
       nixos-installer.nixosConfigurations //
       { };
 

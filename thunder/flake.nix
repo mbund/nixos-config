@@ -1,0 +1,136 @@
+{
+  description = "Thunder cloud server configuration";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+  };
+
+  outputs = { self, nixpkgs, ... }@inputs: {
+    genNixOSConfigurations = parentInputs: {
+      thunder = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+
+        modules = [
+          ({ pkgs, config, ... }:
+            {
+
+              imports = [
+                ./hardware-configuration.nix
+                ./networking.nix
+              ];
+
+              # Nix options
+              nix = {
+                settings = {
+                  auto-optimise-store = true;
+                  trusted-users = [ "root" ];
+                  allowed-users = [ "*" ];
+                  binary-caches = [
+                    "https://cache.nixos.org"
+                    "https://nix-community.cachix.org"
+                  ];
+                  binary-cache-public-keys = [
+                    "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+                    "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+                  ];
+                };
+                package = pkgs.nixUnstable;
+                extraOptions = ''
+                  # enable the new standalone nix commands
+                  experimental-features = nix-command flakes
+
+                  flake-registry = /etc/nixos/global-flake-registry.json
+                  accept-flake-config = true
+                  warn-dirty = false
+                  
+                  # run garbage collection whenever there is less than 500MiB free space left
+                  min-free = ${toString (500 * 1024 * 1024)}
+                '';
+                gc = {
+                  automatic = true;
+                  dates = "Tuesday 01:00 UTC";
+                  options = "--delete-older-than 7d";
+                };
+              };
+
+              # Clear >1 month-old logs
+              systemd = {
+                services.clear-log = {
+                  description = "Clear >1 month-old logs every week";
+                  serviceConfig = {
+                    Type = "oneshot";
+                    ExecStart = "${pkgs.systemd}/bin/journalctl --vacuum-time=30d";
+                  };
+                };
+                timers.clear-log = {
+                  wantedBy = [ "timers.target" ];
+                  partOf = [ "clear-log.service" ];
+                  timerConfig.OnCalendar = "Tuesday 01:00 UTC";
+                };
+              };
+
+              # User options
+              users.mutableUsers = false;
+              users.groups = {
+                # make a new group for the files in /etc/nixos so some users are allowed to edit it
+                nixos-configurator = { };
+                mbund = { };
+              };
+              users.users = {
+                root.hashedPassword = "*"; # disable root password
+                mbund = {
+                  isNormalUser = true;
+                  group = "mbund";
+                  extraGroups = [
+                    "users"
+                    "wheel"
+                    "nixos-configurator"
+                  ];
+                  uid = 1000;
+                  passwordFile = "/etc/mbund-passwd"; # mkpasswd -m sha-512 > /etc/mbund-passwd
+                  openssh.authorizedKeys.keys = [
+                    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIADcdRDVko8I13btaGgmsg8mE5qxxJlQn8FscTMghdjr mbund@mbund-desktop"
+                  ];
+                };
+              };
+
+              time.timeZone = "UTC";
+
+              # Misc
+              systemd.extraConfig = ''
+                # this isn't some super powerful server running a million things, a service will
+                # either stop in milliseconds or fail so the default 90s is way too long
+                DefaultTimeoutStopSec=10s
+              '';
+
+              security.sudo.extraConfig = ''
+                # rollback results in sudo lectures after each reboot
+                Defaults lecture = never
+              '';
+
+              system = {
+                autoUpgrade = {
+                  enable = true;
+                  allowReboot = true;
+                  dates = "Daily 01:00 UTC";
+                };
+                # Copy over full nixos-config to `/var/run/current-system/full-config/`
+                # (available to the currently active derivation for safety/debugging)
+                extraSystemBuilderCmds = "cp -rf ${./.} $out/full-config";
+
+                # This value determines the NixOS release from which the default
+                # settings for stateful data, like file locations and database versions
+                # on your system were taken. It‘s perfectly fine and recommended to leave
+                # this value at the release version of the first install of this system.
+                # Before changing this value read the documentation for this option
+                # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+                stateVersion = "21.11"; # Did you read the comment?
+              };
+
+            })
+        ];
+      };
+    };
+  };
+}
+

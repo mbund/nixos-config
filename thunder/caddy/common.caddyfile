@@ -1,0 +1,3 @@
+(set_headers) {
+    Referrer-Policy "no-referrer"
+}
