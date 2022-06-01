@@ -39,6 +39,10 @@
           };
           services.gnome.gnome-keyring.enable = true;
           programs.seahorse.enable = true;
+          programs.evolution = {
+            enable = true;
+            plugins = with pkgs; [ evolution-ews ];
+          };
           security.pam.services.login = {
             enableGnomeKeyring = true;
           };
