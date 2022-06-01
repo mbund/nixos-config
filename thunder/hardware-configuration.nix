@@ -1,5 +1,9 @@
-{ pkgs, config, lib, ... }:
+{ pkgs, config, lib, modulesPath, ... }:
 {
+  imports = [
+    (modulesPath + "/profiles/qemu-guest.nix")
+  ];
+  
   # partitioning and drives
   fileSystems."/" = {
     device = "/dev/sda";
@@ -11,6 +15,7 @@
   ];
 
   # kernel
+  boot.initrd.availableKernelModules = [ "virtio_pci" "virtio_scsi" "achi" "sd_mod" ];
   boot.kernelParams = [ "console=ttyS0,19200n8" ];
   boot.kernelModules = [ "tcp_bbr" ];
   boot.kernelPackages = pkgs.linuxPackages_hardened;
@@ -61,5 +66,8 @@
       terminal_output serial
     '';
   };
+  
+  # misc
+  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
 }
