@@ -15,7 +15,7 @@
   ];
 
   # kernel
-  boot.initrd.availableKernelModules = [ "virtio_pci" "virtio_scsi" "achi" "sd_mod" ];
+  boot.initrd.availableKernelModules = [ "virtio_pci" "virtio_scsi" "ahci" "sd_mod" ];
   boot.kernelParams = [ "console=ttyS0,19200n8" ];
   boot.kernelModules = [ "tcp_bbr" ];
   boot.kernelPackages = pkgs.linuxPackages_hardened;
