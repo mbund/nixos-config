@@ -16,6 +16,7 @@
     permitRootLogin = "no";
     ports = [ 22 ];
     openFirewall = false;
+    passwordAuthentication = false;
   };
 
   environment.systemPackages = with pkgs; [
