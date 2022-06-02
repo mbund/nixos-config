@@ -6,9 +6,11 @@
   ];
   
   networking = {
-    usePredictableInterfaceNames = false;
     useDHCP = false;
     interfaces.eth0.useDHCP = true;
+    # usePredictableInterfaceNames = false;
+    networkmanager.enable = true;
+    hostName = "thunder";
   };
 
   services.openssh = {
@@ -22,7 +24,7 @@
   environment.systemPackages = with pkgs; [
     inetutils
     mtr
-    sysstat
+    sysstat    
   ];
 
   # Linode longview system stats
@@ -36,7 +38,7 @@
     enable = true;
     settings = {
       resolution_type = "GETDNS_RESOLUTION_STUB";
-      dns_transport_list = "GETDNS_TRANSPORT_TLS";
+      dns_transport_list = [ "GETDNS_TRANSPORT_TLS" ];
       tls_authentication = "GETDNS_AUTHENTICATION_REQUIRED";
       tls_query_padding_blocksize = 256;
       edns_client_subnet_private = 1; # true

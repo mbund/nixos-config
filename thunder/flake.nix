@@ -81,10 +81,12 @@
                 mbund = {
                   isNormalUser = true;
                   group = "mbund";
+                  shell = pkgs.zsh;
                   extraGroups = [
                     "users"
                     "wheel"
                     "nixos-configurator"
+                    "networkmanager"
                   ];
                   uid = 1000;
                   passwordFile = "/etc/mbund-passwd"; # mkpasswd -m sha-512 > /etc/mbund-passwd
@@ -94,9 +96,16 @@
                 };
               };
 
-              time.timeZone = "UTC";
+              # programs
+              programs.zsh.enable = true;
+              environment.systemPackages = with pkgs; [
+                git
+                vim
+              ];
 
               # Misc
+              time.timeZone = "UTC";
+
               systemd.extraConfig = ''
                 # this isn't some super powerful server running a million things, a service will
                 # either stop in milliseconds or fail so the default 90s is way too long
