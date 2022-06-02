@@ -88,11 +88,15 @@
     interfaces.eth0 = {
       allowedTCPPorts = [
         22
-        443
+        443 4430
+        80 8000
       ];
     };
     extraCommands = ''
       ip6tables -t nat -I PREROUTING -i ens3 -p tcp -m tcp --dport 443 -j REDIRECT --to-ports 4430
+      iptables -t nat -I PREROUTING -i ens3 -p tcp -m tcp --dport 443 -j REDIRECT --to-ports 4430
+      ip6tables -t nat -I PREROUTING -i ens3 -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 8000
+      iptables -t nat -I PREROUTING -i ens3 -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 8000
     '';
   };
   

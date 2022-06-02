@@ -1,3 +1,9 @@
+{
+    admin off
+    http_port 8000
+    https_port 4430
+}
+
 (set_headers) {
     Referrer-Policy "no-referrer"
 }

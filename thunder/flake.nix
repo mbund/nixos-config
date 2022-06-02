@@ -17,6 +17,7 @@
               imports = [
                 ./hardware-configuration.nix
                 ./networking.nix
+                ./searxng.nix
               ];
 
               # Nix options
@@ -97,6 +98,7 @@
               };
 
               # programs
+              virtualisation.podman.enable = true;
               programs.zsh.enable = true;
               environment.systemPackages = with pkgs; [
                 git
