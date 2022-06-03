@@ -87,16 +87,19 @@
     enable = true;
     interfaces.eth0 = {
       allowedTCPPorts = [
+        # Every required port is opened here, including some internal ones. A separate,
+        # dedicated firewall should allow only the absolutely required ports. The
+        # required ports are, by arbitrary convention here, the first column of numbers.
         22
         443 4430
-        80 8000
       ];
     };
     extraCommands = ''
-      ip6tables -t nat -I PREROUTING -i ens3 -p tcp -m tcp --dport 443 -j REDIRECT --to-ports 4430
-      iptables -t nat -I PREROUTING -i ens3 -p tcp -m tcp --dport 443 -j REDIRECT --to-ports 4430
-      ip6tables -t nat -I PREROUTING -i ens3 -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 8000
-      iptables -t nat -I PREROUTING -i ens3 -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 8000
+      # Redirect all incoming https (443) traffic through to port 4430
+      ip46tables -t nat -A PREROUTING -i eth0 -p tcp --dport 443 -j REDIRECT --to-port 4430
+
+      # Redirect *all exclusively local (OUTPUT not POSTROUTING)* packets that are going out from port 4430 to port 443
+      ip46tables -t nat -A OUTPUT -p tcp --dport 4430 -j DNAT --to-destination :443
     '';
   };
   

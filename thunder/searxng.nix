@@ -10,7 +10,7 @@ in {
     image = "searxng/searxng";
     environment = {
       BASE_URL = "https://localhost";
-      INSTANCE_NAME = "msearx";
+      INSTANCE_NAME = "mearxng";
     };
     volumes = [
       "${data}/${name}-container:/etc/searxng"
