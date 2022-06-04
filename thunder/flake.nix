@@ -71,6 +71,9 @@
                   partOf = [ "clear-log.service" ];
                   timerConfig.OnCalendar = "Tuesday 01:00 UTC";
                 };
+                tmpfiles.rules = [
+                  "v /etc/nixos 775 root nixos-configurator - -"
+                ];
               };
 
               # User options

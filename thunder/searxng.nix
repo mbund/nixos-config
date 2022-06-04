@@ -20,6 +20,10 @@ in {
     ];
   };
 
+  systemd.tmpfiles.rules = [
+    "v ${data}/${name}-container 755 ${user} ${user} - -"
+  ];
+
   users.users.${user} = {
     group = user;
     home = data;

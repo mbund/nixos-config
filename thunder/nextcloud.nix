@@ -26,7 +26,6 @@ in {
     ];
     ports = [
       "127.0.0.1:${builtins.toString port}:80"
-      "${builtins.toString db_port}:5432"
     ];
     dependsOn = [ "nextcloud-postgres" ];
   };
@@ -48,14 +47,13 @@ in {
   };
   
   systemd.tmpfiles.rules = [
-    "v ${data}/nextcloud-container                 755 ${user} ${user} 0 -"
-    "v ${data}/nextcloud-container/nextcloud       755 ${user} ${user} 0 -"
-    "v ${data}/nextcloud-container/apps            755 ${user} ${user} 0 -"
-    "v ${data}/nextcloud-container/config          755 ${user} ${user} 0 -"
-    "v ${data}/nextcloud-container/data            755 ${user} ${user} 0 -"
-    "v ${data}/nextcloud-postgres-container        755 ${user} ${user} 0 -"
-    "v ${data}/nextcloud-postgres-container/pgdata 755 ${user} ${user} 0 -"
-    "v ${data}/nextcloud-postgres-container/data   755 ${user} ${user} 0 -"
+    "v ${data}/nextcloud-container                 755 ${user} ${user} - -"
+    "v ${data}/nextcloud-container/nextcloud       755 ${user} ${user} - -"
+    "v ${data}/nextcloud-container/apps            755 ${user} ${user} - -"
+    "v ${data}/nextcloud-container/config          755 ${user} ${user} - -"
+    "v ${data}/nextcloud-container/data            755 ${user} ${user} - -"
+    "v ${data}/nextcloud-postgres-container        755 ${user} ${user} - -"
+    "v ${data}/nextcloud-postgres-container/data   755 ${user} ${user} - -"
   ];
 
   users.users.${user} = {
