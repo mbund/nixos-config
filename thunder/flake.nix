@@ -20,6 +20,7 @@
                 ./caddy-proxy.nix
                 ./caddy-tor.nix
                 ./searxng.nix
+                ./nextcloud.nix
               ];
 
               # Nix options

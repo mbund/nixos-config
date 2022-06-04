@@ -3,7 +3,7 @@ let
   host = "searx.mbund.org";
   port = 4431;
   name = "searxng";
-  user = "searxng";
+  user = "thunder-searxng";
   data = "/home/${user}";
 in {
   virtualisation.oci-containers.containers.${name} = {

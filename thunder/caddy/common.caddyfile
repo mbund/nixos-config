@@ -19,3 +19,10 @@
         lb_policy first
     }
 }
+
+(mb_proxy_nextcloud) {
+    reverse_proxy 127.0.0.1:4432 {
+        import mb_remove_headers
+        lb_policy first
+    }
+}
