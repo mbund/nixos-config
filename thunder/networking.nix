@@ -91,7 +91,7 @@
         # dedicated firewall should allow only the absolutely required ports. The
         # required ports are, by arbitrary convention here, the first column of numbers.
         22
-        443 4430
+        443  4430
       ];
     };
     extraCommands = ''

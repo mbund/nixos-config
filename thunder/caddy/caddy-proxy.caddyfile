@@ -1,0 +1,16 @@
+import common.caddyfile
+
+https://searx.mbund.org:4430 https://www.searx.mbund.org:4430 {
+    # www -> apex
+    @www host www.searx.mbund.org
+    redir @www https://searx.mbund.org{uri} permanent
+
+    header {
+        import mb_set_headers
+        Onion-Location http://searx.gchlu5whdmvcy7yql7y2ued2dagjie7lrbrdu762y6455ehlejrvbcqd.onion
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        defer
+    }
+
+    import mb_proxy_searx
+}

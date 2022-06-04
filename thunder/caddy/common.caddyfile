@@ -4,6 +4,18 @@
     https_port 4430
 }
 
-(set_headers) {
+(mb_set_headers) {
     Referrer-Policy "no-referrer"
+}
+
+(mb_remove_headers) {
+    header_up Host {http.reverse_proxy.upstream.host}
+    header_up User-Agent "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+}
+
+(mb_proxy_searx) {
+    reverse_proxy 127.0.0.1:4431 {
+        import mb_remove_headers
+        lb_policy first
+    }
 }

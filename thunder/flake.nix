@@ -17,6 +17,8 @@
               imports = [
                 ./hardware-configuration.nix
                 ./networking.nix
+                ./caddy-proxy.nix
+                ./caddy-tor.nix
                 ./searxng.nix
               ];
 

@@ -1,9 +1,0 @@
-import common.caddyfile
-
-https://searx.mbund.org:4430 https://www.searx.mbund.org:4430 {
-      # www -> apex
-      @www host www.searx.mbund.org
-      redir @www https://searx.mbund.org{uri} permanent
-
-      reverse_proxy 127.0.0.1:4431
-}
