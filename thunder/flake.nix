@@ -23,7 +23,6 @@
                 ./nextcloud.nix
               ];
 
-              # Nix options
               nix = {
                 settings = {
                   auto-optimise-store = true;
@@ -57,7 +56,7 @@
                 };
               };
 
-              # Clear >1 month-old logs
+              # clear >1 month-old logs
               systemd = {
                 services.clear-log = {
                   description = "Clear >1 month-old logs every week";
@@ -76,7 +75,7 @@
                 ];
               };
 
-              # User options
+              # user options
               users.mutableUsers = false;
               users.groups = {
                 # make a new group for the files in /etc/nixos so some users are allowed to edit it
@@ -103,27 +102,15 @@
                 };
               };
 
-              # programs
-              virtualisation.podman.enable = true;
+              # misc
+              virtualisation.docker.enable = true;
+              virtualisation.oci-containers.backend = "docker";
               programs.zsh.enable = true;
+              time.timeZone = "UTC";
               environment.systemPackages = with pkgs; [
                 git
                 vim
               ];
-
-              # Misc
-              time.timeZone = "UTC";
-
-              systemd.extraConfig = ''
-                # this isn't some super powerful server running a million things, a service will
-                # either stop in milliseconds or fail so the default 90s is way too long
-                DefaultTimeoutStopSec=10s
-              '';
-
-              security.sudo.extraConfig = ''
-                # rollback results in sudo lectures after each reboot
-                Defaults lecture = never
-              '';
 
               system = {
                 autoUpgrade = {
