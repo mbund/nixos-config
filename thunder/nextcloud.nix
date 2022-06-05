@@ -3,21 +3,20 @@ let
   port = 4432;
   user = "thunder-nextcloud";
   data = "/home/${user}";
-  db_port = 10000;
   localfile = path: "/etc/nixos/thunder/" + path;
-in {
+in
+{
   virtualisation.oci-containers.containers.nextcloud = {
     image = "nextcloud";
     environment = {
-      POSTGRES_DB = "nextcloud";
-      POSTGRES_USER = "nextcloud";
-      POSTGRES_HOST = "127.0.0.1";
+      MYSQL_DATABASE = "nextcloud";
+      MYSQL_USER = "nextcloud";
+      MYSQL_HOST = "nextcloudmariadb:3306";
+      # MYSQL_PASSWORD = "nextcloud-secret";
       NEXTCLOUD_ADMIN_USER = "admin";
+      # NEXTCLOUD_ADMIN_PASSWORD = "admin";
     };
-    environmentFiles = [
-      (localfile "/secrets/nextcloud-env")
-      (localfile "/secrets/nextcloud-postgres-env")
-    ];
+    environmentFiles = [ (localfile "/secrets/nextcloud-env") ];
     volumes = [
       "${data}/nextcloud-container/nextcloud:/var/www/html"
       "${data}/nextcloud-container/apps:/var/www/custom_apps"
@@ -27,33 +26,47 @@ in {
     ports = [
       "127.0.0.1:${builtins.toString port}:80"
     ];
-    dependsOn = [ "nextcloud-postgres" ];
+    dependsOn = [ "nextcloudmariadb" ];
+    extraOptions = [ "--network=nextcloud-br" ];
   };
 
-  virtualisation.oci-containers.containers.nextcloud-postgres = {
-    image = "postgres";
+  virtualisation.oci-containers.backend = lib.mkForce "docker";
+
+  virtualisation.oci-containers.containers.nextcloudmariadb = {
+    image = "mariadb";
     environment = {
-      POSTGRES_USER = "nextcloud";
+      MARIADB_DATABASE = "nextcloud";
+      MARIADB_USER = "nextcloud";
+      # MARIADB_ROOT_PASSWORD = "root-secret";
+      # MARIADB_PASSWORD = "nextcloud-secret";
     };
-    environmentFiles = [
-      (localfile "/secrets/nextcloud-postgres-env")
-    ];
+    environmentFiles = [ (localfile "secrets/nextcloudmariadb-env") ];
     volumes = [
-      "${data}/nextcloud-postgres-container/data:/var/lib/postgresql/data"
+      "${data}/nextcloudmariadb-container/data:/var/lib/mysql"
     ];
-    ports = [
-      "127.0.0.1:${builtins.toString db_port}:5432"
-    ];
+    extraOptions = [ "--network=nextcloud-br" ];
   };
-  
+
+  systemd.services.init-nextcloud-network-and-files = {
+    description = "Create the network bridge nextcloud-br for nextcloud.";
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig.Type = "oneshot";
+    script =
+      let
+        backend = config.virtualisation.oci-containers.backend;
+        cli = "${config.virtualisation.${backend}.package}/bin/${backend}";
+      in "${cli} network ls | grep nextcloud-br || ${cli} network create nextcloud-br";
+  };
+
   systemd.tmpfiles.rules = [
     "v ${data}/nextcloud-container                 755 ${user} ${user} - -"
     "v ${data}/nextcloud-container/nextcloud       755 ${user} ${user} - -"
     "v ${data}/nextcloud-container/apps            755 ${user} ${user} - -"
     "v ${data}/nextcloud-container/config          755 ${user} ${user} - -"
     "v ${data}/nextcloud-container/data            755 ${user} ${user} - -"
-    "v ${data}/nextcloud-postgres-container        755 ${user} ${user} - -"
-    "v ${data}/nextcloud-postgres-container/data   755 ${user} ${user} - -"
+    "v ${data}/nextcloudmariadb-container         755 ${user} ${user} - -"
+    "v ${data}/nextcloudmariadb-container/data    755 ${user} ${user} - -"
   ];
 
   users.users.${user} = {
