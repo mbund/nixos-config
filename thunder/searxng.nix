@@ -2,6 +2,7 @@
 let
   host = "searx.mbund.org";
   port = 4431;
+  uid = 10001;
   name = "searxng";
   user = "thunder-searxng";
   data = "/home/${user}";
@@ -21,7 +22,7 @@ in {
   };
 
   systemd.tmpfiles.rules = [
-    "v ${data}/${name}-container 755 ${user} ${user} - -"
+    "v ${data}/${name}-container 550 ${user} ${user} - -"
   ];
 
   users.users.${user} = {
@@ -29,10 +30,12 @@ in {
     home = data;
     createHome = true;
     isSystemUser = true;
+    inherit uid;
   };
 
   users.groups.${user} = {
     members = [ "${user}" ];
+    gid = uid;
   };
 
 }

@@ -85,8 +85,8 @@
         # Every required port is opened here, including some internal ones. A separate,
         # dedicated firewall should allow only the absolutely required ports. The
         # required ports are, by arbitrary convention here, the first column of numbers.
-        22
-        443  4430
+        22        # ssh
+        443  4430 # https
       ];
     };
     extraCommands = ''

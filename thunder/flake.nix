@@ -21,6 +21,7 @@
                 ./caddy-tor.nix
                 ./searxng.nix
                 ./nextcloud.nix
+                ./matrix.nix
               ];
 
               nix = {

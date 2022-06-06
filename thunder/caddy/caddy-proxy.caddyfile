@@ -22,10 +22,31 @@ https://nextcloud.mbund.org:4430 https://www.nextcloud.mbund.org:4430 {
 
     header {
         import mb_set_headers
-        Onion-Location http://nextcloud.gchlu5whdmvcy7yql7y2ued2dagjie7lrbrdu762y6455ehlejrvbcqd.onion
         Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
         defer
     }
 
-    import mb_proxy_nextcloud
+    reverse_proxy 127.0.0.1:4432 {
+        import mb_remove_headers
+        lb_policy first
+    }
+}
+
+(matrix-well-known-header) {
+    # Headers
+    header Access-Control-Allow-Origin "*"
+    header Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+    header Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    header Content-Type "application/json"
+}
+
+https://mbund.org:4430 {
+    handle /.well-known/matrix/server {
+        import matrix-well-known-header
+        respond `{"m.server":"matrix.mbund.org:443"}`
+    }
+}
+
+https://matrix.mbund.org:4430 {
+    reverse_proxy /_matrix/* http://127.0.0.1:6167
 }
