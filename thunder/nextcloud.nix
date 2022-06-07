@@ -2,9 +2,7 @@
 let
   port = 4432;
   user = "thunder-nextcloud";
-  uid = 10002;
   data = "/home/${user}";
-  localfile = path: "/etc/nixos/thunder/" + path;
 in
 {
   # edit nextcloud's config.php and add
@@ -27,8 +25,8 @@ in
       "${data}/nextcloud-container/config:/var/www/config"
       "${data}/nextcloud-container/data:/var/www/data"
       
-      "${localfile "secrets/nextcloud-mariadb-password"}:/run/secrets/nextcloud-mariadb-password"
-      "${localfile "secrets/nextcloud-admin-password"}:/run/secrets/nextcloud-admin-password"
+      "/etc/secrets/nextcloud-mariadb-password:/run/secrets/nextcloud-mariadb-password"
+      "/etc/secrets/nextcloud-admin-password:/run/secrets/nextcloud-admin-password"
     ];
     ports = [
       "127.0.0.1:${builtins.toString port}:80"
@@ -49,9 +47,9 @@ in
     volumes = [
       "${data}/nextcloudmariadb-container/data:/var/lib/mysql"
 
-      "${localfile "secrets/nextcloud-mariadb-password"}:/run/secrets/nextcloud-mariadb-password"
-      "${localfile "secrets/nextcloud-mariadb-root-password"}:/run/secrets/nextcloud-mariadb-root-password"
-      "${localfile "secrets/nextcloud-admin-password"}:/run/secrets/nextcloud-admin-password"
+      "/etc/secrets/nextcloud-mariadb-password:/run/secrets/nextcloud-mariadb-password"
+      "/etc/secrets/nextcloud-mariadb-root-password:/run/secrets/nextcloud-mariadb-root-password"
+      "/etc/secrets/nextcloud-admin-password:/run/secrets/nextcloud-admin-password"
     ];
     extraOptions = [ "--network=nextcloud-br" ];
   };
@@ -71,13 +69,14 @@ in
   };
 
   systemd.tmpfiles.rules = [
-    "v ${data}/nextcloud-container             550 ${user} ${user} - -"
-    "v ${data}/nextcloud-container/nextcloud   550 ${user} ${user} - -"
-    "v ${data}/nextcloud-container/apps        550 ${user} ${user} - -"
-    "v ${data}/nextcloud-container/config      550 ${user} ${user} - -"
-    "v ${data}/nextcloud-container/data        550 ${user} ${user} - -"
-    "v ${data}/nextcloudmariadb-container      550 ${user} ${user} - -"
-    "v ${data}/nextcloudmariadb-container/data 550 ${user} ${user} - -"
+    "v ${data}/nextcloud-container             777 ${user} ${user} - -"
+    "v ${data}/nextcloud-container/nextcloud   777 ${user} ${user} - -"
+    "v ${data}/nextcloud-container/apps        777 ${user} ${user} - -"
+    "v ${data}/nextcloud-container/config      777 ${user} ${user} - -"
+    "v ${data}/nextcloud-container/data        777 ${user} ${user} - -"
+
+    "v ${data}/nextcloudmariadb-container      777 ${user} ${user} - -"
+    "v ${data}/nextcloudmariadb-container/data 777 ${user} ${user} - -"
   ];
 
   users.users.${user} = {
@@ -85,12 +84,10 @@ in
     home = data;
     createHome = true;
     isSystemUser = true;
-    inherit uid;
   };
 
   users.groups.${user} = {
     members = [ "${user}" ];
-    gid = uid;
   };
 
 }

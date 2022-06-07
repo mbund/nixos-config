@@ -1,5 +1,29 @@
 import common.caddyfile
 
+(matrix-well-known-header) {
+    # Headers
+    header Access-Control-Allow-Origin "*"
+    header Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+    header Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    header Content-Type "application/json"
+}
+
+mbund.org:4430 {
+    handle /.well-known/matrix/server {
+        import matrix-well-known-header
+        respond `{"m.server":"matrix.mbund.org:443"}`
+    }
+
+    handle /.well-known/matrix/client {
+        import matrix-well-known-header
+        respond `{"m.homeserver":{"base_url":"https://matrix.mbund.org"}}`
+    }
+}
+
+matrix.mbund.org:4430 {
+    reverse_proxy /_matrix/* http://127.0.0.1:6167
+}
+
 https://searx.mbund.org:4430 https://www.searx.mbund.org:4430 {
     # www -> apex
     @www host www.searx.mbund.org
@@ -30,23 +54,4 @@ https://nextcloud.mbund.org:4430 https://www.nextcloud.mbund.org:4430 {
         import mb_remove_headers
         lb_policy first
     }
-}
-
-(matrix-well-known-header) {
-    # Headers
-    header Access-Control-Allow-Origin "*"
-    header Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
-    header Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-    header Content-Type "application/json"
-}
-
-https://mbund.org:4430 {
-    handle /.well-known/matrix/server {
-        import matrix-well-known-header
-        respond `{"m.server":"matrix.mbund.org:443"}`
-    }
-}
-
-https://matrix.mbund.org:4430 {
-    reverse_proxy /_matrix/* http://127.0.0.1:6167
 }

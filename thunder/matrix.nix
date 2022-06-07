@@ -2,9 +2,7 @@
 let
   port = 6167;
   user = "thunder-matrix";
-  uid = 10003;
   data = "/home/${user}";
-  localfile = path: "/etc/nixos/thunder/" + path;
 in
 {
   # edit matrix's config.php and add
@@ -32,7 +30,6 @@ in
       "127.0.0.1:${builtins.toString port}:6167"
     ];
     extraOptions = [ "--network=matrix-br" ];
-    user = "${builtins.toString uid}:${builtins.toString uid}";
   };
 
   systemd.services.init-matrix-network-and-files = {
@@ -50,8 +47,8 @@ in
   };
 
   systemd.tmpfiles.rules = [
-    "v ${data}/matrixconduit-container    770 ${user} ${user} - -"
-    "v ${data}/matrixconduit-container/db 770 ${user} ${user} - -"
+    "v ${data}/matrixconduit-container    007 ${user} ${user} - -"
+    "v ${data}/matrixconduit-container/db 007 ${user} ${user} - -"
   ];
 
   users.users.${user} = {
@@ -59,12 +56,10 @@ in
     home = data;
     createHome = true;
     isSystemUser = true;
-    inherit uid;
   };
 
   users.groups.${user} = {
     members = [ "${user}" ];
-    gid = uid;
   };
 
 }
