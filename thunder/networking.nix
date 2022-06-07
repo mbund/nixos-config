@@ -87,7 +87,6 @@
         # required ports are, by arbitrary convention here, the first column of numbers.
         22        # ssh
         443  4430 # https
-        8448
       ];
     };
     extraCommands = ''
