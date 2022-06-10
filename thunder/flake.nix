@@ -22,6 +22,7 @@
                 ./searxng.nix
                 ./nextcloud.nix
                 ./matrix.nix
+                ./owntracks.nix
               ];
 
               nix = {

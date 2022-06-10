@@ -5,29 +5,39 @@ let
   data = "/home/${user}";
 in
 {
-  # edit matrix's config.php and add
-  # 'overwritehost' => 'matrix.mbund.org',
-
-  virtualisation.oci-containers.containers.matrixconduit = {
-    image = "matrixconduit/matrix-conduit";
-    environment = {
-      CONDUIT_SERVER_NAME = "mbund.org";
-      CONDUIT_DATABASE_PATH = "/var/lib/matrix-conduit";
-      CONDUIT_PORT = "6167";
-      CONDUIT_DATABASE_BACKEND = "rocksdb";
-      CONDUIT_ALLOW_REGISTRATION = "true";
-      CONDUIT_ALLOW_FEDERATION = "true";
-      CONDUIT_MAX_REQUEST_SIZE = "20000000";
-      CONDUIT_TRUSTED_SERVERS = "[\"matrix.org\"]";
-      CONDUIT_MAX_CONCURRENT_REQUESTS = "100";
-      CONDUIT_LOG = "info";
-      CONDUIT_ADDRESS = "0.0.0.0";
-    };
+  virtualisation.oci-containers.containers.matrixdendrite = {
+    image = "matrixdotorg/dendrite-monolith:v0.8.8";
     volumes = [
-      "${data}/matrixconduit-container/db:/var/lib/matrix-conduit"
+      "${data}/dendrite-container/config:/etc/dendrite"
+      "${data}/dendrite-container/media:/var/dendrite/media"
     ];
     ports = [
-      "127.0.0.1:${builtins.toString port}:6167"
+      "127.0.0.1:8009:8008"
+      "127.0.0.1:8449:8448"
+    ];
+    dependsOn = [ "matrixpostgres" ];
+    extraOptions = [ "--network=matrix-br" ];
+    cmd = [ "-really-enable-open-registration" ];
+  };
+
+  virtualisation.oci-containers.containers.matrixpostgres = {
+    image = "postgres:14.3";
+    environment = {
+      POSTGRES_USER = "dendrite";
+      POSTGRES_PASSWORD_FILE = "/run/secrets/matrix-postgres-password";
+      PGDATA = "/var/lib/postgresql/data/pgdata";
+    };
+    volumes = [
+      "${builtins.toFile "create-db.sh" ''
+          #!/usr/bin/env bash
+
+          for db in userapi_accounts mediaapi syncapi roomserver keyserver federationapi appservice mscs; do
+              createdb -U dendrite -O dendrite dendrite_$db
+          done
+      ''}:/docker-entrypoint-initdb.d/create-db.sh"
+      "${data}/postgres-container/data:/var/lib/postgresql/data"
+
+      "/etc/secrets/matrix-postgres-password:/run/secrets/matrix-postgres-password"
     ];
     extraOptions = [ "--network=matrix-br" ];
   };
@@ -47,8 +57,11 @@ in
   };
 
   systemd.tmpfiles.rules = [
-    "v ${data}/matrixconduit-container    007 ${user} ${user} - -"
-    "v ${data}/matrixconduit-container/db 007 ${user} ${user} - -"
+    "v ${data}/dendrite-container        777 ${user} ${user} - -"
+    "v ${data}/dendrite-container/config 777 ${user} ${user} - -"
+    "v ${data}/dendrite-container/media  777 ${user} ${user} - -"
+    "v ${data}/postgres-container        777 ${user} ${user} - -"
+    "v ${data}/postgres-container/data   777 ${user} ${user} - -"
   ];
 
   users.users.${user} = {
