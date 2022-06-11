@@ -16,19 +16,24 @@ mbund.org:4430 {
 
     handle /.well-known/matrix/client {
         import matrix-well-known-header
-        respond `{"m.homeserver":{"base_url":"https://matrix.mbund.org"},"m.identity_server":{"base_url":"https://vector.im"}}`
+        respond `{"m.homeserver":{"base_url":"https://matrix.mbund.org"}}`
     }
 }
 
 matrix.mbund.org:4430 {
     reverse_proxy /_matrix/* http://127.0.0.1:8009
     reverse_proxy /_synapse/client/* http://127.0.0.1:8009
-    reverse_proxy /_conduit/client/* http://127.0.0.1:8009
 }
 
-https://owntracks.mbund.org:4430 {
-    # encode gzip
-    reverse_proxy http://127.0.0.1:4433
+mqtt.mbund.org {
+    reverse_proxy 127.0.0.1:9002
+}
+
+nodered.mbund.org:4430 {
+    reverse_proxy 127.0.0.1:1880
+    basicauth * {
+        admin JDJhJDE0JFREWnY1Y2czeEZRMi4uNGprWWNPUU9sb3NWVFkwLlR5V2w1cDhjZUdMOTIxVUsvYXFBaElP
+    }
 }
 
 https://searx.mbund.org:4430 https://www.searx.mbund.org:4430 {
@@ -50,6 +55,9 @@ https://nextcloud.mbund.org:4430 https://www.nextcloud.mbund.org:4430 {
     # www -> apex
     @www host www.nextcloud.mbund.org
     redir @www https://nextcloud.mbund.org{uri} permanent
+
+    rewrite /.well-known/carddav /remote.php/dav
+    rewrite /.well-known/caldav /remote.php/dav
 
     header {
         import mb_set_headers

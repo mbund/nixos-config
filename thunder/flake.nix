@@ -23,6 +23,7 @@
                 ./nextcloud.nix
                 ./matrix.nix
                 ./owntracks.nix
+                ./mqtt.nix
               ];
 
               nix = {

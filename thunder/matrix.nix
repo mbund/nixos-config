@@ -17,7 +17,7 @@ in
     ];
     dependsOn = [ "matrixpostgres" ];
     extraOptions = [ "--network=matrix-br" ];
-    cmd = [ "-really-enable-open-registration" ];
+    # cmd = [ "-really-enable-open-registration" ];
   };
 
   virtualisation.oci-containers.containers.matrixpostgres = {
