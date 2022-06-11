@@ -8,7 +8,7 @@ in
   virtualisation.oci-containers.containers.owntracks = {
     image = "owntracks/recorder";
     environment = {
-      OTR_HOST = "owntracksmosquitto";
+      OTR_HOST = "mosquitto";
     };
     volumes = [
       "${data}/owntracks-container/recorder-store:/store"

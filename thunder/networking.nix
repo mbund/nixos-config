@@ -80,15 +80,13 @@
   # port forwarding
   networking.firewall = {
     enable = true;
-    interfaces.eth0 = {
-      allowedTCPPorts = [
-        # Every required port is opened here, including some internal ones. A separate,
-        # dedicated firewall should allow only the absolutely required ports. The
-        # required ports are, by arbitrary convention here, the first column of numbers.
-        22        # ssh
-        443  4430 # https
-      ];
-    };
+    allowedTCPPorts = [
+      # Every required port is opened here, including some internal ones. A separate,
+      # dedicated firewall should allow only the absolutely required ports. The
+      # required ports are, by arbitrary convention here, the first column of numbers.
+      22        # ssh
+      443  4430 # https
+    ];
     extraCommands = ''
       # Redirect all incoming https (443) traffic through to port 4430
       ip46tables -t nat -A PREROUTING -i eth0 -p tcp --dport 443 -j REDIRECT --to-port 4430
