@@ -7,6 +7,7 @@
     desktop.url = "./desktop";
     zephyr.url = "./zephyr";
     thunder.url = "./thunder";
+    linode-kube-master.url = "./linode-kube-master";
     nixos-installer.url = "./nixos-installer";
     mbund-gnome.url = "./mbund-gnome";
 
@@ -21,6 +22,7 @@
       desktop.genNixOSConfigurations inputs //
       zephyr.nixosConfigurations //
       thunder.genNixOSConfigurations inputs //
+      linode-kube-master.genNixOSConfigurations inputs //
       nixos-installer.nixosConfigurations //
       { };
 
