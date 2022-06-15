@@ -29,13 +29,6 @@ mqtt.mbund.org {
     reverse_proxy 127.0.0.1:9002
 }
 
-# nodered.mbund.org:4430 {
-#     reverse_proxy 127.0.0.1:1880
-#     basicauth * {
-#         admin JDJhJDE0JFREWnY1Y2czeEZRMi4uNGprWWNPUU9sb3NWVFkwLlR5V2w1cDhjZUdMOTIxVUsvYXFBaElP
-#     }
-# }
-
 https://searx.mbund.org:4430 https://www.searx.mbund.org:4430 {
     # www -> apex
     @www host www.searx.mbund.org
@@ -65,8 +58,13 @@ https://nextcloud.mbund.org:4430 https://www.nextcloud.mbund.org:4430 {
         defer
     }
 
+    route /ds-vpath/* {
+        uri strip_prefix /ds-vpath
+        reverse_proxy 127.0.0.1:4433
+    }
+ 
     reverse_proxy 127.0.0.1:4432 {
-        import mb_remove_headers
+        # import mb_remove_headers
         lb_policy first
     }
 }

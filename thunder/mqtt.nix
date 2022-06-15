@@ -1,6 +1,5 @@
 { pkgs, lib, config, ... }:
 let
-  port = 4433;
   user = "thunder-mqtt";
   data = "/home/${user}";
 in
@@ -14,21 +13,10 @@ in
     ];
     ports = [
       "127.0.0.1:9002:9001"
+      "127.0.0.1:1883:1883"
     ];
     extraOptions = [ "--network=mqtt-br" ];
   };
-
-  # virtualisation.oci-containers.containers.nodered = {
-  #   image = "nodered/node-red:latest-12";
-  #   volumes = [
-  #     "${data}/nodered-container/data:/data"
-  #   ];
-  #   ports = [
-  #     "127.0.0.1:1880:1880"
-  #   ];
-  #   dependsOn = [ "mosquitto" ];
-  #   extraOptions = [ "--network=mqtt-br" ];
-  # };
 
   systemd.services.init-mqtt-network-and-files = {
     description = "Create the network bridge mqtt-br for mqtt.";

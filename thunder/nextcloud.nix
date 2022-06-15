@@ -7,6 +7,7 @@ in
 {
   # edit nextcloud's config.php and add
   # 'overwritehost' => 'nextcloud.mbund.org',
+  # 'overwriteprotocol' => 'https',
 
   virtualisation.oci-containers.containers.nextcloud = {
     image = "nextcloud";
@@ -53,6 +54,22 @@ in
     ];
     extraOptions = [ "--network=nextcloud-br" ];
   };
+    
+  virtualisation.oci-containers.containers.onlyofficedocumentserver = {
+    image = "onlyoffice/documentserver";
+    volumes = [
+      "${data}/onlyofficedocumentserver-container/logs:/var/log/onlyoffice"
+      "${data}/onlyofficedocumentserver-container/data:/var/www/onlyoffice/Data"
+      "${data}/onlyofficedocumentserver-container/lib:/var/lib/onlyoffice"
+      "${data}/onlyofficedocumentserver-container/rabbitmq:/var/lib/rabbitmq"
+      "${data}/onlyofficedocumentserver-container/redis:/var/lib/redis"
+      "${data}/onlyofficedocumentserver-container/db:/var/lib/postgresql"
+    ];
+    ports = [
+      "127.0.0.1:4433:80"
+    ];
+    extraOptions = [ "--network=nextcloud-br" ];
+  };
 
   systemd.services.init-nextcloud-network-and-files = {
     description = "Create the network bridge nextcloud-br for nextcloud.";
@@ -69,14 +86,22 @@ in
   };
 
   systemd.tmpfiles.rules = [
-    "v ${data}/nextcloud-container             777 ${user} ${user} - -"
-    "v ${data}/nextcloud-container/nextcloud   777 ${user} ${user} - -"
-    "v ${data}/nextcloud-container/apps        777 ${user} ${user} - -"
-    "v ${data}/nextcloud-container/config      777 ${user} ${user} - -"
-    "v ${data}/nextcloud-container/data        777 ${user} ${user} - -"
+    "v ${data}/nextcloud-container                         777 ${user} ${user} - -"
+    "v ${data}/nextcloud-container/nextcloud               777 ${user} ${user} - -"
+    "v ${data}/nextcloud-container/apps                    777 ${user} ${user} - -"
+    "v ${data}/nextcloud-container/config                  777 ${user} ${user} - -"
+    "v ${data}/nextcloud-container/data                    777 ${user} ${user} - -"
 
-    "v ${data}/nextcloudmariadb-container      777 ${user} ${user} - -"
-    "v ${data}/nextcloudmariadb-container/data 777 ${user} ${user} - -"
+    "v ${data}/nextcloudmariadb-container                  777 ${user} ${user} - -"
+    "v ${data}/nextcloudmariadb-container/data             777 ${user} ${user} - -"
+
+    "v ${data}/onlyofficedocumentserver-container          777 ${user} ${user} - -"
+    "v ${data}/onlyofficedocumentserver-container/logs     777 ${user} ${user} - -"
+    "v ${data}/onlyofficedocumentserver-container/data     777 ${user} ${user} - -"
+    "v ${data}/onlyofficedocumentserver-container/lib      777 ${user} ${user} - -"
+    "v ${data}/onlyofficedocumentserver-container/rabbitmq 777 ${user} ${user} - -"
+    "v ${data}/onlyofficedocumentserver-container/redis    777 ${user} ${user} - -"
+    "v ${data}/onlyofficedocumentserver-container/db       777 ${user} ${user} - -"
   ];
 
   users.users.${user} = {

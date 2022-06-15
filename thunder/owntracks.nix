@@ -1,6 +1,5 @@
 { pkgs, lib, config, ... }:
 let
-  port = 4433;
   user = "thunder-owntracks";
   data = "/home/${user}";
 in
@@ -13,9 +12,6 @@ in
     volumes = [
       "${data}/owntracks-container/recorder-store:/store"
       # "${data}/owntracks-container/config:/config"
-    ];
-    ports = [
-      # "127.0.0.1:4433:8083"
     ];
     dependsOn = [ "mosquitto" ];
     extraOptions = [ "--network=mqtt-br" ];
