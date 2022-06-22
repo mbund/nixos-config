@@ -68,7 +68,7 @@
 
       nixosConfigurations.marshmellow-roaster = mkSystem "x86_64-linux" [ ./hosts/marshmellow-roaster ];
       deploy.nodes.marshmellow-roaster = {
-        # hostname = "192.168.1.103";
+        hostname = "192.168.1.122";
         profiles.system = {
           user = "root";
           path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.marshmellow-roaster;

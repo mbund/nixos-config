@@ -1,7 +1,7 @@
 { config, ... }: let
   
   home = {
-    home.stateVersion = "22.05";
+    home.stateVersion = "21.11";
   };
 
 in {
@@ -12,6 +12,16 @@ in {
     ../../roles/desktop.nix
   ];
 
+  # networking options
+  networking = {
+    hostName = "marshmellow-roaster";
+    useDHCP = false;
+    interfaces.enp5s0.useDHCP = true;
+    interfaces.wlp9s01b.useDHCP = true;
+    networkmanager.enable = true;
+  };
+
+  # basic home state
   home-manager.users.mbund = home;
 
   # This value determines the NixOS release from which the default
