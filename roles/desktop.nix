@@ -1,8 +1,9 @@
-{ inputs, ... }: {
-  imports = with inputs.self.nixosModules; with inputs.self.nixosProfiles; [
+{ ... }: {
+  imports = [
     ./base.nix
-    
-    hyprland-de
-    firefox
+
+    ../profiles/hyprland-de.nix
+    ../profiles/firefox.nix
+    ../profiles/gaming.nix
   ];
 }

@@ -22,15 +22,14 @@
   services.tlp.enable = true;
   services.upower.enable = true;
 
-  # erasure
-  environment.erasure.root = {
+  # erasure and persist
+  environment.persist.root = {
     storage-path = "/persist";
 
     btrfs = {
       enable = true;
       device = "/dev/mapper/nixos-root";
       subvolume = "root";
-      mountpoint = "/";
       rollback-snapshot = "root-blank";
     };
     
@@ -39,7 +38,7 @@
     ];
   };
 
-  environment.erasure.home = {
+  environment.persist.home = {
     storage-path = "/persist/home";
 
     btrfs = {

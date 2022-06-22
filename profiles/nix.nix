@@ -1,4 +1,14 @@
-{ pkgs, lib, inputs, config, ... }: {
+{ pkgs, lib, inputs, config, ... }: let
+  
+  home = {
+    home.packages = with pkgs; [
+      nix-index
+      nix-tree
+      nix-prefetch-scripts
+    ];
+  };
+
+in {
   nix = {
     nixPath = lib.mkForce [ "self=/etc/self/compat" "nixpkgs=/etc/nixpkgs" ];
     registry.self.flake = inputs.self;

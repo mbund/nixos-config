@@ -1,143 +1,139 @@
-{ config, pkgs, lib, inputs, ... }:
+{ config, pkgs, lib, ... }:
 {
-  imports = [ inputs.impermanence.nixosModules.impermanence ];
+  options.environment.persist = lib.mkOption {
+    default = { };
 
-  options = {
-    environment.erasure = lib.mkOption {
-      default = { };
+    type = lib.types.attrsOf (
+      lib.types.submodule ({ name, ... }: {
+        options = {
 
-      type = lib.types.attrsOf (
-        lib.types.submodule ({ name, ... }: {
-          options = {
-
-            name = lib.mkOption {
-              default = name;
-              example = "root";
-              type = lib.types.str;
-              description = "Name for this";
-            };
-
-            storage-path = lib.mkOption {
-              example = "/persist";
-              type = lib.types.str;
-              description = "Path to symlink everything into";
-            };
-
-            btrfs = {
-              enable = lib.mkOption {
-                type = lib.types.bool;
-                default = false;
-                description = ''
-                  Enable if using `btrfs` as root.
-                '';
-              };
-
-              device = lib.mkOption {
-                type = lib.types.str;
-                example = "/dev/sda1";
-              };
-
-              subvolume = lib.mkOption {
-                type = lib.types.str;
-                example = "root";
-                description = ''
-                  `btrfs` subvolume which will be rolled back on boot. Should be the subvolume mounted on to `/`.
-                '';
-              };
-
-              rollback-snapshot = lib.mkOption {
-                type = lib.types.str;
-                example = "root-blank";
-                description = ''
-                  `btrfs` snapshot to roll back to on boot. Ideally should be a read-only snapshot taken while completely blank.
-                '';
-              };
-
-              rollback-on-boot = lib.mkOption {
-                type = lib.types.bool;
-                default = true;
-              };
-
-              diff-command = lib.mkOption {
-                type = lib.types.str;
-                default = "diff-" + name;
-              };
-            };
-
-            other-rollback = {
-              enable = lib.mkOption {
-                type = lib.types.bool;
-                default = false;
-                description = ''
-                  Enable if rolling back using some other method. If it's on `tmpfs`, for example.
-                '';
-              };
-            };
-
-            # TODO
-            sources = lib.mkOption {
-              type = lib.types.listOf lib.types.str;
-              default = [ ];
-            };
-
-            paths = lib.mkOption {
-              type = lib.types.listOf lib.types.str;
-              default = [ ];
-              example = [
-                "/etc/machine-id"
-                "/etc/nixos/"
-              ];
-              description = ''
-                Files and folders that should be put into persistent storage.
-              '';
-            };
-
-            directories = lib.mkOption {
-              type = lib.types.listOf lib.types.str;
-              default = [ ];
-              example = [
-                "/etc/nixos"
-              ];
-              description = ''
-                Folders that should be put into persistent storage.
-              '';
-            };
-
-            files = lib.mkOption {
-              type = lib.types.listOf lib.types.str;
-              default = [ ];
-              example = [
-                "/etc/machine-id"
-              ];
-              description = ''
-                Files that should be put into persistent storage.
-              '';
-            };
-
-            ignore = lib.mkOption {
-              type = lib.types.listOf lib.types.str;
-              default = [ ];
-              example = [
-                "/tmp/*"
-              ];
-              description = ''
-                Regex per line of paths that should be ignored when running `filesystem-diff`.
-              '';
-            };
-
+          name = lib.mkOption {
+            default = name;
+            example = "root";
+            type = lib.types.str;
+            description = "Name for this";
           };
-        })
-      );
 
-      description = ''
-        Persistent storage locations and the paths to link them. Each attribute name should be the full path to a persistent storage location.
-      '';
-    };
+          storage-path = lib.mkOption {
+            example = "/persist";
+            type = lib.types.str;
+            description = "Path to symlink everything into";
+          };
+
+          btrfs = {
+            enable = lib.mkOption {
+              type = lib.types.bool;
+              default = false;
+              description = ''
+                Enable if using `btrfs` as root.
+              '';
+            };
+
+            device = lib.mkOption {
+              type = lib.types.str;
+              example = "/dev/sda1";
+            };
+
+            subvolume = lib.mkOption {
+              type = lib.types.str;
+              example = "root";
+              description = ''
+                `btrfs` subvolume which will be rolled back on boot. Should be the subvolume mounted on to `/`.
+              '';
+            };
+
+            rollback-snapshot = lib.mkOption {
+              type = lib.types.str;
+              example = "root-blank";
+              description = ''
+                `btrfs` snapshot to roll back to on boot. Ideally should be a read-only snapshot taken while completely blank.
+              '';
+            };
+
+            rollback-on-boot = lib.mkOption {
+              type = lib.types.bool;
+              default = true;
+            };
+
+            diff-command = lib.mkOption {
+              type = lib.types.str;
+              default = "diff-" + name;
+            };
+          };
+
+          other-rollback = {
+            enable = lib.mkOption {
+              type = lib.types.bool;
+              default = false;
+              description = ''
+                Enable if rolling back using some other method. If it's on `tmpfs`, for example.
+              '';
+            };
+          };
+
+          # TODO
+          sources = lib.mkOption {
+            type = lib.types.listOf lib.types.str;
+            default = [ ];
+          };
+
+          paths = lib.mkOption {
+            type = lib.types.listOf lib.types.str;
+            default = [ ];
+            example = [
+              "/etc/machine-id"
+              "/etc/nixos/"
+            ];
+            description = ''
+              Files and folders that should be put into persistent storage.
+            '';
+          };
+
+          directories = lib.mkOption {
+            type = lib.types.listOf lib.types.str;
+            default = [ ];
+            example = [
+              "/etc/nixos"
+            ];
+            description = ''
+              Folders that should be put into persistent storage.
+            '';
+          };
+
+          files = lib.mkOption {
+            type = lib.types.listOf lib.types.str;
+            default = [ ];
+            example = [
+              "/etc/machine-id"
+            ];
+            description = ''
+              Files that should be put into persistent storage.
+            '';
+          };
+
+          ignore = lib.mkOption {
+            type = lib.types.listOf lib.types.str;
+            default = [ ];
+            example = [
+              "/tmp/*"
+            ];
+            description = ''
+              Regex per line of paths that should be ignored when running `filesystem-diff`.
+            '';
+          };
+
+        };
+      })
+    );
+
+    description = ''
+      Persistent storage locations and the paths to link them. Each attribute name should be the full path to a persistent storage location.
+    '';
   };
-
+  
   config =
     let
-      erasures = builtins.attrValues config.environment.erasure;
+      persists = builtins.attrValues config.environment.persist;
 
       # TODO move these into their own library?
       splitPath = paths:
@@ -202,7 +198,7 @@
             })
           ] else [ ]
         )
-        erasures);
+        persists);
 
       postDeviceCommands = builtins.concatStringsSep "\n" (map
         (erasure:
@@ -251,7 +247,7 @@
           '' else ""
 
         )
-        erasures);
+        persists);
 
     in
     {
@@ -268,7 +264,7 @@
             };
           }
         )
-        erasures);
+        persists);
 
       environment.systemPackages = packages;
       boot.initrd.postDeviceCommands = postDeviceCommands;

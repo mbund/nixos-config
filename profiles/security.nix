@@ -9,6 +9,11 @@
   systemd.tmpfiles.rules = [
     "Z /etc/nixos 775 root nixos-configurator - -"
   ];
+  
+  # manage root user
+  users.users.root = {
+    password = "root";
+  };
 
   # create user and group `mbund`
   users.groups.mbund = { };
@@ -28,7 +33,7 @@
       "networkmanager"
     ];
     uid = 1000;
-    password = "";
+    password = "mbund";
   };
 
   # privilege escalation

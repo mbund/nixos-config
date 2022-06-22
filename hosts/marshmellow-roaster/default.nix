@@ -1,11 +1,18 @@
-{ config, ... }: {
+{ config, ... }: let
+  
+  home = {
+    home.stateVersion = "22.05";
+  };
+
+in {
   imports = [
-    # ./hardware-configuration.nix
+    ./hardware-configuration.nix
+    ../../profiles/intel.nix
     
-    ../../profiles/hyprland-de.nix
-    ../../profiles/nvidia.nix
-    ../../profiles/gaming.nix
+    ../../roles/desktop.nix
   ];
+
+  home-manager.users.mbund = home;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

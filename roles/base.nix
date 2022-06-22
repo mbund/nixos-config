@@ -1,14 +1,11 @@
-{ inputs, pkgs, ... }: {
-  imports = with inputs.self.nixosModules; with inputs.self.nixosProfiles; [
-    inputs.home-manager.nixosModules.home-manager
+{ pkgs, ... }: {
+  imports = [
+    ../modules/persist.nix
     
-    # modules
-    erasure
-    
-    # profiles
-    nix
-    git
-    zsh
+    ../profiles/security.nix
+    ../profiles/nix.nix
+    ../profiles/git.nix
+    ../profiles/zsh.nix
   ];
   
   environment.systemPackages = with pkgs; [
