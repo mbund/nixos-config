@@ -28,8 +28,8 @@
     };
 
     "/boot" = {
-      device = "/dev/disk/by-label/bootloader";
-      fsType = "vfat";
+      device = "/dev/disk/by-label/boot";
+      fsType = "ext4";
     };
 
     "/swap" = {
@@ -60,7 +60,7 @@
   # encryption
   boot.initrd.luks.devices = {
     "nixos-root" = {
-      device = "/dev/disk/by-uuid/e9bec88c-bd65-4ce0-b370-6c619e453edb";
+      device = "/dev/disk/by-id/ata-ST500LM012_HN-M500MBB_S2TDJB0C230612-part3";
     };
   };
 
