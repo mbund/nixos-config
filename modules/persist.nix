@@ -155,15 +155,15 @@
       # implementation
 
       packages = lib.flatten (map
-        (erasure:
-          if erasure.btrfs.enable && erasure.btrfs.diff-command != "" then [
+        (persist:
+          if persist.btrfs.enable && persist.btrfs.diff-command != "" then [
             (pkgs.writeShellApplication {
-              name = erasure.btrfs.diff-command;
+              name = persist.btrfs.diff-command;
               runtimeInputs = with pkgs; [ btrfs-progs coreutils gnused ];
               text =
                 let
-                  ignorefiles = builtins.toFile ("erasure-ignore-" + erasure.name) (lib.concatMapStrings (path: path + "\n") erasure.ignore);
-                  linkedfiles = builtins.toFile ("erasure-ignore-linked-" + erasure.name) (lib.concatMapStrings (path: "^" + path + "\n") erasure.paths);
+                  ignorefiles = builtins.toFile ("persist-ignore-" + persist.name) (lib.concatMapStrings (path: path + "\n") persist.ignore);
+                  linkedfiles = builtins.toFile ("persist-ignore-linked-" + persist.name) (lib.concatMapStrings (path: "^" + path + "\n") persist.paths);
                 in
                 ''
                   if [ "$EUID" != 0 ]; then
@@ -172,15 +172,15 @@
                   fi
 
                   sudo mkdir -p /mnt
-                  sudo mount -o subvol=/${erasure.btrfs.subvolume} ${erasure.btrfs.device} /mnt
+                  sudo mount -o subvol=/${persist.btrfs.subvolume} ${persist.btrfs.device} /mnt
 
-                  OLD_TRANSID=$(sudo btrfs subvolume find-new /mnt/${erasure.btrfs.rollback-snapshot} 9999999)
+                  OLD_TRANSID=$(sudo btrfs subvolume find-new /mnt/${persist.btrfs.rollback-snapshot} 9999999)
                   OLD_TRANSID=''${OLD_TRANSID#transid marker was }
 
-                  sudo btrfs subvolume find-new "/mnt/${erasure.btrfs.subvolume}" "$OLD_TRANSID" |
+                  sudo btrfs subvolume find-new "/mnt/${persist.btrfs.subvolume}" "$OLD_TRANSID" |
                   sed '$d' | # remove last line ("transid marker was...")
                   cut -f17- -d' ' | # remove metadata (inode, file offset, len, etc.)
-                  while read -r line; do echo ${lib.escapeShellArg erasure.btrfs.mountpoint}"''${line}"; done | # prepend mountpoint
+                  while read -r line; do echo ${lib.escapeShellArg persist.btrfs.subvolume}"''${line}"; done | # prepend subvolume
                   grep -v -f ${ignorefiles} | # ignore ignored paths
                   grep -v -f ${linkedfiles} | # ignore persisted paths
                   sort |
@@ -201,9 +201,9 @@
         persists);
 
       postDeviceCommands = builtins.concatStringsSep "\n" (map
-        (erasure:
+        (persist:
 
-          if erasure.btrfs.enable && erasure.btrfs.rollback-on-boot then ''
+          if persist.btrfs.enable && persist.btrfs.rollback-on-boot then ''
             # btrfs state erasure
             # Taken from:
             # https://mt-caret.github.io/blog/posts/2020-06-29-optin-state.html
@@ -212,7 +212,7 @@
 
             # We first mount the btrfs root to /mnt
             # so we can manipulate btrfs subvolumes.
-            mount -o subvol=/${erasure.btrfs.subvolume} ${erasure.btrfs.device} /mnt
+            mount -o subvol=/${persist.btrfs.subvolume} ${persist.btrfs.device} /mnt
 
             # While we're tempted to just delete /root and create
             # a new snapshot from /root-blank, /root is already
@@ -229,17 +229,17 @@
             # Anyhow, deleting these subvolumes hasn't resulted
             # in any issues so far, except for fairly
             # benign-looking errors from systemd-tmpfiles.
-            btrfs subvolume list -o /mnt/${erasure.btrfs.subvolume} |
+            btrfs subvolume list -o /mnt/${persist.btrfs.subvolume} |
             cut -f9 -d' ' |
             while read subvolume; do
               echo "deleting /$subvolume subvolume..."
               btrfs subvolume delete "/mnt/$subvolume"
             done &&
-            echo "deleting /${erasure.btrfs.subvolume} subvolume..." &&
-            btrfs subvolume delete /mnt/${erasure.btrfs.subvolume}
+            echo "deleting /${persist.btrfs.subvolume} subvolume..." &&
+            btrfs subvolume delete /mnt/${persist.btrfs.subvolume}
 
-            echo "restoring blank /${erasure.btrfs.subvolume} subvolume..."
-            btrfs subvolume snapshot /mnt/${erasure.btrfs.rollback-snapshot} /mnt/${erasure.btrfs.subvolume}
+            echo "restoring blank /${persist.btrfs.subvolume} subvolume..."
+            btrfs subvolume snapshot /mnt/${persist.btrfs.rollback-snapshot} /mnt/${persist.btrfs.subvolume}
 
             # Once we're done rolling back to a blank snapshot,
             # we can unmount /mnt and continue on the boot process.
@@ -255,12 +255,12 @@
       # This took too long to debug and I don't want to go through that again so heed this warning, future self.
 
       environment.persistence = builtins.listToAttrs (map
-        (erasure:
+        (persist:
           {
-            name = erasure.storage-path;
+            name = persist.storage-path;
             value = {
-              directories = (builtins.filter (path: lib.hasSuffix "/" path) erasure.paths) ++ erasure.directories;
-              files = (builtins.filter (path: ! lib.hasSuffix "/" path) erasure.paths) ++ erasure.files;
+              directories = (builtins.filter (path: lib.hasSuffix "/" path) persist.paths) ++ persist.directories;
+              files = (builtins.filter (path: ! lib.hasSuffix "/" path) persist.paths) ++ persist.files;
             };
           }
         )

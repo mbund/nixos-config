@@ -1,6 +1,6 @@
 { pkgs, config, lib, ... }:
 {
-  # Partitioning and drives
+  # partitioning and drives
   fileSystems = {
     "/" = {
       device = "/dev/mapper/nixos-root";
@@ -45,7 +45,7 @@
     };
   };
 
-  # Create swapfile
+  # create swapfile
   swapDevices = [
     {
       # To initialize a new swapfile on btrfs, you must first create it like so
@@ -57,19 +57,19 @@
     }
   ];
 
-  # Encryption
+  # encryption
   boot.initrd.luks.devices = {
     "nixos-root" = {
       device = "/dev/disk/by-uuid/e9bec88c-bd65-4ce0-b370-6c619e453edb";
     };
   };
 
-  # Kernel
+  # kernel
   boot.initrd.availableKernelModules = [ "ehci_pci" "ahci" "usb_storage" "ums_realtek" "sd_mod" "sr_mod" ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  # Bootloader
+  # bootloader
   boot.loader.grub = {
     enable = true;
     version = 2;
@@ -77,6 +77,6 @@
     enableCryptodisk = true;
   };
 
-  # hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware;
   hardware.enableRedistributableFirmware = true;
 }

@@ -27,19 +27,13 @@
 
       mkSystem = system: extraModules: nixpkgs.lib.nixosSystem {
         inherit system;
-        modules = [
-          inputs.impermanence.nixosModules.impermanence
-          inputs.agenix.nixosModules.age
-          inputs.home-manager.nixosModules.home-manager
-          inputs.nur.nixosModules.nur
-          ({ config, ... }: {
-            system.configurationRevision = self.sourceInfo.rev;
-            services.getty.greetingLine =
-              "<<< Welcome to NixOS ${config.system.nixos.label} @ ${self.sourceInfo.rev} - \\l >>>";
-
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-          })
+        specialArgs = { inherit inputs; };
+        modules = with inputs; [
+          impermanence.nixosModules.impermanence
+          agenix.nixosModules.age
+          home-manager.nixosModules.home-manager
+          nur.nixosModules.nur
+          hyprland.nixosModules.default
         ] ++ extraModules;
       };
     in
