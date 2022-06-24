@@ -1,14 +1,17 @@
-{ config, ... }: let
-  
+{ config, ... }:
+let
+
   home = {
     home.stateVersion = "21.11";
   };
 
-in {
+in
+{
   imports = [
     ./hardware-configuration.nix
     ../../profiles/intel.nix
-    
+    ../../profiles/location/JFK.nix
+
     ../../roles/desktop.nix
   ];
 
@@ -35,7 +38,7 @@ in {
   # erasure and persist
   environment.persist.root = {
     storage-path = "/persist";
-    
+
     btrfs = {
       enable = true;
       device = "/dev/mapper/nixos-root";
@@ -45,8 +48,8 @@ in {
   };
 
   environment.persist.home = {
-    storage-path = "/persist/home";
-    
+    storage-path = "/persist";
+
     btrfs = {
       enable = true;
       device = "/dev/mapper/nixos-root";
@@ -54,4 +57,20 @@ in {
       rollback-snapshot = "home-blank";
     };
   };
+
+  # system.activationScripts = {
+  #   homedirs.text = builtins.concatStringsSep "\n" (map
+  #     (dir: ''
+  #       mkdir -p ${dir}
+  #       chown mbund:mbund ${dir}
+  #     '')
+  #     (builtins.filter (lib.hasPrefix "/home/mbund") config.environment.persistence.directories));
+  #   homefiles.text = builtins.concatStringsSep "\n" (map
+  #     (file: ''
+  #       mkdir -p $(dirname ${file})
+  #       touch ${file}
+  #       chown mbund:mbund ${file}
+  #     '')
+  #     (builtins.filter (lib.hasPrefix "/home/mbund") config.environment.persistence.files));
+  # };
 }

@@ -109,13 +109,13 @@ let
         source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
       '';
     };
+
+    # home.persistance."/persist/home/${config.home.user}".directories = [ ".local/share/zsh" ];
   };
 
 in
 {
-  environment.sessionVariables.SHELL = "zsh";
-
-  environment.persist.home.directories = [ "/home/mbund/.local/share/zsh" ];
+  # environment.persist.home.directories = [ "/home/mbund/.local/share/zsh" ];
 
   home-manager.users.mbund = home;
 }

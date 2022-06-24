@@ -6,6 +6,7 @@
     ../profiles/nix.nix
     ../profiles/git.nix
     ../profiles/zsh.nix
+    ../profiles/helix.nix
   ];
   
   environment.systemPackages = with pkgs; [

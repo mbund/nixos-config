@@ -29,11 +29,11 @@
         inherit system;
         specialArgs = { inherit inputs; };
         modules = with inputs; [
-          impermanence.nixosModules.impermanence
-          agenix.nixosModules.age
-          home-manager.nixosModules.home-manager
           nur.nixosModules.nur
+          home-manager.nixosModules.home-manager
+          impermanence.nixosModules.impermanence
           hyprland.nixosModules.default
+          agenix.nixosModules.age
         ] ++ extraModules;
       };
     in
